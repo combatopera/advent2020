@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 
+from adventlib import readchunks
 from pathlib import Path
 
 fields = {
@@ -12,21 +13,14 @@ fields = {
     'pid',
 }
 
-def _read():
-    with Path('input', '4').open() as f:
-        for line in f:
-            yield line.rstrip()
-    yield ''
-
 def main():
     valid = 0
-    p = {}
-    for l in _read():
-        if l:
-            p.update(e.split(':') for e in l.split(' '))
-        else:
-            valid += fields <= p.keys()
+    with Path('input', '4').open() as f:
+        for chunk in readchunks(f):
             p = {}
+            for l in chunk:
+                p.update(e.split(':') for e in l.split(' '))
+            valid += fields <= p.keys()
     print(valid)
 
 if '__main__' == __name__:

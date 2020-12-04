@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 
+from adventlib import readchunks
 from pathlib import Path
 import re
 
@@ -52,21 +53,14 @@ rules = dict(
     pid = Pattern('[0-9]{9}'),
 )
 
-def _read():
-    with Path('input', '4').open() as f:
-        for line in f:
-            yield line.rstrip()
-    yield ''
-
 def main():
     valid = 0
-    p = {}
-    for l in _read():
-        if l:
-            p.update(e.split(':') for e in l.split(' '))
-        else:
-            valid += all(f in p and rule(p[f]) for f, rule in rules.items())
+    with Path('input', '4').open() as f:
+        for chunk in readchunks(f):
             p = {}
+            for l in chunk:
+                p.update(e.split(':') for e in l.split(' '))
+            valid += all(f in p and rule(p[f]) for f, rule in rules.items())
     print(valid)
 
 if '__main__' == __name__:
