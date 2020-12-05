@@ -7,12 +7,9 @@ def main():
     s = answerof('5a')
     with Path('input', '5').open() as f:
         taken = set(SeatReader(10).read(f))
-    try:
-        while True:
-            s -= 1
-            taken.remove(s)
-    except KeyError:
-        print(s)
+    while s in taken:
+        s -= 1
+    print(s)
 
 if '__main__' == __name__:
     main()
