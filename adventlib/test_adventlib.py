@@ -1,4 +1,4 @@
-from . import readchunks
+from . import readchunks, SeatReader
 from unittest import TestCase
 
 class TestReadChunks(TestCase):
@@ -24,3 +24,11 @@ class TestReadChunks(TestCase):
             '\n\n',
         ]:
             self.assertEqual([], list(readchunks(text.splitlines(True))))
+
+class TestSeatReader(TestCase):
+
+    def test_range(self):
+        self.assertEqual(range(1024), SeatReader(10).range())
+        self.assertEqual(range(8), SeatReader(3).range())
+        self.assertEqual(range(4), SeatReader(2).range())
+        self.assertEqual(range(2), SeatReader(1).range())

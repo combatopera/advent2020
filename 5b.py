@@ -1,20 +1,15 @@
 #!/usr/bin/env python3
 
+from adventlib import SeatReader
 from pathlib import Path
 
-xform = dict(F = 0, B = 1, L = 0, R = 1)
-size = 10
-factors = [2 ** i for i in range(size)]
-factors.reverse()
-
 def main():
-    space = range(2 ** size)
-    seats = set(space)
+    r = SeatReader(10)
+    seats = set(r.range())
     with Path('input', '5').open() as f:
-        for l in f:
-            seats.remove(sum(f * xform[l[i]] for i, f in enumerate(factors)))
+        seats.difference_update(r.read(f))
     try:
-        for s in space:
+        for s in r.range():
             seats.remove(s)
     except KeyError:
         print(min(seats))
