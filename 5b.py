@@ -2,7 +2,6 @@
 
 from adventlib import answerof, SeatReader
 from pathlib import Path
-import subprocess
 
 def main():
     s = answerof('5a')

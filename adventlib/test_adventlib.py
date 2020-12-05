@@ -1,4 +1,4 @@
-from . import readchunks, SeatReader
+from . import readchunks
 from unittest import TestCase
 
 class TestReadChunks(TestCase):
