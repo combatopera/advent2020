@@ -26,4 +26,5 @@ class SeatReader:
             yield sum(f * self.xform[l[i]] for i, f in enumerate(self.factors))
 
 def answerof(taskname):
+    'Pretend we saved it.'
     return int(subprocess.check_output([f".{os.sep}{taskname}.py"]))
