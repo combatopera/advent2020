@@ -9,8 +9,8 @@ def main():
         taken = set(SeatReader(10).read(f))
     try:
         while True:
-            taken.remove(s)
             s -= 1
+            taken.remove(s)
     except KeyError:
         print(s)
 
