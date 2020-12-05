@@ -1,3 +1,5 @@
+import os, subprocess
+
 def readchunks(f):
     def g():
         for l in f:
@@ -23,5 +25,5 @@ class SeatReader:
         for l in f:
             yield sum(f * self.xform[l[i]] for i, f in enumerate(self.factors))
 
-    def range(self):
-        return range(2 ** len(self.factors))
+def answerof(taskname):
+    return int(subprocess.check_output([f".{os.sep}{taskname}.py"]))

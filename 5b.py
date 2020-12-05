@@ -1,18 +1,19 @@
 #!/usr/bin/env python3
 
-from adventlib import SeatReader
+from adventlib import answerof, SeatReader
 from pathlib import Path
+import subprocess
 
 def main():
-    r = SeatReader(10)
-    seats = set(r.range())
+    s = answerof('5a')
     with Path('input', '5').open() as f:
-        seats.difference_update(r.read(f))
+        taken = set(SeatReader(10).read(f))
     try:
-        for s in r.range():
-            seats.remove(s)
+        while True:
+            taken.remove(s)
+            s -= 1
     except KeyError:
-        print(min(seats))
+        print(s)
 
 if '__main__' == __name__:
     main()
