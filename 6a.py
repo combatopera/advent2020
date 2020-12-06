@@ -1,16 +1,15 @@
 #!/usr/bin/env python3
 
 from adventlib import readchunks
+from itertools import chain
 from pathlib import Path
 
 def main():
-    n = 0
-    with Path('input', '6').open() as f:
-        for group in readchunks(f):
-            union = set()
-            union.update(*group)
-            n += len(union)
-    print(n)
+    def counts():
+        with Path('input', '6').open() as f:
+            for group in readchunks(f):
+                yield len(set(chain(*group)))
+    print(sum(counts()))
 
 if '__main__' == __name__:
     main()
