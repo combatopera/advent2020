@@ -8,8 +8,7 @@ def main():
     with Path('input', '6').open() as f:
         for group in readchunks(f):
             union = set()
-            for person in group:
-                union.update(person)
+            union.update(*group)
             n += len(union)
     print(n)
 
