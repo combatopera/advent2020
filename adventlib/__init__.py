@@ -1,4 +1,4 @@
-import os, subprocess
+import os, re, subprocess
 
 def readchunks(f):
     def g():
@@ -28,3 +28,17 @@ class SeatReader:
 def answerof(taskname):
     'Pretend we saved it.'
     return int(subprocess.check_output([f".{os.sep}{taskname}.py"]))
+
+class BagRule:
+
+    outer = re.compile('(.+) bags contain (.+)[.]')
+    inner = re.compile('([1-9]) (.+) bags?')
+
+    @classmethod
+    def readmany(cls, f):
+        for l in f:
+            yield cls(l.rstrip())
+
+    def __init__(self, line):
+        self.lhs, v = self.outer.fullmatch(line).groups()
+        self.rhs = {} if 'no other bags' == v else {c: int(n) for x in v.split(', ') for n, c in [self.inner.fullmatch(x).groups()]}
