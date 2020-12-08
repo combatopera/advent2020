@@ -1,8 +1,5 @@
 #!/usr/bin/env python3
 
-from adventlib import BagRule
-from collections import defaultdict
-from itertools import chain
 from pathlib import Path
 
 class Program:
