@@ -48,9 +48,9 @@ def main():
         program = Program.load(f)
     c = Computer()
     subs = dict(jmp = 'nop', nop = 'jmp')
-    for i, (name, _) in enumerate(program.instructions):
-        sub = subs.get(name)
-        if sub is not None and c.exec(program.patched(i, sub)):
+    for index, instruction in enumerate(program.instructions):
+        sub = subs.get(instruction[0])
+        if sub is not None and c.exec(program.patched(index, sub)):
             break
     print(c.accumulator)
 
