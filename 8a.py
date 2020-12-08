@@ -18,9 +18,9 @@ class Computer:
     def run(self, program):
         visited = set()
         while self.pc not in visited:
+            visited.add(self.pc)
             name, arg = program.instructions[self.pc]
             getattr(self, name)(arg)
-            visited.add(self.pc)
             self.pc += 1
 
     def acc(self, arg):
