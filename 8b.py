@@ -16,7 +16,7 @@ class Program:
 
     def patched(self, i, name):
         instructions = self.instructions.copy()
-        instructions[i] = [name, instructions[i][1]]
+        instructions[i] = [name, *instructions[i][1:]]
         return type(self)(instructions)
 
 class Computer:
