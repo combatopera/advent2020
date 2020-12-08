@@ -10,12 +10,12 @@ class Program:
                 yield [t(w) for t, w in zip([str, int], line.split(' '))]
         self.instructions = list(g())
 
-class Computer:
+class Execution:
 
     accumulator = 0
     pc = 0
 
-    def run(self, program):
+    def __init__(self, program):
         visited = set()
         while self.pc not in visited:
             visited.add(self.pc)
@@ -34,10 +34,7 @@ class Computer:
 
 def main():
     with Path('input', '8').open() as f:
-        program = Program(f)
-    c = Computer()
-    c.run(program)
-    print(c.accumulator)
+        print(Execution(Program(f)).accumulator)
 
 if '__main__' == __name__:
     main()
