@@ -47,13 +47,11 @@ def main():
     with Path('input', '8').open() as f:
         program = Program.load(f)
     c = Computer()
+    subs = dict(jmp = 'nop', nop = 'jmp')
     for i, (name, _) in enumerate(program.instructions):
-        if 'jmp' == name:
-            if c.exec(program.patched(i, 'nop')):
-                break
-        elif 'nop' == name:
-            if c.exec(program.patched(i, 'jmp')):
-                break
+        sub = subs.get(name)
+        if sub is not None and c.exec(program.patched(i, sub)):
+            break
     print(c.accumulator)
 
 if '__main__' == __name__:
