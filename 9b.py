@@ -8,16 +8,16 @@ def main():
     with Path('input', '9').open() as f:
         v = [int(l) for l in f]
     i = j = 1
-    while True:
-        r = v[i:j + 1]
-        total = sum(r)
-        if total == target:
-            break
+    total = v[i]
+    while total != target:
         if total < target:
             j += 1
+            total += v[j]
         else:
+            total -= v[i]
             i += 1
         assert i <= j
+    r = v[i:j + 1]
     print(min(r) + max(r))
 
 if '__main__' == __name__:
