@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 
+from itertools import islice
 from pathlib import Path
 
 width = 25
@@ -27,7 +28,7 @@ class Triangle:
     def update(self, x):
         for p in self.rows[self.cursor]:
             p.update(0, x)
-        for r in self.rows[self.cursor + 1:]:
+        for r in islice(self.rows, self.cursor + 1, None):
             r[self.cursor].update(1, x)
         self.cursor = (self.cursor + 1) % len(self.rows)
 
