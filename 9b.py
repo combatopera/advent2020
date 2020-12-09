@@ -3,25 +3,6 @@
 from adventlib import answerof
 from pathlib import Path
 
-width = 25
-
-class Validator:
-
-    def __init__(self, values):
-        self.ring = [0] * len(values)
-        for value in values:
-            self.update(value)
-
-    def update(self, value):
-        self.ring.pop(0)
-        self.ring.append(value)
-
-    def validate(self, value):
-        for x in self.ring:
-            for y in self.ring:
-                if x != y and x + y == value:
-                    return True
-
 def main():
     target = answerof('9a')
     with Path('input', '9').open() as f:
