@@ -24,7 +24,7 @@ class Triangle:
         return any(p.sum == x for r in self.rows for p in r)
 
     def update(self, x):
-        for p in self.rows[self.cursor][:self.cursor]:
+        for p in self.rows[self.cursor]:
             p.update(0, x)
         for r in self.rows[self.cursor + 1:]:
             r[self.cursor].update(1, x)
