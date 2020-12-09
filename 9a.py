@@ -18,6 +18,7 @@ class Triangle:
     cursor = 0
 
     def __init__(self, size):
+        # Half of a matrix not including diagonal:
         self.rows = [[self.Pair() for _ in range(r)] for r in range(size)]
 
     def accept(self, x):
