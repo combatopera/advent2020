@@ -4,32 +4,17 @@ from pathlib import Path
 
 width = 25
 
-class Validator:
-
-    def __init__(self, values):
-        self.ring = [0] * len(values)
-        for value in values:
-            self.update(value)
-
-    def update(self, value):
-        self.ring.pop(0)
-        self.ring.append(value)
-
-    def validate(self, value):
-        for x in self.ring:
-            for y in self.ring:
-                if x != y and x + y == value:
-                    return True
-
 def main():
     with Path('input', '9').open() as f:
-        v = [int(l) for l in f]
-    validator = Validator(v[:width])
-    for x in v[width:]:
-        if not validator.validate(x):
+        values = [int(l) for l in f]
+    ring = values[:width]
+    cursor = 0
+    for value in values[width:]:
+        if not any(x != y and x + y == value for x in ring for y in ring):
             break
-        validator.update(x)
-    print(x)
+        ring[cursor] = value
+        cursor = (cursor + 1) % width
+    print(value)
 
 if '__main__' == __name__:
     main()
