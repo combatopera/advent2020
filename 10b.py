@@ -6,15 +6,15 @@ from pathlib import Path
 import operator, re
 
 @lru_cache()
-def runarrangements(runlen):
+def runarrangements(adapters):
     def g():
-        if runlen:
-            for runarrangement in runarrangements(runlen - 1):
+        if adapters:
+            for runarrangement in runarrangements(adapters - 1):
                 yield 0 # Do not skip another adapter, reset skipped adapter counter.
-                if runarrangement < 2: # We can skip at most 2 adapters at a time.
+                if runarrangement < 2: # If we haven't skipped 2 adjacent adapters, we can skip another.
                     yield runarrangement + 1 # Skip another adapter, increment counter.
         else:
-            yield 0 # There are no adapters to skip.
+            yield 0 # There is one possible arrangement of no adapters, in which none skipped.
     return list(g())
 
 def main():
