@@ -23,7 +23,7 @@ class Triangle:
         self.rows = [[self.Pair() for _ in range(r)] for r in range(size)]
 
     def accept(self, x):
-        return any(p.sum == x for r in self.rows for p in r)
+        return any(p.sum == x for r in self.rows for p in r) # XXX: Can't we maintain a set?
 
     def update(self, x):
         for p in self.rows[self.cursor]:
