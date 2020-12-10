@@ -5,8 +5,8 @@ from functools import reduce
 from pathlib import Path
 import operator, re
 
-def factor(runsize):
-    return min(7, 2 ** (runsize - 1))
+def factor(runlen):
+    return min(7, 2 ** (runlen - 1))
 
 def main():
     with Path('input', '10').open() as f:
@@ -16,8 +16,8 @@ def main():
     joltages.sort()
     diffs = differentiate(joltages)
     assert 2 not in diffs
-    runs = [len(run) for run in re.findall('1+', ''.join(map(str, diffs)))]
-    print(reduce(operator.mul, map(factor, runs)))
+    runlens = [len(run) for run in re.findall('1+', ''.join(map(str, diffs)))]
+    print(reduce(operator.mul, map(factor, runlens)))
 
 if '__main__' == __name__:
     main()
