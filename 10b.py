@@ -5,7 +5,7 @@ from functools import reduce
 from pathlib import Path
 import operator, re
 
-def factor(runlen):
+def arrangements(runlen):
     return min(7, 2 ** (runlen - 1))
 
 def main():
@@ -17,7 +17,7 @@ def main():
     diffs = differentiate(joltages)
     assert 2 not in diffs
     runlens = [len(run) for run in re.findall('1+', ''.join(map(str, diffs)))]
-    print(reduce(operator.mul, map(factor, runlens)))
+    print(reduce(operator.mul, map(arrangements, runlens)))
 
 if '__main__' == __name__:
     main()
