@@ -12,7 +12,7 @@ def runarrangements(runlen):
             yield 0
         else:
             for runarrangement in runarrangements(runlen - 1):
-                yield runarrangement
+                yield 0
                 if runarrangement < 2:
                     yield runarrangement + 1
     return list(g())
