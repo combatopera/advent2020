@@ -1,10 +1,7 @@
 #!/usr/bin/env python3
 
-from itertools import islice
+from adventlib import differentiate
 from pathlib import Path
-
-def differentiate(v):
-    return [y - x for x, y in zip(v, islice(v, 1, None))]
 
 def main():
     with Path('input', '10').open() as f:

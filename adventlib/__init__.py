@@ -1,3 +1,4 @@
+from itertools import islice
 import os, re, subprocess
 
 def readchunks(f):
@@ -42,3 +43,6 @@ class BagRule:
     def __init__(self, line):
         self.lhs, v = self.outer.fullmatch(line).groups()
         self.rhs = {} if 'no other bags' == v else {c: int(n) for x in v.split(', ') for n, c in [self.inner.fullmatch(x).groups()]}
+
+def differentiate(v):
+    return [y - x for x, y in zip(v, islice(v, 1, None))]
