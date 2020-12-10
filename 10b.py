@@ -1,12 +1,21 @@
 #!/usr/bin/env python3
 
 from adventlib import differentiate
-from functools import reduce
+from functools import lru_cache, reduce
 from pathlib import Path
 import operator, re
 
-def arrangements(runlen):
-    return min(7, 2 ** (runlen - 1))
+@lru_cache()
+def runarrangements(runlen):
+    def g():
+        if 1 == runlen:
+            yield 0
+        else:
+            for runarrangement in runarrangements(runlen - 1):
+                yield runarrangement
+                if runarrangement < 2:
+                    yield runarrangement + 1
+    return list(g())
 
 def main():
     with Path('input', '10').open() as f:
@@ -16,8 +25,7 @@ def main():
     joltages.sort()
     diffs = differentiate(joltages)
     assert 2 not in diffs
-    runlens = [len(run) for run in re.findall('1+', ''.join(map(str, diffs)))]
-    print(reduce(operator.mul, map(arrangements, runlens)))
+    print(reduce(operator.mul, (len(runarrangements(len(run))) for run in re.findall('1+', ''.join(map(str, diffs))))))
 
 if '__main__' == __name__:
     main()
