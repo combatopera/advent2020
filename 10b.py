@@ -8,13 +8,13 @@ import operator, re
 @lru_cache()
 def runarrangements(runlen):
     def g():
-        if 1 == runlen:
-            yield 0 # There are no adapters to skip.
-        else:
+        if runlen:
             for runarrangement in runarrangements(runlen - 1):
                 yield 0 # Do not skip another adapter, reset skipped adapter counter.
                 if runarrangement < 2: # We can skip at most 2 adapters at a time.
                     yield runarrangement + 1 # Skip another adapter, increment counter.
+        else:
+            yield 0 # There are no adapters to skip.
     return list(g())
 
 def main():
@@ -25,7 +25,7 @@ def main():
     joltages.sort()
     diffs = differentiate(joltages)
     assert 2 not in diffs # Convenient!
-    print(reduce(operator.mul, (len(runarrangements(len(run))) for run in re.findall('1+', ''.join(map(str, diffs))))))
+    print(reduce(operator.mul, (len(runarrangements(len(run) - 1)) for run in re.findall('1+', ''.join(map(str, diffs))))))
 
 if '__main__' == __name__:
     main()
