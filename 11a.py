@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
 
-from adventlib import differentiate
 from pathlib import Path
 
 class Seats:
