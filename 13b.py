@@ -1,0 +1,32 @@
+#!/usr/bin/env python3
+
+from itertools import islice
+from functools import reduce
+from pathlib import Path
+import operator
+
+class Bus:
+
+    def __init__(self, offset, period):
+        self.offset = offset
+        self.period = period
+
+def main():
+    with Path('input', '13').open() as f:
+        buses, = islice(f, 1, None)
+    buses = [Bus(offset, int(period)) for offset, period in enumerate(buses.split(',')) if 'x' != period]
+    allperiods = reduce(operator.mul, (b.period for b in buses))
+    def terms():
+        for b in buses:
+            otherperiods = allperiods // b.period
+            x = 0
+            while otherperiods * x % b.period != -b.offset % b.period:
+                x += 1
+            yield otherperiods * x
+    timestamp = sum(terms())
+    for b in buses:
+        assert 0 == (timestamp + b.offset) % b.period
+    print(timestamp)
+
+if '__main__' == __name__:
+    main()
