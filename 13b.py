@@ -8,6 +8,7 @@ import operator
 class Bus:
 
     def __init__(self, offset, period):
+        self.remainder = -offset % period
         self.offset = offset
         self.period = period
 
@@ -20,7 +21,7 @@ def main():
         for b in buses:
             otherperiods = allperiods // b.period
             x = 0
-            while otherperiods * x % b.period != -b.offset % b.period:
+            while otherperiods * x % b.period != b.remainder:
                 x += 1
             yield otherperiods * x
     timestamp = sum(terms())
