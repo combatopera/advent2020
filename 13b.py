@@ -20,10 +20,10 @@ def main():
     def terms():
         for b in buses:
             otherperiods = allperiods // b.period
-            x = 0
-            while otherperiods * x % b.period != b.remainder:
-                x += 1
-            yield otherperiods * x
+            term = 0
+            while term % b.period != b.remainder:
+                term += otherperiods
+            yield term
     timestamp = sum(terms())
     for b in buses:
         assert 0 == (timestamp + b.offset) % b.period
