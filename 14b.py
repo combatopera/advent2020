@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 
-from itertools import chain, combinations
+from itertools import combinations
 from pathlib import Path
 import re
 
@@ -15,10 +15,8 @@ def main():
                 ones = int(rhs.translate(str.maketrans('X', '0')), 2)
                 addrmask = int(rhs.translate(str.maketrans('X10', '001')), 2)
                 floats = [2 ** i for i, c in enumerate(reversed(rhs)) if 'X' == c]
-                #print(rhs, f"{ones:b}", f"{addrmask:b}", floats)
             else:
                 addr0 = int(addrstr) & addrmask | ones
-                #print(f"{int(addrstr):b} {addrmask:b} {ones:b} {addr0:b}")
                 val = int(rhs)
                 # Adapt powerset recipe:
                 for size in range(len(floats) + 1):
