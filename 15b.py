@@ -3,7 +3,7 @@
 from collections import defaultdict
 from pathlib import Path
 
-totalturns = 2020
+totalturns = 30000000
 
 def main():
     t1 = {}
@@ -19,6 +19,9 @@ def main():
         t1[n] = t2.get(n)
         t2[n] = turn
         turn += 1
+
+        if not turn%1000000:print(turn)
+
     print(n)
 
 if '__main__' == __name__:
