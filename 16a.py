@@ -4,6 +4,8 @@ from adventlib import readchunks
 from itertools import islice
 from pathlib import Path
 
+fields = None
+
 def main():
     def badvals():
         with Path('input', '16').open() as f:
