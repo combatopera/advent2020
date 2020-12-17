@@ -18,9 +18,10 @@ def main():
         newactive = set()
         candidates = set()
         for cube in active:
-            if sum(1 for k in kernel if vadd(cube, k) in active) in {2, 3}:
+            halo = [vadd(cube, k) for k in kernel]
+            if sum(1 for c in halo if c in active) in {2, 3}:
                 newactive.add(cube)
-            candidates.update(vadd(cube, k) for k in kernel)
+            candidates.update(c for c in halo if c not in active)
         for cube in candidates:
             if sum(1 for k in kernel if vadd(cube, k) in active) == 3:
                 newactive.add(cube)
