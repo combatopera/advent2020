@@ -9,11 +9,16 @@ token = re.compile('([0-9]+)|([+*])')
 
 def split(text):
     for n, op in token.findall(text):
-        yield int(n) if n else ops[op]
+        yield Int(n) if n else ops[op]
 
 def find(text, c, start):
     i = text.find(c, start)
     return i if -1 != i else len(text)
+
+class Int(int):
+
+    def eval(self):
+        return self
 
 class Expr:
 
@@ -37,14 +42,9 @@ class Expr:
         self.expr = expr
 
     def eval(self):
-        def eval(e):
-            try:
-                return e.eval()
-            except AttributeError:
-                return e
-        acc = eval(self.expr[0])
+        acc = self.expr[0].eval()
         for op, expr in zip(islice(self.expr, 1, None, 2), islice(self.expr, 2, None, 2)):
-            acc = op(acc, eval(expr))
+            acc = op(acc, expr.eval())
         return acc
 
 def main():
