@@ -21,15 +21,13 @@ class Expr:
     def _parse(cls, text, cursor):
         v = []
         while True:
-            open = find(text, '(', cursor)
-            close = find(text, ')', cursor)
-            if open < close:
-                v.extend(split(text[cursor:open]))
-                w, cursor = cls._parse(text, open + 1)
+            b = min(find(text, c, cursor) for c in '()')
+            v.extend(split(text[cursor:b]))
+            if b < len(text) and '(' == text[b]:
+                w, cursor = cls._parse(text, b + 1)
                 v.append(w)
             else:
-                v.extend(split(text[cursor:close]))
-                return cls(v), close + 1
+                return cls(v), b + 1
 
     @classmethod
     def parse(cls, text):
