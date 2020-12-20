@@ -6,7 +6,7 @@ from pathlib import Path
 
 top, right, bottom, left = range(4)
 tilesize = 10
-mapsize = 12
+gridsize = 12
 
 def _normedge(e):
     i, j = 0, len(e) - 1
@@ -70,9 +70,9 @@ def main():
                     tiles.pop(i)
                     solution[x, y] = o
                     return
-    for rank in range(mapsize):
+    for rank in range(gridsize):
         solve(rank, rank)
-        for file in range(rank + 1, mapsize):
+        for file in range(rank + 1, gridsize):
             solve(file, rank)
             solve(rank, file)
     print(len(solution), len(tiles))
