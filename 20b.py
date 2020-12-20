@@ -5,6 +5,7 @@ from collections import defaultdict
 from pathlib import Path
 
 top, right, bottom, left = range(4)
+tilesize = 10
 
 def _normedge(e):
     i, j = 0, len(e) - 1
@@ -16,25 +17,24 @@ def _normedge(e):
 
 class Tile:
 
-    @classmethod
-    def parse(cls, rows):
-        return cls([_normedge(e) for e in [
+    def __init__(self, rows):
+        self.normedges = [_normedge(e) for e in [
             rows[0],
             ''.join(row[-1] for row in rows),
             rows[-1],
             ''.join(row[0] for row in rows),
-        ]])
+        ]]
+        self.rows = rows
 
-    def __init__(self, normedges):
-        self.normedges = normedges
-
-    def rotations(self):
-        for i in range(4):
-            yield type(self)(self.normedges[i:] + self.normedges[:i])
+    def _rotations(self):
+        yield self
+        yield type(self)([''.join(self.rows[c][tilesize-1-r] for c in range(tilesize)) for r in range(tilesize)])
+        yield type(self)([''.join(self.rows[tilesize-1-r][tilesize-1-c] for c in range(tilesize)) for r in range(tilesize)])
+        yield type(self)([''.join(self.rows[tilesize-1-c][r] for c in range(tilesize)) for r in range(tilesize)])
 
     def orientations(self):
-        yield from self.rotations()
-        yield from type(self)([self.normedges[i] for i in [top, left, bottom, right]]).rotations()
+        yield from self._rotations()
+        yield from type(self)(list(reversed(self.rows)))._rotations()
 
     def acceptright(self, tile):
         return self.normedges[right] == tile.normedges[left]
@@ -59,7 +59,7 @@ class Void:
 
 def main():
     with Path('input', '20').open() as f:
-        tiles = [Tile.parse(chunk[1:]) for chunk in readchunks(f)]
+        tiles = [Tile(chunk[1:]) for chunk in readchunks(f)]
     void = Void(tiles)
     solution = {}
     def solve(x, y):
