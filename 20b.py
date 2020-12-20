@@ -45,8 +45,12 @@ class Tile:
 
 class Void:
 
-    def __init__(self, outeredges):
-        self.outeredges = set(outeredges)
+    def __init__(self, tiles):
+        normedgetotilecount = defaultdict(int)
+        for t in tiles:
+            for e in t.normedges:
+                normedgetotilecount[e] += 1
+        self.outeredges = set(e for e, n in normedgetotilecount.items() if 1 == n)
 
     def acceptright(self, tile):
         return tile.normedges[left] in self.outeredges
@@ -59,11 +63,7 @@ def main():
     with Path('input', '20').open() as f:
         for chunk in readchunks(f):
             tiles.append(Tile.parse(chunk))
-    normedgetotilecount = defaultdict(int)
-    for t in tiles:
-        for e in t.normedges:
-            normedgetotilecount[e] += 1
-    void = Void(e for e, n in normedgetotilecount.items() if 1 == n)
+    void = Void(tiles)
     solution = {}
     def solve(x, y):
         for i, t in enumerate(tiles):
@@ -77,7 +77,7 @@ def main():
         for file in range(rank + 1, 12):
             solve(file, rank)
             solve(rank, file)
-    print(solution)
+    print(len(solution), len(tiles))
 
 if '__main__' == __name__:
     main()
