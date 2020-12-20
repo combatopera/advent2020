@@ -17,8 +17,7 @@ def _normedge(e):
 class Tile:
 
     @classmethod
-    def parse(cls, chunk):
-        rows = chunk[1:]
+    def parse(cls, rows):
         return cls([_normedge(e) for e in [
             rows[0],
             ''.join(row[-1] for row in rows),
@@ -60,7 +59,7 @@ class Void:
 
 def main():
     with Path('input', '20').open() as f:
-        tiles = [Tile.parse(chunk) for chunk in readchunks(f)]
+        tiles = [Tile.parse(chunk[1:]) for chunk in readchunks(f)]
     void = Void(tiles)
     solution = {}
     def solve(x, y):
