@@ -16,7 +16,44 @@ def _normedge(e):
         assert i < j # No palindromes.
     return e if e[i] == '#' else ''.join(reversed(e))
 
-class Tile:
+class BaseTile:
+
+    def __init__(self, rows):
+        self.h = len(rows)
+        self.w = len(rows[0])
+        self.rows = rows
+
+    def _rotations(self):
+        yield self
+        yield type(self)([''.join(self.rows[c][self.w-1-r] for c in range(self.h)) for r in range(self.w)])
+        yield type(self)([''.join(self.rows[self.h-1-r][self.w-1-c] for c in range(self.w)) for r in range(self.h)])
+        yield type(self)([''.join(self.rows[self.h-1-c][r] for c in range(self.h)) for r in range(self.w)])
+
+    def orientations(self):
+        yield from self._rotations()
+        yield from type(self)(list(reversed(self.rows)))._rotations()
+
+    def _match(self, tile, x, y):
+        return all(tile.rows[r][c] != '#' or self.rows[y+r][x+c] == '#' for r in range(tile.h) for c in range(tile.w))
+
+    def find(self, tile):
+        for y in range(self.h - tile.h + 1):
+            for x in range(self.w - tile.w + 1):
+                if self._match(tile, x, y):
+                    yield x, y
+
+    def delete(self, tile, x, y):
+        for r in range(tile.h):
+            for c in range(tile.w):
+                if '#' == tile.rows[r][c]:
+                    v = list(self.rows[y+r])
+                    v[x+c] = '.'
+                    self.rows[y+r] = ''.join(v)
+
+    def hashes(self):
+        return sum(1 for r in self.rows for c in r if '#' == c)
+
+class Tile(BaseTile):
 
     def __init__(self, rows):
         self.normedges = [_normedge(e) for e in [
@@ -25,19 +62,7 @@ class Tile:
             rows[-1],
             ''.join(row[0] for row in rows),
         ]]
-        self.rows = rows
-
-    def _rotations(self):
-        h = len(self.rows)
-        w = len(self.rows[0])
-        yield self
-        yield type(self)([''.join(self.rows[c][w-1-r] for c in range(h)) for r in range(w)])
-        yield type(self)([''.join(self.rows[h-1-r][w-1-c] for c in range(w)) for r in range(h)])
-        yield type(self)([''.join(self.rows[h-1-c][r] for c in range(h)) for r in range(w)])
-
-    def orientations(self):
-        yield from self._rotations()
-        yield from type(self)(list(reversed(self.rows)))._rotations()
+        super().__init__(rows)
 
     def acceptright(self, tile):
         return self.normedges[right] == tile.normedges[left]
@@ -60,6 +85,12 @@ class Void:
     def acceptbottom(self, tile):
         return tile.normedges[top] in self.outeredges
 
+nessie = BaseTile([
+    '                  # ',
+    '#    ##    ##    ###',
+    ' #  #  #  #  #  #   ',
+])
+
 def main():
     with Path('input', '20').open() as f:
         tiles = [Tile(chunk[1:]) for chunk in readchunks(f)]
@@ -77,7 +108,18 @@ def main():
         for file in range(rank + 1, gridsize):
             solve(file, rank)
             solve(rank, file)
-    print(len(solution), len(tiles))
+    def gridrows():
+        for y in range(gridsize):
+            for r in range(1, tilesize - 1):
+                yield ''.join(solution[x, y].rows[r][c] for x in range(gridsize) for c in range(1, tilesize - 1))
+    grid = BaseTile(list(gridrows()))
+    for o in nessie.orientations():
+        locations = list(grid.find(o))
+        if locations:
+            break
+    for loc in locations:
+        grid.delete(o, *loc)
+    print(grid.hashes())
 
 if '__main__' == __name__:
     main()
