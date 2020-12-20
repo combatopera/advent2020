@@ -18,12 +18,12 @@ class Tile:
 
     @classmethod
     def parse(cls, chunk):
-        _, *data = chunk
+        rows = chunk[1:]
         return cls([_normedge(e) for e in [
-            data[0],
-            ''.join(d[-1] for d in data),
-            data[-1],
-            ''.join(d[0] for d in data),
+            rows[0],
+            ''.join(row[-1] for row in rows),
+            rows[-1],
+            ''.join(row[0] for row in rows),
         ]])
 
     def __init__(self, normedges):
