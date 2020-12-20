@@ -28,10 +28,12 @@ class Tile:
         self.rows = rows
 
     def _rotations(self):
+        h = len(self.rows)
+        w = len(self.rows[0])
         yield self
-        yield type(self)([''.join(self.rows[c][tilesize-1-r] for c in range(tilesize)) for r in range(tilesize)])
-        yield type(self)([''.join(self.rows[tilesize-1-r][tilesize-1-c] for c in range(tilesize)) for r in range(tilesize)])
-        yield type(self)([''.join(self.rows[tilesize-1-c][r] for c in range(tilesize)) for r in range(tilesize)])
+        yield type(self)([''.join(self.rows[c][w-1-r] for c in range(h)) for r in range(w)])
+        yield type(self)([''.join(self.rows[h-1-r][w-1-c] for c in range(w)) for r in range(h)])
+        yield type(self)([''.join(self.rows[h-1-c][r] for c in range(h)) for r in range(w)])
 
     def orientations(self):
         yield from self._rotations()
