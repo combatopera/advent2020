@@ -22,16 +22,16 @@ class Tile:
     def parse(cls, chunk):
         title, *data = chunk
         n, = cls.numberpattern.findall(title)
-        return cls(int(n), data)
-
-    def __init__(self, n, data):
-        self.normedges = [_normedge(e) for e in [
+        return cls(int(n), [_normedge(e) for e in [
             data[0],
+            ''.join(d[-1] for d in data),
             data[-1],
             ''.join(d[0] for d in data),
-            ''.join(d[-1] for d in data),
-        ]]
+        ]])
+
+    def __init__(self, n, normedges):
         self.n = n
+        self.normedges = normedges
 
 def main():
     tiles = []
