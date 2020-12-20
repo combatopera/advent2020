@@ -59,10 +59,8 @@ class Void:
         return tile.normedges[top] in self.outeredges
 
 def main():
-    tiles = []
     with Path('input', '20').open() as f:
-        for chunk in readchunks(f):
-            tiles.append(Tile.parse(chunk))
+        tiles = [Tile.parse(chunk) for chunk in readchunks(f)]
     void = Void(tiles)
     solution = {}
     def solve(x, y):
