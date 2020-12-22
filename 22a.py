@@ -6,7 +6,7 @@ from pathlib import Path
 def consume(decks):
     while True:
         cards = sorted(((d.pop(0), d) for d in decks), key = lambda t: -t[0])
-        cards[0][1].extend(c[0] for c in cards)
+        cards[0][1].extend(c for c, _ in cards)
         if any(not d for _, d in cards[1:]):
             return sum(c * (1 + i) for i, c in enumerate(reversed(cards[0][1])))
 
