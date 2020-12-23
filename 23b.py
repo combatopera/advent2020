@@ -1,38 +1,59 @@
 #!/usr/bin/env python3
 
+from itertools import chain, islice
+
 input = '538914762'
+
+class Cup:
+
+    def __init__(self, label):
+        self.label = label
 
 class Cups:
 
-    def __init__(self, cups):
-        self.lo = min(cups)
-        self.hi = max(cups)
-        self.n = len(cups)
-        self.cups = cups
+    def __init__(self, labels, n):
+        self.labeltocup = {l: Cup(l) for l in labels}
+        for l in range(len(self.labeltocup) + 1, n + 1):
+            self.labeltocup[l] = Cup(l)
+        self.current = next(iter(self.labeltocup.values()))
+        for c, d in zip(self.labeltocup.values(), chain(islice(self.labeltocup.values(), 1, None), [self.current])):
+            c.succ = d
+            d.prev = c
+        self.n = n
 
-    def __getitem__(self, i):
-        return self.cups[i % self.n]
+    def _pop3(self):
+        trio = self.current.succ
+        self.current.succ = trio.succ.succ.succ
+        self.current.succ.prev = self.current
+        return trio
 
     def move(self):
-        trio = [self.cups.pop(1) for _ in range(3)]
-        label = self.cups[0]
+        trio = self._pop3()
+        badlabels = {trio.label, trio.succ.label, trio.succ.succ.label}
+        label = self.current.label
         while True:
-            label -= 1
-            if label < self.lo:
-                label = self.hi
-            if label not in trio:
+            label = (label - 2) % self.n + 1
+            if label not in badlabels:
                 break
-        i = self.cups.index(label) + 1
-        self.cups[i:i] = trio
-        self.cups.append(self.cups.pop(0))
+        before = self.labeltocup[label]
+        before.succ.prev = trio.succ.succ
+        trio.succ.succ.succ = before.succ
+        before.succ = trio
+        trio.prev = before
+        self.current = self.current.succ
 
     def report(self):
-        i = self.cups.index(1) + 1
-        return self[i] * self[i + 1]
+        root = self.labeltocup[1]
+        def labels():
+            d = root.succ
+            while d != root:
+                yield d.label
+                d = d.succ
+        l, m = islice(labels(), None, 2)
+        return l * m
 
 def main():
-    v = list(map(int, input))
-    cups = Cups(v + list(range(len(v)+1, 1000000+1)))
+    cups = Cups(map(int, input), 1000000)
     for _ in range(10000000):
         cups.move()
     print(cups.report())
