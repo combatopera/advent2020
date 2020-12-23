@@ -14,9 +14,6 @@ class Cups:
         for i, l in enumerate(labels):
             self.labels[i] = l
 
-    def __getitem__(self, i):
-        return self.labels[i % self.n]
-
     def move(self):
         trio = {l: None for l in islice(self.labels, 1, 4)}
         del self.labels[1:4]
@@ -31,7 +28,7 @@ class Cups:
 
     def report(self):
         i = self.labels.index(1) + 1
-        return ''.join(str(self[i + k]) for k in range(self.n - 1))
+        return ''.join(str(self.labels[k % self.n]) for k in range(i, i + self.n - 1))
 
 def main():
     cups = Cups(len(input))
