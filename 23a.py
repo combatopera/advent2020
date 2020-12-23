@@ -4,9 +4,13 @@ input = '538914762'
 
 class Cups:
 
-    def __init__(self, cups):
-        self.n = len(cups)
-        self.cups = cups
+    def __init__(self, n):
+        self.cups = [1 + i for i in range(n)]
+        self.n = n
+
+    def load(self, labels):
+        for i, l in enumerate(labels):
+            self.cups[i] = l
 
     def __getitem__(self, i):
         return self.cups[i % self.n]
@@ -29,7 +33,8 @@ class Cups:
         return ''.join(str(self[i + k]) for k in range(self.n - 1))
 
 def main():
-    cups = Cups(list(map(int, input)))
+    cups = Cups(len(input))
+    cups.load(map(int, input))
     for _ in range(100):
         cups.move()
     print(cups.report())
