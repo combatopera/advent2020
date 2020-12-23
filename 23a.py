@@ -5,8 +5,6 @@ input = '538914762'
 class Cups:
 
     def __init__(self, cups):
-        self.lo = min(cups)
-        self.hi = max(cups)
         self.n = len(cups)
         self.cups = cups
 
@@ -18,8 +16,8 @@ class Cups:
         label = self.cups[0]
         while True:
             label -= 1
-            if label < self.lo:
-                label = self.hi
+            if label < 1:
+                label = self.n
             if label not in trio:
                 break
         i = self.cups.index(label) + 1
