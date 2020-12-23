@@ -1,5 +1,7 @@
 #!/usr/bin/env python3
 
+from itertools import islice
+
 input = '538914762'
 
 class Cups:
@@ -16,7 +18,8 @@ class Cups:
         return self.cups[i % self.n]
 
     def move(self):
-        trio = [self.cups.pop(1) for _ in range(3)]
+        trio = {l: None for l in islice(self.cups, 1, 4)}
+        del self.cups[1:4]
         label = self.cups[0]
         while True:
             label = (label - 2) % self.n + 1
