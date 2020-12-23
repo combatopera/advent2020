@@ -33,7 +33,6 @@ class Cups:
 def main():
     v = list(map(int, input))
     cups = Cups(v + list(range(len(v)+1, 1000000+1)))
-    print(cups.cups[:100])
     for _ in range(10000000):
         cups.move()
     print(cups.report())
