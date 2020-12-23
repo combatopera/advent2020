@@ -31,8 +31,10 @@ class Cups:
         return self[i] * self[i + 1]
 
 def main():
-    cups = Cups(list(map(int, input)))
-    for _ in range(100):
+    v = list(map(int, input))
+    cups = Cups(v + list(range(len(v)+1, 1000000+1)))
+    print(cups.cups[:100])
+    for _ in range(10000000):
         cups.move()
     print(cups.report())
 
