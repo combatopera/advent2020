@@ -10,7 +10,7 @@ class Cups:
         self.labels = [1 + i for i in range(n)]
         self.n = n
 
-    def load(self, labels):
+    def relabel(self, labels):
         for i, l in enumerate(labels):
             self.labels[i] = l
 
@@ -32,7 +32,7 @@ class Cups:
 
 def main():
     cups = Cups(len(input))
-    cups.load(map(int, input))
+    cups.relabel(map(int, input))
     for _ in range(100):
         cups.move()
     print(cups.report())
