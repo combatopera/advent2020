@@ -19,9 +19,7 @@ class Cups:
         trio = [self.cups.pop(1) for _ in range(3)]
         label = self.cups[0]
         while True:
-            label -= 1
-            if label < 1:
-                label = self.n
+            label = (label - 2) % self.n + 1
             if label not in trio:
                 break
         i = self.cups.index(label) + 1
