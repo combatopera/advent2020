@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
 
-from itertools import islice
 from pathlib import Path
 
 class Pos:
