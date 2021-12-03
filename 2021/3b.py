@@ -16,7 +16,6 @@ def main():
                 keep = int(common)
             keep = str(keep)
             lines = [l for l in lines if l[i] == keep]
-            print(keep, len(lines))
             if 1 == len(lines):
                 return int(lines[0], 2)
     alllines = Path('input', '3').read_text().splitlines()
