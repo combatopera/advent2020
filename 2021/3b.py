@@ -8,13 +8,7 @@ def main():
         for i in range(len(lines[0])):
             threshold = sum(ord(c) for c in '01') * len(lines) / 2
             s = sum(ord(l[i]) for l in lines)
-            if s > threshold:
-                keep = int(common)
-            elif s < threshold:
-                keep = 1 - common
-            else:
-                keep = int(common)
-            keep = str(keep)
+            keep = str(1 - common if s < threshold else int(common))
             lines = [l for l in lines if l[i] == keep]
             if 1 == len(lines):
                 return int(lines[0], 2)
