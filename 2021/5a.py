@@ -34,9 +34,6 @@ class Vector(tuple):
     def __iadd__(self, that):
         return type(self)(x + y for x, y in zip(self, that))
 
-def _parsepoint(s):
-    return [int(x) for x in s.split(',')]
-
 def main():
     d = Diagram()
     with Path('input', '5').open() as f:
