@@ -9,19 +9,30 @@ class Diagram:
         self.points = defaultdict(int)
 
     def line(self, start, end):
-        dx = end[0] - start[0]
-        dy = end[1] - start[1]
-        if dx and dy:
+        v = end - start
+        if all(v):
             return
-        l = (dx**2+dy**2)**.5
-        v = dx / l, dy / l
-        x, y = start
+        v /= v.manhattan()
+        x = start
         while True:
-            self.points[x, y] += 1
-            if [x, y] == end:
+            self.points[x] += 1
+            if x == end:
                 break
-            x += v[0]
-            y += v[1]
+            x += v
+
+class Vector(tuple):
+
+    def __sub__(self, that):
+        return type(self)(x - y for x, y in zip(self, that))
+
+    def manhattan(self):
+        return max(map(abs, self))
+
+    def __truediv__(self, n):
+        return type(self)(x / n for x in self)
+
+    def __iadd__(self, that):
+        return type(self)(x + y for x, y in zip(self, that))
 
 def _parsepoint(s):
     return [int(x) for x in s.split(',')]
@@ -31,7 +42,7 @@ def main():
     with Path('input', '5').open() as f:
         for line in f:
             start, _, end = line.split()
-            d.line(*map(_parsepoint, [start, end]))
+            d.line(*(Vector(map(int, p.split(','))) for p in [start, end]))
     print(sum(1 for p, n in d.points.items() if n >= 2))
 
 if '__main__' == __name__:
