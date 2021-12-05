@@ -25,7 +25,7 @@ def main():
         for line in f:
             start, _, end = line.split()
             d.line(*(Vector(map(int, p.split(','))) for p in [start, end]))
-    print(sum(1 for p, n in d.points.items() if n >= 2))
+    print(sum(1 for n in d.points.values() if n >= 2))
 
 if '__main__' == __name__:
     main()
