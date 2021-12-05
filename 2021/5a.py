@@ -10,7 +10,7 @@ class Diagram:
 
     def line(self, start, end):
         v = end - start
-        if all(v):
+        if v.diagonal():
             return
         v /= v.manhattan()
         x = start
@@ -33,6 +33,9 @@ class Vector(tuple):
 
     def manhattan(self):
         return max(map(abs, self))
+
+    def diagonal(self):
+        return sum(map(bool, self)) > 1
 
 def main():
     d = Diagram()
