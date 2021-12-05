@@ -46,3 +46,20 @@ class BagRule:
 
 def differentiate(v):
     return [y - x for x, y in zip(v, islice(v, 1, None))]
+
+class Vector(tuple):
+
+    def __add__(self, that):
+        return type(self)(x + y for x, y in zip(self, that))
+
+    def __sub__(self, that):
+        return type(self)(x - y for x, y in zip(self, that))
+
+    def __truediv__(self, n):
+        return type(self)(x / n for x in self)
+
+    def manhattan(self):
+        return max(map(abs, self))
+
+    def diagonal(self):
+        return sum(map(bool, self)) > 1

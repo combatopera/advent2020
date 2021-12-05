@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 
+from adventlib import Vector
 from collections import defaultdict
 from pathlib import Path
 
@@ -17,20 +18,6 @@ class Diagram:
             if x == end:
                 break
             x += v
-
-class Vector(tuple):
-
-    def __add__(self, that):
-        return type(self)(x + y for x, y in zip(self, that))
-
-    def __sub__(self, that):
-        return type(self)(x - y for x, y in zip(self, that))
-
-    def __truediv__(self, n):
-        return type(self)(x / n for x in self)
-
-    def manhattan(self):
-        return max(map(abs, self))
 
 def main():
     d = Diagram()
