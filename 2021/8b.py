@@ -57,7 +57,7 @@ def main():
     with Path('input', '8').open() as f:
         for line in f:
             patterns, digits = (s.split() for s in line.split('|'))
-            patch, = emptypatch.search(sorted(patterns, key = lambda p: len(p)), figures.keys())
+            patch, = emptypatch.search(sorted(patterns, key = len), figures.keys())
             n += patch.decode(digits)
     print(n)
 
