@@ -10,6 +10,7 @@ class Figure:
         lines = [l for l in text.splitlines() if l]
         for digit in range(10):
             digittext = ''.join(l[3 * digit:3 * (digit + 1)] for l in lines)
+            assert {' '} == set(digittext[::2])
             yield cls(digit, {i for i in range(7) if digittext[1 + 2 * i] != ' '})
 
     def __init__(self, digit, segments):
