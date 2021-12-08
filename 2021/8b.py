@@ -5,8 +5,15 @@ from pathlib import Path
 
 class Figure:
 
+    @classmethod
+    def parse(cls, text):
+        lines = [l for l in text.splitlines() if l]
+        for digit in range(10):
+            digittext = ''.join(l[3 * digit:3 * (digit + 1)] for l in lines)
+            yield cls(digit, {i for i in range(7) if digittext[1 + 2 * i] != ' '})
+
     def __init__(self, digit, segments):
-        self.segments = {i for i, c in enumerate(segments) if c != ' '}
+        self.segments = segments
         self.digit = digit
 
 class Patch:
@@ -39,18 +46,13 @@ class Patch:
     def decode(self, patterns):
         return sum(10 ** i * self._decodeone(p) for i, p in enumerate(reversed(patterns)))
 
-figures = [
-    Figure(0, '-|| ||-'),
-    Figure(1, '  |  | '),
-    Figure(2, '- |-| -'),
-    Figure(3, '- |- |-'),
-    Figure(4, ' ||- | '),
-    Figure(5, '-| - |-'),
-    Figure(6, '-| -||-'),
-    Figure(7, '- |  | '),
-    Figure(8, '-||-||-'),
-    Figure(9, '-||- |-'),
-]
+figures = list(Figure.parse('''
+ -     -  -     -  -  -  -  - $
+| |  |  |  || ||  |    || || |$
+       -  -  -  -  -     -  - $
+| |  ||    |  |  || |  || |  |$
+ -     -  -     -  -     -  - $
+'''))
 figurelookup = {frozenset(f.segments): f for f in figures}
 emptypatch = Patch({})
 
