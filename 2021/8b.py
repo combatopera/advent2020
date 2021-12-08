@@ -25,12 +25,6 @@ class Patch:
         for chars in permutations(unknownchars):
             yield type(self)(dict(self.chartosegment, **dict(zip(chars, unknownsegments))))
 
-    def _decodeone(self, pattern):
-        return figurelookup[frozenset(self.chartosegment[c] for c in pattern)].digit
-
-    def decode(self, patterns):
-        return sum(10 ** i * self._decodeone(p) for i, p in enumerate(reversed(patterns)))
-
     def search(self, patterns, figures):
         if patterns:
             for f in figures:
@@ -38,6 +32,12 @@ class Patch:
                     yield from q.search(patterns[1:], figures - {f})
         else:
             yield self
+
+    def _decodeone(self, pattern):
+        return figurelookup[frozenset(self.chartosegment[c] for c in pattern)].digit
+
+    def decode(self, patterns):
+        return sum(10 ** i * self._decodeone(p) for i, p in enumerate(reversed(patterns)))
 
 figures = [
     Figure(0, '-|| ||-'),
