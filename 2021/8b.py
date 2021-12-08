@@ -18,7 +18,7 @@ class Patch:
     def __init__(self, chartosegment):
         self.chartosegment = chartosegment
 
-    def _patches(self, figure, pattern):
+    def _patches(self, pattern, figure):
         if len(figure) != len(pattern):
             return
         knownsegments = {i for c in pattern for i in [self.chartosegment.get(c)] if i is not None}
@@ -32,7 +32,7 @@ class Patch:
     def search(self, patterns, figures):
         if patterns:
             for f in figures:
-                for q in self._patches(f, patterns[0]):
+                for q in self._patches(patterns[0], f):
                     yield from q.search(patterns[1:], figures - {f})
         else:
             yield self
