@@ -53,16 +53,13 @@ def _patchrec(patterns, figures, patch):
     else:
         yield patch
 
-def _patch(patterns):
-    patch, = _patchrec(sorted(patterns, key = lambda p: len(p)), set(figures), Patch({}))
-    return patch
-
 def main():
     n = 0
     with Path('input', '8').open() as f:
         for line in f:
             patterns, digits = (s.split() for s in line.split('|'))
-            n += _patch(patterns).decode(digits)
+            patch, = _patchrec(sorted(patterns, key = lambda p: len(p)), set(figures), Patch({}))
+            n += patch.decode(digits)
     print(n)
 
 if '__main__' == __name__:
