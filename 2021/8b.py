@@ -27,7 +27,7 @@ class Patch:
         unknownsegments = list(figure - knownsegments)
         unknownchars = [c for c in pattern if c not in self.chartosegment]
         for chars in permutations(unknownchars):
-            yield type(self)(dict(self.chartosegment, **dict(zip(chars, unknownsegments))))
+            yield type(self)(dict(zip(chars, unknownsegments), **self.chartosegment))
 
     def search(self, patterns, figures):
         if patterns:
