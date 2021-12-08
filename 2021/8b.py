@@ -1,54 +1,70 @@
 #!/usr/bin/env python3
 
-from collections import defaultdict
+from itertools import permutations
 from pathlib import Path
 
-def _decode(patterns, digits):
-    patterns = [set(p) for p in patterns]
-    def take(l):
-        p, = (p for p in patterns if l(p))
-        patterns.remove(p)
-        return p
-    def pop():
-        pop = defaultdict(int)
-        for p in patterns:
-            for c in p:
-                pop[c] += 1
-        return pop
-    one = take(lambda p: len(p) == 2)
-    four = take(lambda p: len(p) == 4)
-    seven = take(lambda p: len(p) == 3)
-    eight = take(lambda p: len(p) == 7)
-    bl, = (c for c, n in pop().items() if n == 3)
-    two = take(lambda p: len(p) == 5 and bl in p)
-    nine = eight - {bl}
-    patterns.remove(nine)
-    five, = (p for p in patterns if bl not in p and p|{bl} in patterns)
-    patterns.remove(five)
-    six = five|{bl}
-    patterns.remove(six)
-    zero = take(lambda p: len(p) == 6)
-    three, = patterns
-    lookup = {frozenset(s): n for s, n in [
-        [zero, 0],
-        [one, 1],
-        [two, 2],
-        [three, 3],
-        [four, 4],
-        [five, 5],
-        [six, 6],
-        [seven, 7],
-        [eight, 8],
-        [nine, 9],
-    ]}
-    digits = [lookup[frozenset(d)] for d in digits]
-    return int(''.join(str(d) for d in digits))
+class Figure:
+
+    def __init__(self, digit, segments):
+        self.segments = {i for i, c in enumerate(segments) if c != ' '}
+        self.digit = digit
+
+figures = [
+    Figure(0, '-|| ||-'),
+    Figure(1, '  |  | '),
+    Figure(2, '- |-| -'),
+    Figure(3, '- |- |-'),
+    Figure(4, ' ||- | '),
+    Figure(5, '-| - |-'),
+    Figure(6, '-| -||-'),
+    Figure(7, '- |  | '),
+    Figure(8, '-||-||-'),
+    Figure(9, '-||- |-'),
+]
+figurelookup = {frozenset(f.segments): f for f in figures}
+
+class Patch:
+
+    def __init__(self, chartosegment):
+        self.chartosegment = chartosegment
+
+    def patches(self, figure, pattern):
+        if len(figure.segments) != len(pattern):
+            return
+        knownsegments = {i for c in pattern for i in [self.chartosegment.get(c)] if i is not None}
+        if not knownsegments <= figure.segments:
+            return
+        unknownsegments = list(figure.segments - knownsegments)
+        unknownchars = [c for c in pattern if c not in self.chartosegment]
+        for chars in permutations(unknownchars):
+            print(figure.digit, pattern, chars)
+            yield type(self)(dict(self.chartosegment, **dict(zip(chars, unknownsegments))))
+
+    def _decodeone(self, pattern):
+        return figurelookup[frozenset(self.chartosegment[c] for c in pattern)].digit
+
+    def decode(self, patterns):
+        return sum(10 ** i * self._decodeone(p) for i, p in enumerate(reversed(patterns)))
+
+def _patchrec(patterns, figures, patch):
+    print(patch.chartosegment, patterns, [f.digit for f in figures])
+    if patterns:
+        for f in figures:
+            for q in patch.patches(f, patterns[0]):
+                yield from _patchrec(patterns[1:], figures - {f}, q)
+    else:
+        yield patch
+
+def _patch(patterns):
+    patch, = _patchrec(sorted(patterns, key = lambda p: len(p)), set(figures), Patch({}))
+    return patch
 
 def main():
     n = 0
     with Path('input', '8').open() as f:
         for line in f:
-            n += _decode(*(s.split() for s in line.split('|')))
+            patterns, digits = (s.split() for s in line.split('|'))
+            n += _patch(patterns).decode(digits)
     print(n)
 
 if '__main__' == __name__:
