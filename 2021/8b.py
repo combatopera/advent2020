@@ -3,7 +3,7 @@
 from itertools import permutations
 from pathlib import Path
 
-class Figure:
+class Figure(frozenset):
 
     @classmethod
     def parse(cls, text):
@@ -11,11 +11,7 @@ class Figure:
         for digit in range(10):
             digittext = ''.join(l[3 * digit:3 * (digit + 1)] for l in lines)
             assert {' '} == set(digittext[::2])
-            yield cls(digit, frozenset(i for i in range(7) if digittext[1 + 2 * i] != ' '))
-
-    def __init__(self, digit, segments):
-        self.segments = segments
-        self.digit = digit
+            yield cls(i for i in range(7) if digittext[1 + 2 * i] != ' ')
 
 class Patch:
 
@@ -23,12 +19,12 @@ class Patch:
         self.chartosegment = chartosegment
 
     def _patches(self, figure, pattern):
-        if len(figure.segments) != len(pattern):
+        if len(figure) != len(pattern):
             return
         knownsegments = {i for c in pattern for i in [self.chartosegment.get(c)] if i is not None}
-        if not knownsegments <= figure.segments:
+        if not knownsegments <= figure:
             return
-        unknownsegments = list(figure.segments - knownsegments)
+        unknownsegments = list(figure - knownsegments)
         unknownchars = [c for c in pattern if c not in self.chartosegment]
         for chars in permutations(unknownchars):
             yield type(self)(dict(self.chartosegment, **dict(zip(chars, unknownsegments))))
@@ -42,27 +38,26 @@ class Patch:
             yield self
 
     def _decodeone(self, pattern):
-        return figurelookup[frozenset(self.chartosegment[c] for c in pattern)]
+        return figures[Figure(self.chartosegment[c] for c in pattern)]
 
     def decode(self, patterns):
         return sum(10 ** i * self._decodeone(p) for i, p in enumerate(reversed(patterns)))
 
-figures = list(Figure.parse('''
+emptypatch = Patch({})
+figures = {f: digit for digit, f in enumerate(Figure.parse('''
  -     -  -     -  -  -  -  - $
 | |  |  |  || ||  |    || || |$
        -  -  -  -  -     -  - $
 | |  ||    |  |  || |  || |  |$
  -     -  -     -  -     -  - $
-'''))
-figurelookup = {f.segments: f.digit for f in figures}
-emptypatch = Patch({})
+'''))}
 
 def main():
     n = 0
     with Path('input', '8').open() as f:
         for line in f:
             patterns, digits = (s.split() for s in line.split('|'))
-            patch, = emptypatch.search(sorted(patterns, key = lambda p: len(p)), set(figures))
+            patch, = emptypatch.search(sorted(patterns, key = lambda p: len(p)), figures.keys())
             n += patch.decode(digits)
     print(n)
 
