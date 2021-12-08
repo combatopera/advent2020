@@ -11,7 +11,7 @@ class Figure:
         for digit in range(10):
             digittext = ''.join(l[3 * digit:3 * (digit + 1)] for l in lines)
             assert {' '} == set(digittext[::2])
-            yield cls(digit, {i for i in range(7) if digittext[1 + 2 * i] != ' '})
+            yield cls(digit, frozenset(i for i in range(7) if digittext[1 + 2 * i] != ' '))
 
     def __init__(self, digit, segments):
         self.segments = segments
@@ -42,7 +42,7 @@ class Patch:
             yield self
 
     def _decodeone(self, pattern):
-        return figurelookup[frozenset(self.chartosegment[c] for c in pattern)].digit
+        return figurelookup[frozenset(self.chartosegment[c] for c in pattern)]
 
     def decode(self, patterns):
         return sum(10 ** i * self._decodeone(p) for i, p in enumerate(reversed(patterns)))
@@ -54,7 +54,7 @@ figures = list(Figure.parse('''
 | |  ||    |  |  || |  || |  |$
  -     -  -     -  -     -  - $
 '''))
-figurelookup = {frozenset(f.segments): f for f in figures}
+figurelookup = {f.segments: f.digit for f in figures}
 emptypatch = Patch({})
 
 def main():
