@@ -37,7 +37,6 @@ class Patch:
         unknownsegments = list(figure.segments - knownsegments)
         unknownchars = [c for c in pattern if c not in self.chartosegment]
         for chars in permutations(unknownchars):
-            print(figure.digit, pattern, chars)
             yield type(self)(dict(self.chartosegment, **dict(zip(chars, unknownsegments))))
 
     def _decodeone(self, pattern):
@@ -47,7 +46,6 @@ class Patch:
         return sum(10 ** i * self._decodeone(p) for i, p in enumerate(reversed(patterns)))
 
 def _patchrec(patterns, figures, patch):
-    print(patch.chartosegment, patterns, [f.digit for f in figures])
     if patterns:
         for f in figures:
             for q in patch.patches(f, patterns[0]):
