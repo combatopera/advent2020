@@ -16,8 +16,8 @@ class Grid(set):
                 for d in self.kernel:
                     q = p + d
                     if q in self:
-                        points_.append(q)
                         self.remove(q)
+                        points_.append(q)
                         n += 1
             points = points_
         return n
