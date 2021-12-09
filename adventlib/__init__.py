@@ -63,3 +63,9 @@ class Vector(tuple):
 
     def diagonal(self):
         return sum(map(bool, self)) > 1
+
+def intsin(k):
+    return (k & 1) * (1 - (k // 2) * 2)
+
+def intcos(k):
+    return intsin(k + 1)
