@@ -3,24 +3,24 @@
 from adventlib import intcos, intsin, Vector
 from pathlib import Path
 
-class Grid(dict):
+class Grid(set):
 
     kernel = [Vector([intcos(k), intsin(k)]) for k in range(4)]
 
     def takebasin(self):
-        keys = [next(iter(self))]
-        self.pop(keys[0])
+        points = [next(iter(self))]
+        self.remove(points[0])
         n = 1
-        while keys:
-            keys_ = []
-            for k in keys:
+        while points:
+            points_ = []
+            for p in points:
                 for d in self.kernel:
-                    nextk = k + d
-                    if nextk in self:
-                        keys_.append(nextk)
-                        self.pop(nextk)
+                    q = p + d
+                    if q in self:
+                        points_.append(q)
+                        self.remove(q)
                         n += 1
-            keys = keys_
+            points = points_
         return n
 
 def main():
@@ -28,7 +28,7 @@ def main():
     for y, line in enumerate(Path('input', '9').read_text().splitlines()):
         for x, c in enumerate(line):
             if '9' != c:
-                grid[Vector([x, y])] = int(c)
+                grid.add(Vector([x, y]))
     basins = []
     while grid:
         basins.append(grid.takebasin())
