@@ -8,8 +8,7 @@ class Grid(set):
     kernel = [Vector([intcos(k), intsin(k)]) for k in range(4)]
 
     def takebasin(self):
-        points = [next(iter(self))]
-        self.remove(points[0])
+        points = [self.pop()]
         n = 1
         while points:
             points_ = []
