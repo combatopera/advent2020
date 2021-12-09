@@ -1,16 +1,11 @@
 #!/usr/bin/env python3
 
-from adventlib import Vector
+from adventlib import intcos, intsin, Vector
 from pathlib import Path
 
 class Grid(dict):
 
-    kernel = [
-        Vector([1, 0]),
-        Vector([0, 1]),
-        Vector([-1, 0]),
-        Vector([0, -1]),
-    ]
+    kernel = [Vector([intcos(k), intsin(k)]) for k in range(4)]
 
     def takebasin(self):
         keys = [next(iter(self))]
