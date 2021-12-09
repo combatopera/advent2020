@@ -1,6 +1,8 @@
 #!/usr/bin/env python3
 
 from adventlib import intcos, intsin, Vector
+from functools import reduce
+from operator import mul
 from pathlib import Path
 
 class Grid(set):
@@ -32,7 +34,7 @@ def main():
     while grid:
         basins.append(grid.takebasin())
     basins.sort()
-    print(basins[-3]*basins[-2]*basins[-1])
+    print(reduce(mul, basins[-3:]))
 
 if '__main__' == __name__:
     main()
