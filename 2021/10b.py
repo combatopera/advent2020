@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
 
-from adventlib import intcos, intsin, Vector
 from pathlib import Path
 
 class Pair:
