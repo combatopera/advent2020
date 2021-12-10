@@ -21,8 +21,7 @@ def _error(line):
     for c in line:
         p = pairs.get(c)
         if p is None:
-            p = stack.pop(-1)
-            if p.close != c:
+            if stack.pop(-1).close != c:
                 return byclose[c].score
         else:
             stack.append(p)
