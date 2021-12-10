@@ -1,0 +1,40 @@
+#!/usr/bin/env python3
+
+from adventlib import intcos, intsin, Vector
+from pathlib import Path
+
+class Pair:
+
+    def __init__(self, pair, score):
+        self.open, self.close = pair
+        self.score = score
+
+pairs = {p.open: p for p in [
+    Pair('()', 3),
+    Pair('[]', 57),
+    Pair('{}', 1197),
+    Pair('<>', 25137),
+]}
+byclose = {p.close: p for p in pairs.values()}
+
+def _error(line):
+    stack = []
+    for c in line:
+        p = pairs.get(c)
+        if p is None:
+            p = stack.pop(-1)
+            if p.close != c:
+                return byclose[c].score
+        else:
+            stack.append(p)
+    return 0
+
+def main():
+    e = 0
+    with Path('input', '10').open() as f:
+        for line in f:
+            e += _error(line.rstrip())
+    print(e)
+
+if '__main__' == __name__:
+    main()
