@@ -13,8 +13,9 @@ class Graph:
             yield p
         else:
             for e in self.edges:
-                if p[-1] in e:
-                    n, = (n for n in e if n != p[-1])
+                n = e - {p[-1]}
+                if 1 == len(n):
+                    n, = n
                     if not (n in self.smallnodes and n in visited):
                         yield from self._paths(p + [n], visited | {n})
 
