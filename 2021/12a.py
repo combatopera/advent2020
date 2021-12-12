@@ -8,18 +8,18 @@ class Graph:
         self.smallnodes = {n for e in edges for n in e if n == n.lower()}
         self.edges = edges
 
-    def _paths(self, p):
+    def _paths(self, p, visited):
         if p[-1] == 'end':
             yield p
         else:
             for e in self.edges:
                 if p[-1] in e:
                     n, = (n for n in e if n != p[-1])
-                    if n not in self.smallnodes or n not in p:
-                        yield from self._paths(p + [n])
+                    if not (n in self.smallnodes and n in visited):
+                        yield from self._paths(p + [n], visited | {n})
 
     def paths(self):
-        yield from self._paths(['start'])
+        yield from self._paths(['start'], {'start'})
 
 def main():
     g = Graph([set(line.split('-')) for line in Path('input', '12').read_text().splitlines()])
