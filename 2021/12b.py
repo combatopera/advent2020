@@ -17,7 +17,7 @@ class Graph:
                     n, = (n for n in e if n != p[-1])
                     if not (n in self.smallnodes and n in visited):
                         yield from self._paths(p + [n], visited | {n}, visited2)
-                    elif 'start' != n and not visited2:
+                    elif not (visited2 or 'start' == n):
                         yield from self._paths(p + [n], visited, {n})
 
     def paths(self):
