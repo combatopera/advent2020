@@ -19,7 +19,7 @@ class Paper(set):
 def main():
     with Path('input', '13').open() as f:
         dots, folds = readchunks(f)
-    paper = Paper({tuple(map(int, d.split(','))) for d in dots})
+    paper = Paper(tuple(map(int, d.split(','))) for d in dots)
     for fold in folds:
         axis, n = fold.split('=')
         paper.fold(0 if 'x' == axis[-1] else 1, int(n))
