@@ -4,9 +4,7 @@ from pathlib import Path
 
 def _fuel(mass):
     f = mass // 3 - 2
-    if f <= 0:
-        return 0
-    return f + _fuel(f)
+    return f + _fuel(f) if f > 0 else 0
 
 def main():
     fuel = 0
