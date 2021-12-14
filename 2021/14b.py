@@ -12,10 +12,9 @@ class Rules:
 
     def compile(self, template):
         d = defaultdict(int)
-        d['$'+template[0]] = 1
-        d['$'+template[-1]] = 1
+        d[template[0]] = d[template[-1]] = 1
         for a, b in zip(template, islice(template, 1, None)):
-            d[a+b] += 1
+            d[a + b] += 1
         return d
 
     def insert(self, template):
@@ -33,11 +32,8 @@ class Rules:
     def answer(self, template):
         d = defaultdict(int)
         for r, n in template.items():
-            if '$'==r[0]:
-                d[r[1]]+=n/2
-            else:
-                for c in r:
-                    d[c] += n/2
+            for c in r:
+                d[c] += n/2
         return max(d.values()) - min(d.values())
 
 def main():
