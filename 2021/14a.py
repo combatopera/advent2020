@@ -5,27 +5,31 @@ from collections import defaultdict
 from itertools import islice
 from pathlib import Path
 
-class Rules:
+class Template:
 
-    def __init__(self, rules):
-        self.rules = rules
+    def __init__(self, v):
+        self.v = v
 
-    def insert(self, template):
-        for a, b in zip(template, islice(template, 1, None)):
+    def insert(self, rules):
+        for a, b in zip(self.v, islice(self.v, 1, None)):
             yield a
-            yield self.rules[a + b]
-        yield template[-1]
+            yield rules[a + b]
+        yield self.v[-1]
+
+    def answer(self):
+        d = defaultdict(int)
+        for c in self.v:
+            d[c] += 1
+        return max(d.values()) - min(d.values())
 
 def main():
     with Path('input', '14').open() as f:
         (template,), rules = readchunks(f)
-    rules = Rules({x: y for x, _, y in (r.split() for r in rules)})
+    template = Template(template)
+    rules = {x: y for x, _, y in (r.split() for r in rules)}
     for _ in range(10):
-        template = list(rules.insert(template))
-    d = defaultdict(int)
-    for c in template:
-        d[c] += 1
-    print(max(d.values()) - min(d.values()))
+        template = Template(list(template.insert(rules)))
+    print(template.answer())
 
 if '__main__' == __name__:
     main()
