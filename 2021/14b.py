@@ -33,8 +33,10 @@ class Rules:
         d = defaultdict(int)
         for r, n in template.items():
             for c in r:
-                d[c] += n/2
-        return max(d.values()) - min(d.values())
+                d[c] += n
+        for n in d.values():
+            assert not n & 1
+        return (max(d.values()) - min(d.values())) // 2
 
 def main():
     with Path('input', '14').open() as f:
