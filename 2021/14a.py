@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 
 from adventlib import readchunks
-from collections import defaultdict
+from collections import Counter
 from itertools import islice
 from pathlib import Path
 
@@ -17,7 +17,7 @@ class Template:
         yield self.v[-1]
 
     def answer(self):
-        d = defaultdict(int)
+        d = Counter()
         for c in self.v:
             d[c] += 1
         return max(d.values()) - min(d.values())

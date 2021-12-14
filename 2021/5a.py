@@ -1,13 +1,13 @@
 #!/usr/bin/env python3
 
 from adventlib import Vector
-from collections import defaultdict
+from collections import Counter
 from pathlib import Path
 
 class Diagram:
 
     def __init__(self):
-        self.points = defaultdict(int)
+        self.points = Counter()
 
     def line(self, start, end):
         v = end - start

@@ -1,10 +1,10 @@
 #!/usr/bin/env python3
 
-from collections import defaultdict
+from collections import Counter
 from pathlib import Path
 
 def main():
-    sums = defaultdict(int)
+    sums = Counter()
     n = 0
     with Path('input', '3').open() as f:
         for line in f:
