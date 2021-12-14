@@ -5,23 +5,6 @@ from collections import defaultdict
 from itertools import islice
 from pathlib import Path
 
-class Rules:
-
-    def __init__(self, rules):
-        self.rules = rules
-
-    def insert(self, template):
-        d = defaultdict(int)
-        for r, n in template.d.items():
-            try:
-                c = self.rules[r]
-            except KeyError:
-                d[r] += n
-            else:
-                d[r[0] + c] += n
-                d[c + r[1]] += n
-        return type(template)(d)
-
 class Template:
 
     @classmethod
@@ -34,6 +17,18 @@ class Template:
 
     def __init__(self, d):
         self.d = d
+
+    def insert(self, rules):
+        d = defaultdict(int)
+        for r, n in self.d.items():
+            try:
+                c = rules[r]
+            except KeyError:
+                d[r] += n
+            else:
+                d[r[0] + c] += n
+                d[c + r[1]] += n
+        return type(self)(d)
 
     def answer(self):
         d = defaultdict(int)
@@ -48,9 +43,9 @@ def main():
     with Path('input', '14').open() as f:
         (template,), rules = readchunks(f)
     template = Template.compile(template)
-    rules = Rules({x: y for x, _, y in (r.split() for r in rules)})
+    rules = {x: y for x, _, y in (r.split() for r in rules)}
     for _ in range(40):
-        template = rules.insert(template)
+        template = template.insert(rules)
     print(template.answer())
 
 if '__main__' == __name__:
