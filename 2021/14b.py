@@ -10,16 +10,9 @@ class Rules:
     def __init__(self, rules):
         self.rules = rules
 
-    def compile(self, template):
-        d = defaultdict(int)
-        d[template[0]] = d[template[-1]] = 1
-        for a, b in zip(template, islice(template, 1, None)):
-            d[a + b] += 1
-        return d
-
     def insert(self, template):
         d = defaultdict(int)
-        for r, n in template.items():
+        for r, n in template.d.items():
             try:
                 c = self.rules[r]
             except KeyError:
@@ -27,11 +20,24 @@ class Rules:
             else:
                 d[r[0] + c] += n
                 d[c + r[1]] += n
-        return d
+        return type(template)(d)
 
-    def answer(self, template):
+class Template:
+
+    @classmethod
+    def compile(cls, text):
         d = defaultdict(int)
-        for r, n in template.items():
+        d[text[0]] = d[text[-1]] = 1
+        for a, b in zip(text, islice(text, 1, None)):
+            d[a + b] += 1
+        return cls(d)
+
+    def __init__(self, d):
+        self.d = d
+
+    def answer(self):
+        d = defaultdict(int)
+        for r, n in self.d.items():
             for c in r:
                 d[c] += n
         for n in d.values():
@@ -41,11 +47,11 @@ class Rules:
 def main():
     with Path('input', '14').open() as f:
         (template,), rules = readchunks(f)
+    template = Template.compile(template)
     rules = Rules({x: y for x, _, y in (r.split() for r in rules)})
-    template = rules.compile(template)
     for _ in range(40):
         template = rules.insert(template)
-    print(rules.answer(template))
+    print(template.answer())
 
 if '__main__' == __name__:
     main()
