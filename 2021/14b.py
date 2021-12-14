@@ -43,20 +43,10 @@ def main():
     with Path('input', '14').open() as f:
         (template,), rules = readchunks(f)
     rules = Rules({x: y for x, _, y in (r.split() for r in rules)})
-
-
-    print(template)
     template = rules.compile(template)
-    print(template)
-
-
-
-
     for _ in range(40):
         template = rules.insert(template)
-        #print(template)
-
-        print(rules.answer(template))
+    print(rules.answer(template))
 
 if '__main__' == __name__:
     main()

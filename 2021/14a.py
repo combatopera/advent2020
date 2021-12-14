@@ -13,7 +13,7 @@ class Rules:
     def insert(self, template):
         for a, b in zip(template, islice(template, 1, None)):
             yield a
-            yield self.rules[a+b]
+            yield self.rules[a + b]
         yield template[-1]
 
 def main():
