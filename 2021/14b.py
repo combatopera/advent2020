@@ -21,12 +21,13 @@ class Rules:
     def insert(self, template):
         d = defaultdict(int)
         for r, n in template.items():
-            if '$'!=r[0]:
+            try:
                 c = self.rules[r]
-                d[r[0]+c] += n
-                d[c+r[1]] += n
+            except KeyError:
+                d[r] += n
             else:
-                d[r]+=n
+                d[r[0] + c] += n
+                d[c + r[1]] += n
         return d
 
     def answer(self, template):
