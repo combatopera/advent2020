@@ -25,7 +25,7 @@ class State:
         s = self.rcosts[cost]
         s.remove(p)
         if not s:
-            self.rcosts.pop(cost)
+            del self.rcosts[cost]
 
     def update(self, cursor, step):
         p = cursor + step
