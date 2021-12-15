@@ -1,52 +1,61 @@
 #!/usr/bin/env python3
 
-from adventlib import Vector
+from adventlib import intcos, intsin, Vector
 from collections import defaultdict
 from pathlib import Path
 
-steps = Vector([1, 0]), Vector([0, 1]), Vector([-1, 0]), Vector([0, -1])
+steps = [Vector([intcos(x), intsin(x)]) for x in range(4)]
+
+class State:
+
+    def __init__(self, weights, cursor):
+        self.costs = {}
+        self.rcosts = defaultdict(set)
+        for p in weights:
+            cost = 0 if p == cursor else float('inf')
+            self.costs[p] = cost
+            self.rcosts[cost].add(p)
+        self.weights = weights
+
+    def update(self, cursor, step):
+        p = cursor + step
+        if p in self.costs:
+            old = self.costs[p]
+            new = self.costs[cursor] + self.weights[p]
+            if new < old:
+                self.costs[p] = new
+                self.rcosts[old].remove(p)
+                self.rcosts[new].add(p)
+
+    def consume(self, cursor):
+        cost = self.costs.pop(cursor)
+        self.rcosts[cost].remove(cursor)
+        if not self.rcosts[cost]:
+            self.rcosts.pop(cost)
+        mincost = min(self.rcosts)
+        return next(iter(self.rcosts[mincost]))
 
 def main():
-    grid = {}
+    weights = {}
     for y, line in enumerate(Path('input', '15').read_text().splitlines()):
         for x, c in enumerate(line):
-            grid[Vector([x, y])] = int(c)
+            weights[Vector([x, y])] = int(c)
     w = x + 1
     h = y + 1
-    grid0 = list(grid.items())
+    grid0 = list(weights.items())
     for yy in range(5):
         for xx in range(5):
             if xx or yy:
                 for p, v in grid0:
-                    grid[Vector([xx * w + p[0], yy * h + p[1]])] = (v + xx + yy - 1) % 9 + 1
+                    weights[Vector([xx * w + p[0], yy * h + p[1]])] = (v + xx + yy - 1) % 9 + 1
     target = Vector([5 * w - 1, 5 * h - 1])
-    p = Vector([0, 0])
-    labels = {q: 0 if q == p else float('inf') for q in grid}
-    costs = defaultdict(set)
-    costs[0] = {p}
-    costs[float('inf')] = grid.keys() - {p}
-    while p != target:
-        for s in steps:
-            q = p + s
-            try:
-                r = grid[q]
-            except KeyError:
-                pass
-            else:
-                if q in labels:
-                    old = labels[q]
-                    new = min(old, labels[p] + r)
-                    labels[q] = new
-                    costs[old].remove(q)
-                    costs[new].add(q)
-        l=labels[p]
-        costs[l].remove(p)
-        if not costs[l]:
-            costs.pop(l)
-        labels.pop(p)
-        mincost = min(costs)
-        p = next(iter(costs[mincost]))
-    print(labels[p])
+    cursor = Vector([0, 0])
+    state = State(weights, cursor)
+    while cursor != target:
+        for step in steps:
+            state.update(cursor, step)
+        cursor = state.consume(cursor)
+    print(state.costs[target])
 
 if '__main__' == __name__:
     main()
