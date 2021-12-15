@@ -27,17 +27,13 @@ def main():
     while cursor != target:
         for s in steps:
             q = cursor + s
-            try:
+            if q in state.costs:
                 w = weights[q]
-            except KeyError:
-                pass
-            else:
-                if q in state.costs:
-                    old = state.costs[q]
-                    new = min(old, state.costs[cursor] + w)
-                    state.costs[q] = new
-                    state.rcosts[old].remove(q)
-                    state.rcosts[new].add(q)
+                old = state.costs[q]
+                new = min(old, state.costs[cursor] + w)
+                state.costs[q] = new
+                state.rcosts[old].remove(q)
+                state.rcosts[new].add(q)
         l = state.costs[cursor]
         state.rcosts[l].remove(cursor)
         if not state.rcosts[l]:
