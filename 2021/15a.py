@@ -8,13 +8,24 @@ steps = [Vector([intcos(x), intsin(x)]) for x in range(4)]
 
 class State:
 
-    def __init__(self, points, cursor):
+    def __init__(self, weights, cursor):
         self.costs = {}
         self.rcosts = defaultdict(set)
-        for p in points:
+        for p in weights:
             cost = 0 if p == cursor else float('inf')
             self.costs[p] = cost
             self.rcosts[cost].add(p)
+        self.weights = weights
+
+    def update(self, cursor, step):
+        p = cursor + step
+        if p in self.costs:
+            old = self.costs[p]
+            new = self.costs[cursor] + self.weights[p]
+            if new < old:
+                self.costs[p] = new
+                self.rcosts[old].remove(p)
+                self.rcosts[new].add(p)
 
 def main():
     weights = {}
@@ -25,15 +36,8 @@ def main():
     cursor = Vector([0, 0])
     state = State(weights, cursor)
     while cursor != target:
-        for s in steps:
-            p = cursor + s
-            if p in state.costs:
-                old = state.costs[p]
-                new = state.costs[cursor] + weights[p]
-                if new < old:
-                    state.costs[p] = new
-                    state.rcosts[old].remove(p)
-                    state.rcosts[new].add(p)
+        for step in steps:
+            state.update(cursor, step)
         l = state.costs[cursor]
         state.rcosts[l].remove(cursor)
         if not state.rcosts[l]:
