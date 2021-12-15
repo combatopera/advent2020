@@ -20,17 +20,12 @@ def main():
                 for p, v in grid0:
                     grid[Vector([xx * w + p[0], yy * h + p[1]])] = (v + xx + yy - 1) % 9 + 1
     target = Vector([5 * w - 1, 5 * h - 1])
-
-
-
-
     p = Vector([0, 0])
     labels = {q: 0 if q == p else float('inf') for q in grid}
     costs = defaultdict(set)
     costs[0] = {p}
     costs[float('inf')] = grid.keys() - {p}
     while p != target:
-        print(p)
         for s in steps:
             q = p + s
             try:
@@ -52,7 +47,6 @@ def main():
         mincost = min(costs)
         p = next(iter(costs[mincost]))
     print(labels[p])
-
 
 if '__main__' == __name__:
     main()
