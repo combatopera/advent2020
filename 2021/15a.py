@@ -1,10 +1,10 @@
 #!/usr/bin/env python3
 
-from adventlib import Vector
+from adventlib import intcos, intsin, Vector
 from collections import defaultdict
 from pathlib import Path
 
-steps = Vector([1, 0]), Vector([0, 1]), Vector([-1, 0]), Vector([0, -1])
+steps = [Vector([intcos(x), intsin(x)]) for x in range(4)]
 
 def main():
     grid = {}
