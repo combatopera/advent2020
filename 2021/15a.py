@@ -15,7 +15,6 @@ def main():
     p = Vector([0, 0])
     labels = {q: 0 if q == p else float('inf') for q in grid}
     while p != target:
-        print(p)
         for s in steps:
             q = p + s
             try:
@@ -26,7 +25,6 @@ def main():
                 if q in labels:
                     labels[q] = min(labels[q], labels[p] + r)
         labels.pop(p)
-        #print(labels)
         mincost = min(labels.values())
         for p in labels:
             if labels[p] == mincost:
