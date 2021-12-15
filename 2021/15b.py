@@ -37,8 +37,8 @@ class State:
 
     def consume(self, cursor):
         self._remove(cursor)
-        mincost = min(self.rcosts)
-        return next(iter(self.rcosts[mincost]))
+        for p in self.rcosts[min(self.rcosts)]:
+            return p
 
 def main():
     weights = {}
