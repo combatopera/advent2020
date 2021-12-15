@@ -27,6 +27,14 @@ class State:
                 self.rcosts[old].remove(p)
                 self.rcosts[new].add(p)
 
+    def consume(self, cursor):
+        cost = self.costs.pop(cursor)
+        self.rcosts[cost].remove(cursor)
+        if not self.rcosts[cost]:
+            self.rcosts.pop(cost)
+        mincost = min(self.rcosts)
+        return next(iter(self.rcosts[mincost]))
+
 def main():
     weights = {}
     for y, line in enumerate(Path('input', '15').read_text().splitlines()):
@@ -38,13 +46,7 @@ def main():
     while cursor != target:
         for step in steps:
             state.update(cursor, step)
-        l = state.costs[cursor]
-        state.rcosts[l].remove(cursor)
-        if not state.rcosts[l]:
-            state.rcosts.pop(l)
-        state.costs.pop(cursor)
-        mincost = min(state.rcosts)
-        cursor = next(iter(state.rcosts[mincost]))
+        cursor = state.consume(cursor)
     print(state.costs[target])
 
 if '__main__' == __name__:
