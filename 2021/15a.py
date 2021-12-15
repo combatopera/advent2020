@@ -26,14 +26,15 @@ def main():
     state = State(weights, cursor)
     while cursor != target:
         for s in steps:
-            q = cursor + s
-            if q in state.costs:
-                w = weights[q]
-                old = state.costs[q]
-                new = min(old, state.costs[cursor] + w)
-                state.costs[q] = new
-                state.rcosts[old].remove(q)
-                state.rcosts[new].add(q)
+            p = cursor + s
+            if p in state.costs:
+                w = weights[p]
+                old = state.costs[p]
+                new = state.costs[cursor] + w
+                if new < old:
+                    state.costs[p] = new
+                    state.rcosts[old].remove(p)
+                    state.rcosts[new].add(p)
         l = state.costs[cursor]
         state.rcosts[l].remove(cursor)
         if not state.rcosts[l]:
