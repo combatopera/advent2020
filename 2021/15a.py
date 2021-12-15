@@ -13,25 +13,30 @@ class State:
         self.rcosts = defaultdict(set)
         for p in weights:
             cost = 0 if p == cursor else float('inf')
-            self.costs[p] = cost
-            self.rcosts[cost].add(p)
+            self._put(p, cost)
         self.weights = weights
+
+    def _put(self, p, cost):
+        self.costs[p] = cost
+        self.rcosts[cost].add(p)
+
+    def _remove(self, p):
+        cost = self.costs.pop(p)
+        s = self.rcosts[cost]
+        s.remove(p)
+        if not s:
+            self.rcosts.pop(cost)
 
     def update(self, cursor, step):
         p = cursor + step
         if p in self.costs:
-            old = self.costs[p]
-            new = self.costs[cursor] + self.weights[p]
-            if new < old:
-                self.costs[p] = new
-                self.rcosts[old].remove(p)
-                self.rcosts[new].add(p)
+            cost = self.costs[cursor] + self.weights[p]
+            if cost < self.costs[p]:
+                self._remove(p)
+                self._put(p, cost)
 
     def consume(self, cursor):
-        cost = self.costs.pop(cursor)
-        self.rcosts[cost].remove(cursor)
-        if not self.rcosts[cost]:
-            self.rcosts.pop(cost)
+        self._remove(cursor)
         mincost = min(self.rcosts)
         return next(iter(self.rcosts[mincost]))
 
