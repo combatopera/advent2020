@@ -15,8 +15,8 @@ def main():
     p = Vector([0, 0])
     labels = {q: 0 if q == p else float('inf') for q in grid}
     costs = defaultdict(set)
-    costs[0] = {p}
-    costs[float('inf')] = grid.keys() - {p}
+    for q, cost in labels.items():
+        costs[cost].add(q)
     while p != target:
         for s in steps:
             q = p + s
