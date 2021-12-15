@@ -4,6 +4,7 @@ from adventlib import intcos, intsin, Vector
 from collections import defaultdict
 from pathlib import Path
 
+inf = float('inf')
 steps = [Vector([intcos(x), intsin(x)]) for x in range(4)]
 
 class State:
@@ -12,8 +13,7 @@ class State:
         self.costs = {}
         self.rcosts = defaultdict(set)
         for p in weights:
-            cost = 0 if p == cursor else float('inf')
-            self._put(p, cost)
+            self._put(p, 0 if p == cursor else inf)
         self.weights = weights
 
     def _put(self, p, cost):
