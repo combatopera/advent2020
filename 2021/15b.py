@@ -42,13 +42,14 @@ def main():
             weights[Vector([x, y])] = int(c)
     w = x + 1
     h = y + 1
-    grid0 = list(weights.items())
-    for yy in range(5):
-        for xx in range(5):
+    ww = hh = 5
+    weights_ = weights.copy()
+    for yy in range(hh):
+        for xx in range(ww):
             if xx or yy:
-                for p, v in grid0:
-                    weights[Vector([xx * w + p[0], yy * h + p[1]])] = (v + xx + yy - 1) % 9 + 1
-    target = Vector([5 * w - 1, 5 * h - 1])
+                for (x, y), weight in weights_.items():
+                    weights[Vector([xx * w + x, yy * h + y])] = (weight + xx + yy - 1) % 9 + 1
+    target = Vector([ww * w - 1, hh * h - 1])
     cursor = Vector([0, 0])
     state = State(weights, cursor)
     while cursor != target:
