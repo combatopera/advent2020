@@ -28,9 +28,8 @@ def main():
         for s in steps:
             p = cursor + s
             if p in state.costs:
-                w = weights[p]
                 old = state.costs[p]
-                new = state.costs[cursor] + w
+                new = state.costs[cursor] + weights[p]
                 if new < old:
                     state.costs[p] = new
                     state.rcosts[old].remove(p)
