@@ -8,11 +8,11 @@ steps = [Vector([intcos(x), intsin(x)]) for x in range(4)]
 
 class State:
 
-    def __init__(self, points, start):
+    def __init__(self, points, cursor):
         self.labels = {}
         self.costs = defaultdict(set)
         for p in points:
-            cost = 0 if p == start else float('inf')
+            cost = 0 if p == cursor else float('inf')
             self.labels[p] = cost
             self.costs[cost].add(p)
 
@@ -22,11 +22,11 @@ def main():
         for x, c in enumerate(line):
             weights[Vector([x, y])] = int(c)
     target = Vector([x, y])
-    p = Vector([0, 0])
-    state = State(weights, p)
-    while p != target:
+    cursor = Vector([0, 0])
+    state = State(weights, cursor)
+    while cursor != target:
         for s in steps:
-            q = p + s
+            q = cursor + s
             try:
                 r = weights[q]
             except KeyError:
@@ -34,18 +34,18 @@ def main():
             else:
                 if q in state.labels:
                     old = state.labels[q]
-                    new = min(old, state.labels[p] + r)
+                    new = min(old, state.labels[cursor] + r)
                     state.labels[q] = new
                     state.costs[old].remove(q)
                     state.costs[new].add(q)
-        l = state.labels[p]
-        state.costs[l].remove(p)
+        l = state.labels[cursor]
+        state.costs[l].remove(cursor)
         if not state.costs[l]:
             state.costs.pop(l)
-        state.labels.pop(p)
+        state.labels.pop(cursor)
         mincost = min(state.costs)
-        p = next(iter(state.costs[mincost]))
-    print(state.labels[p])
+        cursor = next(iter(state.costs[mincost]))
+    print(state.labels[target])
 
 if '__main__' == __name__:
     main()
