@@ -35,12 +35,11 @@ class State:
             try:
                 cost = self.costs[p]
             except KeyError:
-                pass
-            else:
-                cost_ = basecost + self.weights[p]
-                if cost_ < cost:
-                    self._remove(p)
-                    self._put(p, cost_)
+                continue
+            cost_ = basecost + self.weights[p]
+            if cost_ < cost:
+                self._remove(p)
+                self._put(p, cost_)
         for p in self.rcosts[min(self.rcosts)]:
             return p
 
