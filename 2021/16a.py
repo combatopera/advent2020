@@ -30,27 +30,22 @@ class Cursor:
     def _packet(self):
         version = self._read(3)
         type = self._read(3)
-        print(version, type)
         if literaltype == type:
             payload = self._readliteral()
         else:
             if self._read(1):
                 count = self._read(11)
-                print('count',count)
                 payload = [self._packet() for _ in range(count)]
             else:
                 stop = self._read(15) + self.i
                 payload = []
                 while self.i != stop:
-                    print(self.i, stop)
                     payload.append(self._packet())
         return Packet(version = version, type = type, payload = payload)
 
     def packet(self):
-        print(self.i,len(self.bits))
         while self.i % 4:
             self.i += 1
-        print(self.i,len(self.bits))
         if any(self.bits[self.i:]):
             return self._packet()
 
