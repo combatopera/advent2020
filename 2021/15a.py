@@ -27,15 +27,14 @@ class State:
         if not s:
             del self.rcosts[cost]
 
-    def update(self, cursor, step):
-        p = cursor + step
-        if p in self.costs:
-            cost = self.costs[cursor] + self.weights[p]
-            if cost < self.costs[p]:
-                self._remove(p)
-                self._put(p, cost)
-
-    def consume(self, cursor):
+    def update(self, cursor):
+        for step in steps:
+            p = cursor + step
+            if p in self.costs:
+                cost = self.costs[cursor] + self.weights[p]
+                if cost < self.costs[p]:
+                    self._remove(p)
+                    self._put(p, cost)
         self._remove(cursor)
         for p in self.rcosts[min(self.rcosts)]:
             return p
@@ -49,9 +48,7 @@ def main():
     cursor = Vector([0, 0])
     state = State(weights, cursor)
     while cursor != target:
-        for step in steps:
-            state.update(cursor, step)
-        cursor = state.consume(cursor)
+        cursor = state.update(cursor)
     print(state.costs[target])
 
 if '__main__' == __name__:
