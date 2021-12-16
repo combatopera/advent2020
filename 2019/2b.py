@@ -18,8 +18,6 @@ class Computer:
                 self.program[self.program[self.cursor + 3]] = self.program[self.program[self.cursor + 1]] + self.program[self.program[self.cursor + 2]]
             elif 2 == k:
                 self.program[self.program[self.cursor + 3]] = self.program[self.program[self.cursor + 1]] * self.program[self.program[self.cursor + 2]]
-            else:
-                panic
             self.cursor += 4
 
 def main():
