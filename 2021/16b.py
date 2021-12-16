@@ -48,23 +48,18 @@ class Cursor:
 
 class Packet(SimpleNamespace):
 
+    ops = {
+        0: sum,
+        1: lambda v: reduce(mul, v),
+        2: min,
+        3: max,
+        5: lambda v: gt(*v),
+        6: lambda v: lt(*v),
+        7: lambda v: eq(*v),
+    }
+
     def calc(self):
-        if 0 == self.type:
-            return sum(p.calc() for p in self.payload)
-        if 1 == self.type:
-            return reduce(mul, (p.calc() for p in self.payload))
-        if 2 == self.type:
-            return min(p.calc() for p in self.payload)
-        if 3 == self.type:
-            return max(p.calc() for p in self.payload)
-        if 4 == self.type:
-            return self.payload
-        if 5 == self.type:
-            return gt(*(p.calc() for p in self.payload))
-        if 6 == self.type:
-            return lt(*(p.calc() for p in self.payload))
-        if 7 == self.type:
-            return eq(*(p.calc() for p in self.payload))
+        return self.payload if literaltype == self.type else self.ops[self.type](p.calc() for p in self.payload)
 
 def main():
     text = Path('input', '16').read_text().rstrip()
