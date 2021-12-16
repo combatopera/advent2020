@@ -26,16 +26,17 @@ class State:
         s.remove(p)
         if not s:
             del self.rcosts[cost]
+        return cost
 
     def update(self, cursor):
+        basecost = self._remove(cursor)
         for step in steps:
             p = cursor + step
             if p in self.costs:
-                cost = self.costs[cursor] + self.weights[p]
+                cost = basecost + self.weights[p]
                 if cost < self.costs[p]:
                     self._remove(p)
                     self._put(p, cost)
-        self._remove(cursor)
         for p in self.rcosts[min(self.rcosts)]:
             return p
 
