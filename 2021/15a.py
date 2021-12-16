@@ -20,8 +20,10 @@ class State:
 
     def _put(self, p, cost):
         self.costs[p] = cost
-        self.rcosts[cost].add(p)
-        heappush(self.allcosts, cost)
+        s = self.rcosts[cost]
+        if not s:
+            heappush(self.allcosts, cost)
+        s.add(p)
 
     def _remove(self, p):
         cost = self.costs.pop(p)
@@ -41,8 +43,7 @@ class State:
                 self._remove(p)
                 self._put(p, cost_)
         while True:
-            cost = self.allcosts[0]
-            for p in self.rcosts[cost]:
+            for p in self.rcosts[self.allcosts[0]]:
                 return p
             heappop(self.allcosts)
 
