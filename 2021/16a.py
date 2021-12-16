@@ -36,7 +36,7 @@ class Cursor:
         else:
             if self._read(1):
                 count = self._read(11)
-                print(count)
+                print('count',count)
                 payload = [self._packet() for _ in range(count)]
             else:
                 stop = self._read(15) + self.i
@@ -47,9 +47,11 @@ class Cursor:
         return Packet(version = version, type = type, payload = payload)
 
     def packet(self):
+        print(self.i,len(self.bits))
         while self.i % 4:
             self.i += 1
-        if self.i != len(self.bits):
+        print(self.i,len(self.bits))
+        if any(self.bits[self.i:]):
             return self._packet()
 
 class Packet(SimpleNamespace):
