@@ -4,6 +4,7 @@ from pathlib import Path
 from types import SimpleNamespace
 
 literaltype = 4
+mask = 0x10
 
 class Cursor:
 
@@ -22,12 +23,12 @@ class Cursor:
     def _readliteral(self):
         k = 0
         part = -1
-        while part & 0x10:
+        while part & mask:
             part = self._read(5)
-            k = (k << 4) | part & 0xf
+            k = (k << 4) | part & ~mask
         return k
 
-    def _packet(self):
+    def packet(self):
         version = self._read(3)
         type = self._read(3)
         if literaltype == type:
@@ -35,19 +36,13 @@ class Cursor:
         else:
             if self._read(1):
                 count = self._read(11)
-                payload = [self._packet() for _ in range(count)]
+                payload = [self.packet() for _ in range(count)]
             else:
                 stop = self._read(15) + self.i
                 payload = []
                 while self.i != stop:
-                    payload.append(self._packet())
+                    payload.append(self.packet())
         return Packet(version = version, type = type, payload = payload)
-
-    def packet(self):
-        while self.i % 4:
-            self.i += 1
-        if any(self.bits[self.i:]):
-            return self._packet()
 
 class Packet(SimpleNamespace):
 
@@ -60,14 +55,7 @@ class Packet(SimpleNamespace):
 def main():
     text = Path('input', '16').read_text().rstrip()
     cursor = Cursor([(i >> b) & 1 for c in text for i in [int(c, 16)] for b in range(3, -1, -1)])
-    vsum = 0
-    while True:
-        p = cursor.packet()
-        if p is None:
-            break
-        for v in p.versions():
-            vsum += v
-    print(vsum)
+    print(sum(cursor.packet().versions()))
 
 if '__main__' == __name__:
     main()
