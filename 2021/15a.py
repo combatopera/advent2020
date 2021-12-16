@@ -2,6 +2,7 @@
 
 from adventlib import intcos, intsin, Vector
 from collections import defaultdict
+from heapq import heappop, heappush
 from pathlib import Path
 
 inf = float('inf')
@@ -12,6 +13,7 @@ class State:
     def __init__(self, weights, cursor):
         self.costs = {}
         self.rcosts = defaultdict(set)
+        self.allcosts = []
         for p in weights:
             self._put(p, 0 if p == cursor else inf)
         self.weights = weights
@@ -19,13 +21,11 @@ class State:
     def _put(self, p, cost):
         self.costs[p] = cost
         self.rcosts[cost].add(p)
+        heappush(self.allcosts, cost)
 
     def _remove(self, p):
         cost = self.costs.pop(p)
-        s = self.rcosts[cost]
-        s.remove(p)
-        if not s:
-            del self.rcosts[cost]
+        self.rcosts[cost].remove(p)
         return cost
 
     def update(self, cursor):
@@ -40,8 +40,11 @@ class State:
             if cost_ < cost:
                 self._remove(p)
                 self._put(p, cost_)
-        for p in self.rcosts[min(self.rcosts)]:
-            return p
+        while True:
+            cost = self.allcosts[0]
+            for p in self.rcosts[cost]:
+                return p
+            heappop(self.allcosts)
 
 def main():
     weights = {}
