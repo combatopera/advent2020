@@ -32,11 +32,15 @@ class State:
         basecost = self._remove(cursor)
         for step in steps:
             p = cursor + step
-            if p in self.costs:
-                cost = basecost + self.weights[p]
-                if cost < self.costs[p]:
+            try:
+                cost = self.costs[p]
+            except KeyError:
+                pass
+            else:
+                cost_ = basecost + self.weights[p]
+                if cost_ < cost:
                     self._remove(p)
-                    self._put(p, cost)
+                    self._put(p, cost_)
         for p in self.rcosts[min(self.rcosts)]:
             return p
 
