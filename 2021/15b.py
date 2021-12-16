@@ -2,6 +2,7 @@
 
 from adventlib import intcos, intsin, Vector
 from collections import defaultdict
+from heapq import heappop, heappush
 from pathlib import Path
 
 inf = float('inf')
@@ -12,6 +13,7 @@ class State:
     def __init__(self, weights, cursor):
         self.costs = {}
         self.rcosts = defaultdict(set)
+        self.allcosts = []
         for p in weights:
             self._put(p, 0 if p == cursor else inf)
         self.weights = weights
@@ -19,26 +21,30 @@ class State:
     def _put(self, p, cost):
         self.costs[p] = cost
         self.rcosts[cost].add(p)
+        heappush(self.allcosts, cost)
 
     def _remove(self, p):
         cost = self.costs.pop(p)
-        s = self.rcosts[cost]
-        s.remove(p)
-        if not s:
-            del self.rcosts[cost]
+        self.rcosts[cost].remove(p)
+        return cost
 
-    def update(self, cursor, step):
-        p = cursor + step
-        if p in self.costs:
-            cost = self.costs[cursor] + self.weights[p]
-            if cost < self.costs[p]:
+    def update(self, cursor):
+        basecost = self._remove(cursor)
+        for step in steps:
+            p = cursor + step
+            try:
+                cost = self.costs[p]
+            except KeyError:
+                continue
+            cost_ = basecost + self.weights[p]
+            if cost_ < cost:
                 self._remove(p)
-                self._put(p, cost)
-
-    def consume(self, cursor):
-        self._remove(cursor)
-        for p in self.rcosts[min(self.rcosts)]:
-            return p
+                self._put(p, cost_)
+        while True:
+            cost = self.allcosts[0]
+            for p in self.rcosts[cost]:
+                return p
+            heappop(self.allcosts)
 
 def main():
     weights = {}
@@ -58,9 +64,7 @@ def main():
     cursor = Vector([0, 0])
     state = State(weights, cursor)
     while cursor != target:
-        for step in steps:
-            state.update(cursor, step)
-        cursor = state.consume(cursor)
+        cursor = state.update(cursor)
     print(state.costs[target])
 
 if '__main__' == __name__:
