@@ -33,10 +33,10 @@ class Target:
             if p.y > maxheight:
                 maxheight = p.y
                 continue
-            if self.x1 <= p.x and p.x <= self.x2 and self.y1 <= p.y and p.y <= self.y2:
-                return maxheight
-            if p.x > self.x2 or p.y < self.y1:
+            if self.x2 < p.x or p.y < self.y1:
                 break
+            if self.x1 <= p.x and p.y <= self.y2:
+                return maxheight
 
     def heights(self, u):
         for v in range(self.y1, -self.y1):
