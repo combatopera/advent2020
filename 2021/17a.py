@@ -39,12 +39,10 @@ class Target:
                 return maxheight
 
     def heights(self, u):
-        v = 0
-        while v < 300:
+        for v in range(300):
             h = self._height(u, v)
             if h is not None:
                 yield h
-            v += 1
 
 def main():
     t = Target(*map(int, re.findall('-?[0-9]+', Path('input', '17').read_text())))
