@@ -45,7 +45,7 @@ class Target:
                 break
 
     def heights(self, u):
-        v = 0
+        v = self.y1
         while True:
             h = self._height(u, v)
             if h is highenough:
