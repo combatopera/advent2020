@@ -40,11 +40,10 @@ class Target:
 
     def heights(self, u):
         v = 0
-        while True:
+        while v < 300:
             h = self._height(u, v)
-            if h is None:
-                break
-            yield h
+            if h is not None:
+                yield h
             v += 1
 
 def main():
