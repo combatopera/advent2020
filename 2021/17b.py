@@ -3,8 +3,6 @@
 from pathlib import Path
 import re
 
-highenough = object()
-
 class Probe:
 
     x = y = 0
@@ -37,22 +35,14 @@ class Target:
                 continue
             if self.x1 <= p.x and p.x <= self.x2 and self.y1 <= p.y and p.y <= self.y2:
                 return maxheight
-            if (p.x < self.x1 or self.x2 < p.x) and not p.u:
-                return highenough
-            if not p.y and p.v < self.y1:
-                return highenough
             if p.x > self.x2 or p.y < self.y1:
                 break
 
     def heights(self, u):
-        v = self.y1
-        while True:
+        for v in range(self.y1, -self.y1):
             h = self._height(u, v)
-            if h is highenough:
-                break
             if h is not None:
                 yield h
-            v += 1
 
 def main():
     t = Target(*map(int, re.findall('-?[0-9]+', Path('input', '17').read_text())))
