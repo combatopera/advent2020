@@ -56,10 +56,7 @@ class Target:
 
 def main():
     t = Target(*map(int, re.findall('-?[0-9]+', Path('input', '17').read_text())))
-    n = 0
-    for u in range(400):
-        n += sum(1 for _ in t.heights(u))
-    print(n)
+    print(sum(1 for u in range(t.x2 + 1) for _ in t.heights(u)))
 
 if '__main__' == __name__:
     main()
