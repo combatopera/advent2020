@@ -3,6 +3,8 @@
 from pathlib import Path
 import re
 
+highenough = object()
+
 class Probe:
 
     x = y = 0
@@ -33,15 +35,21 @@ class Target:
             if p.y > maxheight:
                 maxheight = p.y
                 continue
+            if self.x1 <= p.x and p.x <= self.x2 and self.y1 <= p.y and p.y <= self.y2:
+                return maxheight
+            if (p.x < self.x1 or self.x2 < p.x) and not p.u:
+                return highenough
+            if not p.y and p.v < self.y1:
+                return highenough
             if p.x > self.x2 or p.y < self.y1:
                 break
-            if p.x >= self.x1 and p.y <= self.y2:
-                return maxheight
 
     def heights(self, u):
         v = 0
-        while v < 300:
+        while True:
             h = self._height(u, v)
+            if h is highenough:
+                break
             if h is not None:
                 yield h
             v += 1
