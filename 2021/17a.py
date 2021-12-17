@@ -27,16 +27,16 @@ class Target:
 
     def _height(self, u, v):
         p = Probe(u, v)
-        height = p.y
+        maxheight = p.y
         while True:
             p.step()
-            if p.y > height:
-                height = p.y
+            if p.y > maxheight:
+                maxheight = p.y
                 continue
             if p.x > self.x2 or p.y < self.y1:
-                return
+                break
             if p.x >= self.x1 and p.y <= self.y2:
-                return height
+                return maxheight
 
     def heights(self, u):
         v = 0
