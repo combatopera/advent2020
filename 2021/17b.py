@@ -59,7 +59,6 @@ def main():
     n = 0
     for u in range(400):
         n += sum(1 for _ in t.heights(u))
-        u += 1
     print(n)
 
 if '__main__' == __name__:
