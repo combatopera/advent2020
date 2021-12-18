@@ -55,7 +55,7 @@ class Number(list):
                 if address.index == 1 - index:
                     address.number[index].addimpl(Address(address.number, index), n, 1 - index)
                     break
-        context[0].number[context[0].index] = zero
+        context[0].replace(zero)
         return True
 
     def addimpl(self, address, n, target):
