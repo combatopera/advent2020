@@ -65,7 +65,7 @@ class Number(list):
         Address(self, target).addimpl(n, target)
 
     def split(self, address):
-        return any(n.split(Address(self, i)) for i, n in enumerate(self))
+        return any(Address(self, i).split() for i, _ in enumerate(self))
 
     def magnitude(self):
         return sum(k * n.magnitude() for k, n in zip([3, 2], self))
