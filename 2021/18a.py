@@ -8,6 +8,9 @@ class Address(namedtuple('BaseAddress', 'number index')):
     def replace(self, n):
         self.number[self.index] = n
 
+    def __getattr__(self, name):
+        return lambda *args: getattr(self.number[self.index], name)(self, *args)
+
 class Int(int):
 
     def clone(self):
@@ -49,7 +52,7 @@ class Number(list):
 
     def explode(self, *context):
         if 4 != len(context):
-            return any(n.explode(Address(self, i), *context) for i, n in enumerate(self))
+            return any(Address(self, i).explode(*context) for i, _ in enumerate(self))
         for index, n in enumerate(self):
             for address in context:
                 if address.index == 1 - index:
