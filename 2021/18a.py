@@ -62,7 +62,7 @@ class Number(list):
         return True
 
     def addimpl(self, address, n, target):
-        self[target].addimpl(Address(self, target), n, target)
+        Address(self, target).addimpl(n, target)
 
     def split(self, address):
         return any(n.split(Address(self, i)) for i, n in enumerate(self))
