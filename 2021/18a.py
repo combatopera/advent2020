@@ -33,10 +33,10 @@ class Number(list):
             return Int(obj)
 
     def add(self, n):
-        self[:] = (type(self)(self), n) if self else n
-        while self.explode() or self.split(None):
+        res = type(self)([type(self)(self), n])
+        while res.explode() or res.split(None):
             pass
-        return self
+        return res
 
     def explode(self, *context):
         if 4 != len(context):
