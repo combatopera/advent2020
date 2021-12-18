@@ -22,10 +22,20 @@ class Number(tuple):
             return cls.Int(obj)
 
     def add(self, n):
-        fixme
+        n = type(self)([self, n])
+        while True:
+            m = n.ereduce()
+            if m is not None:
+                n = m
+                continue
+            m = n.sreduce()
+            if m is not None:
+                n = m
+                continue
+            return n
 
     def magnitude(self):
-        fixme
+        return 3 * self[0].magnitude() + 2 * self[1].magnitude()
 
 def main():
     n = Null()
