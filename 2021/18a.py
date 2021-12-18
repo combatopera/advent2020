@@ -5,32 +5,32 @@ from pathlib import Path
 
 class Address(namedtuple('BaseAddress', 'number index')): pass
 
+class Int(int):
+
+    def explode(self, *context):
+        pass
+
+    def addimpl(self, address, n, target):
+        address.number[address.index] = type(self)(self + n)
+
+    def split(self, address):
+        if self >= 10:
+            address.number[address.index] = Number([type(self)(self // 2), type(self)((self + 1) // 2)])
+            return True
+
+    def magnitude(self):
+        return self
+
+zero = Int(0)
+
 class Number(list):
-
-    class Int(int):
-
-        def explode(self, *context):
-            pass
-
-        def addimpl(self, address, n, target):
-            address.number[address.index] = type(self)(self + n)
-
-        def split(self, address):
-            if self >= 10:
-                address.number[address.index] = Number([type(self)(self // 2), type(self)((self + 1) // 2)])
-                return True
-
-        def magnitude(self):
-            return self
-
-    zero = Int(0)
 
     @classmethod
     def xform(cls, obj):
         try:
             return cls(map(cls.xform, obj))
         except TypeError:
-            return cls.Int(obj)
+            return Int(obj)
 
     def add(self, n):
         self[:] = (type(self)(self), n) if self else n
@@ -45,7 +45,7 @@ class Number(list):
                 if address.index == 1 - index:
                     address.number[index].addimpl(Address(address.number, index), n, 1 - index)
                     break
-        context[0].number[context[0].index] = self.zero
+        context[0].number[context[0].index] = zero
         return True
 
     def addimpl(self, address, n, target):
