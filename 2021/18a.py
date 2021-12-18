@@ -38,8 +38,8 @@ class Number(list):
     def clone(self):
         return type(self)(n.clone() for n in self)
 
-    def add(self, n):
-        res = type(self)([self.clone(), n.clone()])
+    def add(self, that):
+        res = type(self)(n.clone() for n in [self, that])
         while res.explode() or res.split(None):
             pass
         return res
