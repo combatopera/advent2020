@@ -20,6 +20,11 @@ class Number(list):
         def addimpl(self, address, n):
             address.number[address.index] = type(self)(self + n)
 
+        def split(self, address):
+            if self >= 10:
+                address.number[address.index] = Number([type(self)(self // 2), type(self)((self + 1) // 2)])
+                return True
+
         def magnitude(self):
             return self
 
@@ -35,7 +40,7 @@ class Number(list):
     def add(self, n):
         n = type(self)([self, n])
         while True:
-            if not (n.explode() or n.sreduce()):
+            if not (n.explode() or n.split(None)):
                 return n
 
     def explode(self, *context):
@@ -57,6 +62,9 @@ class Number(list):
 
     def addimpl(self, address, n):
         self[1 - address.index].addimpl(Address(self, 1 - address.index), n)
+
+    def split(self, address):
+        return any(n.split(Address(self, i)) for i, n in enumerate(self))
 
     def magnitude(self):
         return 3 * self[0].magnitude() + 2 * self[1].magnitude()
