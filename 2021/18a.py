@@ -19,7 +19,7 @@ class Int(int):
     def explode(self, *context):
         pass
 
-    def addimpl(self, address, n, target):
+    def addimpl(self, address, index, n):
         address.replace(type(self)(self + n))
 
     def split(self, address):
@@ -56,13 +56,13 @@ class Number(list):
         for index, n in enumerate(self):
             for address in context:
                 if address.index == 1 - index:
-                    Address(address.number, index).addimpl(n, 1 - index)
+                    Address(address.number, index).addimpl(1 - index, n)
                     break
         context[0].replace(zero)
         return True
 
-    def addimpl(self, address, n, target):
-        Address(self, target).addimpl(n, target)
+    def addimpl(self, address, index, n):
+        Address(self, index).addimpl(index, n)
 
     def split(self, address):
         return any(Address(self, i).split() for i, _ in enumerate(self))
