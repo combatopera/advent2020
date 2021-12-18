@@ -7,6 +7,9 @@ class Address(namedtuple('BaseAddress', 'number index')): pass
 
 class Int(int):
 
+    def clone(self):
+        return self
+
     def explode(self, *context):
         pass
 
@@ -32,8 +35,11 @@ class Number(list):
         except TypeError:
             return Int(obj)
 
+    def clone(self):
+        return type(self)(n.clone() for n in self)
+
     def add(self, n):
-        res = type(self)([type(self)(self), n])
+        res = type(self)([self.clone(), n.clone()])
         while res.explode() or res.split(None):
             pass
         return res
