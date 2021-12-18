@@ -36,6 +36,7 @@ class Number(list):
         self[:] = (type(self)(self), n) if self else n
         while self.explode() or self.split(None):
             pass
+        return self
 
     def explode(self, *context):
         if 4 != len(context):
@@ -57,11 +58,16 @@ class Number(list):
     def magnitude(self):
         return sum(k * n.magnitude() for k, n in zip([3, 2], self))
 
+class Null:
+
+    def add(self, n):
+        return n
+
 def main():
-    n = Number()
+    n = Null()
     with Path('input', '18').open() as f:
         for line in f:
-            n.add(Number.xform(eval(line)))
+            n = n.add(Number.xform(eval(line)))
     print(n.magnitude())
 
 if '__main__' == __name__:
