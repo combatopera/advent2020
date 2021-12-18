@@ -11,8 +11,11 @@ class Address(namedtuple('BaseAddress', 'number index')):
     def replace(self, n):
         self.number[self.index] = n
 
-    def __getattr__(self, name):
-        return lambda *args: getattr(self.number[self.index], name)(self, *args)
+def _invoker(name):
+    return lambda self, *args: getattr(self.number[self.index], name)(self, *args)
+
+for name in 'explode', 'addimpl', 'split':
+    setattr(Address, name, _invoker(name))
 
 class Int(int):
 
