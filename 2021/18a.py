@@ -55,7 +55,7 @@ class Number(list):
         return any(n.split(Address(self, i)) for i, n in enumerate(self))
 
     def magnitude(self):
-        return 3 * self[0].magnitude() + 2 * self[1].magnitude()
+        return sum(k * n.magnitude() for k, n in zip([3, 2], self))
 
 def main():
     n = Number()
