@@ -56,7 +56,7 @@ class Number(list):
         for index, n in enumerate(self):
             for address in context:
                 if address.index == 1 - index:
-                    address.number[index].addimpl(Address(address.number, index), n, 1 - index)
+                    Address(address.number, index).addimpl(n, 1 - index)
                     break
         context[0].replace(zero)
         return True
