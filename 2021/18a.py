@@ -43,14 +43,8 @@ class Number(list):
         for index, n in enumerate(self):
             for address in context:
                 if address.index == 1 - index:
-
-                    #print(address.number[index], '.add', Address(address.number, index), n)
-
                     address.number[index].addimpl(Address(address.number, index), n, 1 - index)
                     break
-
-
-
         context[0].number[context[0].index] = self.zero
         return True
 
@@ -68,8 +62,6 @@ def main():
     with Path('input', '18').open() as f:
         for line in f:
             n.add(Number.xform(eval(line)))
-            print(n)
-            print()
     print(n.magnitude())
 
 if '__main__' == __name__:
