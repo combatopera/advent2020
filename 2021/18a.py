@@ -3,7 +3,10 @@
 from collections import namedtuple
 from pathlib import Path
 
-class Address(namedtuple('BaseAddress', 'number index')): pass
+class Address(namedtuple('BaseAddress', 'number index')):
+
+    def replace(self, n):
+        self.number[self.index] = n
 
 class Int(int):
 
@@ -14,11 +17,11 @@ class Int(int):
         pass
 
     def addimpl(self, address, n, target):
-        address.number[address.index] = type(self)(self + n)
+        address.replace(type(self)(self + n))
 
     def split(self, address):
         if self >= 10:
-            address.number[address.index] = Number([type(self)(self // 2), type(self)((self + 1) // 2)])
+            address.replace(Number([type(self)(self // 2), type(self)((self + 1) // 2)]))
             return True
 
     def magnitude(self):
