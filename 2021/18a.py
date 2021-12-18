@@ -17,7 +17,7 @@ class Number(list):
         def explode(self, *context):
             pass
 
-        def add(self, address, n):
+        def addimpl(self, address, n):
             address.number[address.index] = type(self)(self + n)
 
         def magnitude(self):
@@ -47,7 +47,7 @@ class Number(list):
 
                     print(address.number[index], '.add', Address(address.number, index), n)
 
-                    address.number[index].add(Address(address.number, index), n)
+                    address.number[index].addimpl(Address(address.number, index), n)
                     break
 
 
@@ -55,20 +55,20 @@ class Number(list):
         context[0].number[context[0].index] = self.zero
         return True
 
-    def add(self, address, n):
-        self[1 - address.index].add(Address(self, 1 - address.index), n)
+    def addimpl(self, address, n):
+        self[1 - address.index].addimpl(Address(self, 1 - address.index), n)
 
     def magnitude(self):
         return 3 * self[0].magnitude() + 2 * self[1].magnitude()
 
 def main():
-    for n in '[[[[[9,8],1],2],3],4]','[7,[6,[5,[4,[3,2]]]]]','[[6,[5,[4,[3,2]]]],1]','[[3,[2,[1,[7,3]]]],[6,[5,[4,[3,2]]]]]','[[3,[2,[8,0]]],[9,[5,[4,[3,2]]]]]':
+    if 0:
+      for n in '[[[[[9,8],1],2],3],4]','[7,[6,[5,[4,[3,2]]]]]','[[6,[5,[4,[3,2]]]],1]','[[3,[2,[1,[7,3]]]],[6,[5,[4,[3,2]]]]]','[[3,[2,[8,0]]],[9,[5,[4,[3,2]]]]]':
         n=Number.xform(eval(n))
         print(n)
         n.explode()
         print(n)
         print()
-    dthdfgd
 
     n = Null()
     with Path('input', '18').open() as f:
