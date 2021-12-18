@@ -17,7 +17,7 @@ class Number(list):
         def explode(self, *context):
             pass
 
-        def addimpl(self, address, n):
+        def addimpl(self, address, n, target):
             address.number[address.index] = type(self)(self + n)
 
         def split(self, address):
@@ -40,6 +40,7 @@ class Number(list):
     def add(self, n):
         n = type(self)([self, n])
         while True:
+            print(n)
             if not (n.explode() or n.split(None)):
                 return n
 
@@ -50,9 +51,9 @@ class Number(list):
             for address in context:
                 if address.index == 1 - index:
 
-                    print(address.number[index], '.add', Address(address.number, index), n)
+                    #print(address.number[index], '.add', Address(address.number, index), n)
 
-                    address.number[index].addimpl(Address(address.number, index), n)
+                    address.number[index].addimpl(Address(address.number, index), n, 1 - index)
                     break
 
 
@@ -60,8 +61,8 @@ class Number(list):
         context[0].number[context[0].index] = self.zero
         return True
 
-    def addimpl(self, address, n):
-        self[1 - address.index].addimpl(Address(self, 1 - address.index), n)
+    def addimpl(self, address, n, target):
+        self[target].addimpl(Address(self, target), n, target)
 
     def split(self, address):
         return any(n.split(Address(self, i)) for i, n in enumerate(self))
@@ -78,10 +79,15 @@ def main():
         print(n)
         print()
 
+    #Number.xform(eval('[[[[4,3],4],4],[7,[[8,4],9]]]')).add(Number.xform(eval('[1,1]')))
+    #geregr
+
     n = Null()
     with Path('input', '18').open() as f:
         for line in f:
             n = n.add(Number.xform(eval(line)))
+            print(n)
+            print()
     print(n.magnitude())
 
 if '__main__' == __name__:
