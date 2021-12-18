@@ -1,12 +1,8 @@
 #!/usr/bin/env python3
 
 from collections import namedtuple
+from copy import deepcopy
 from pathlib import Path
-
-class Null:
-
-    def add(self, n):
-        return n
 
 class Address(namedtuple('BaseAddress', 'number index')): pass
 
@@ -38,10 +34,9 @@ class Number(list):
             return cls.Int(obj)
 
     def add(self, n):
-        n = type(self)([self, n])
-        while True:
-            if not (n.explode() or n.split(None)):
-                return n
+        self[:] = (type(self)(self), n) if self else n
+        while self.explode() or self.split(None):
+            pass
 
     def explode(self, *context):
         if 4 != len(context):
@@ -49,8 +44,14 @@ class Number(list):
         for index, n in enumerate(self):
             for address in context:
                 if address.index == 1 - index:
+
+                    #print(address.number[index], '.add', Address(address.number, index), n)
+
                     address.number[index].addimpl(Address(address.number, index), n, 1 - index)
                     break
+
+
+
         context[0].number[context[0].index] = self.zero
         return True
 
@@ -64,11 +65,17 @@ class Number(list):
         return 3 * self[0].magnitude() + 2 * self[1].magnitude()
 
 def main():
-    n = Null()
-    with Path('input', '18').open() as f:
-        for line in f:
-            n = n.add(Number.xform(eval(line)))
-    print(n.magnitude())
+    lines = Path('input', '18').read_text().splitlines()
+    def mags():
+        for a in lines:
+            for b in lines:
+                if a != b:
+                    m = Number.xform(eval(a))
+                    m.add(Number.xform(eval(b)))
+                    yield m.magnitude()
+
+
+    print(max(mags()))
 
 if '__main__' == __name__:
     main()
