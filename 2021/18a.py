@@ -5,6 +5,9 @@ from pathlib import Path
 
 class Address(namedtuple('BaseAddress', 'number index')):
 
+    def mirror(self):
+        return type(self)(self.number, 1 - self.index)
+
     def replace(self, n):
         self.number[self.index] = n
 
@@ -41,6 +44,10 @@ class Number(list):
         except TypeError:
             return Int(obj)
 
+    def _addresses(self):
+        for i in range(len(self)):
+            yield Address(self, i)
+
     def clone(self):
         return type(self)(n.clone() for n in self)
 
@@ -52,11 +59,11 @@ class Number(list):
 
     def explode(self, *context):
         if 4 != len(context):
-            return any(Address(self, i).explode(*context) for i, _ in enumerate(self))
+            return any(a.explode(*context) for a in self._addresses())
         for index, n in enumerate(self):
             for address in context:
                 if address.index == 1 - index:
-                    Address(address.number, index).addimpl(1 - index, n)
+                    address.mirror().addimpl(1 - index, n)
                     break
         context[0].replace(zero)
         return True
@@ -65,7 +72,7 @@ class Number(list):
         Address(self, index).addimpl(index, n)
 
     def split(self, address):
-        return any(Address(self, i).split() for i, _ in enumerate(self))
+        return any(a.split() for a in self._addresses())
 
     def magnitude(self):
         return sum(k * n.magnitude() for k, n in zip([3, 2], self))
