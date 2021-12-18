@@ -3,11 +3,6 @@
 from collections import namedtuple
 from pathlib import Path
 
-class Null:
-
-    def add(self, n):
-        return n
-
 class Address(namedtuple('BaseAddress', 'number index')): pass
 
 class Number(list):
@@ -38,11 +33,9 @@ class Number(list):
             return cls.Int(obj)
 
     def add(self, n):
-        n = type(self)([self, n])
-        while True:
-            print(n)
-            if not (n.explode() or n.split(None)):
-                return n
+        self[:] = (type(self)(self), n) if self else n
+        while self.explode() or self.split(None):
+            pass
 
     def explode(self, *context):
         if 4 != len(context):
@@ -71,21 +64,10 @@ class Number(list):
         return 3 * self[0].magnitude() + 2 * self[1].magnitude()
 
 def main():
-    if 0:
-      for n in '[[[[[9,8],1],2],3],4]','[7,[6,[5,[4,[3,2]]]]]','[[6,[5,[4,[3,2]]]],1]','[[3,[2,[1,[7,3]]]],[6,[5,[4,[3,2]]]]]','[[3,[2,[8,0]]],[9,[5,[4,[3,2]]]]]':
-        n=Number.xform(eval(n))
-        print(n)
-        n.explode()
-        print(n)
-        print()
-
-    #Number.xform(eval('[[[[4,3],4],4],[7,[[8,4],9]]]')).add(Number.xform(eval('[1,1]')))
-    #geregr
-
-    n = Null()
+    n = Number()
     with Path('input', '18').open() as f:
         for line in f:
-            n = n.add(Number.xform(eval(line)))
+            n.add(Number.xform(eval(line)))
             print(n)
             print()
     print(n.magnitude())
