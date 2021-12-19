@@ -53,7 +53,7 @@ def main():
     def distances():
         for i, s in enumerate(scanners):
             for t in scanners[i + 1:]:
-                yield sum(abs(x - y) for x, y in zip(s.loc, t.loc))
+                yield (s.loc - t.loc).manhattan()
     print(max(distances()))
 
 if '__main__' == __name__:

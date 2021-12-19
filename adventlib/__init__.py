@@ -61,6 +61,9 @@ class Vector(tuple):
     def maxhattan(self):
         return max(map(abs, self))
 
+    def manhattan(self):
+        return sum(map(abs, self))
+
     def diagonal(self):
         return sum(map(bool, self)) > 1
 
