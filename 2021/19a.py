@@ -46,12 +46,7 @@ def main():
                     oriented_.add(s)
                     break
         oriented |= oriented_
-    from collections import Counter
-    c = Counter()
-    for s in scanners:
-        for b in s.beacons:
-            c[b] += 1
-    print(len(c))
+    print(len({b for s in scanners for b in s.beacons}))
 
 if '__main__' == __name__:
     main()
