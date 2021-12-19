@@ -52,7 +52,6 @@ def main():
         oriented |= oriented_
     def distances():
         for i, s in enumerate(scanners):
-            print(s.loc)
             for t in scanners[i + 1:]:
                 yield sum(abs(x - y) for x, y in zip(s.loc, t.loc))
     print(max(distances()))
