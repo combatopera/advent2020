@@ -29,6 +29,7 @@ class Scanner:
                             break
                     assert {k: d[k] for k in keys} == {k: m(c[k]-co)+do for k in keys}
                     self.beacons = [m(b - co) + do for b in self.beacons]
+                    self.characters = [{tuple(sorted(map(abs, b - o))): b for b in self.beacons} for o in self.beacons]
                     return True
 
 def main():
