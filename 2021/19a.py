@@ -29,7 +29,13 @@ def main():
         toorient = [s for s in scanners if s not in oriented]
         if not toorient:
             break
-        oriented |= {s for s in toorient for t in oriented if s.reorient(t)}
+        oriented_ = oriented.copy()
+        for s in toorient:
+            for t in oriented:
+                if s.reorient(t):
+                    oriented_.add(s)
+                    break
+        oriented = oriented_
 
 if '__main__' == __name__:
     main()
