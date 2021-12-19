@@ -13,7 +13,7 @@ class Diagram:
         v = end - start
         if v.diagonal():
             return
-        v /= v.manhattan()
+        v /= v.maxhattan()
         x = start
         while True:
             self.points[x] += 1

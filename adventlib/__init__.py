@@ -58,7 +58,7 @@ class Vector(tuple):
     def __truediv__(self, n):
         return type(self)(x / n for x in self)
 
-    def manhattan(self):
+    def maxhattan(self):
         return max(map(abs, self))
 
     def diagonal(self):

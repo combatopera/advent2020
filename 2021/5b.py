@@ -11,7 +11,7 @@ class Diagram:
 
     def line(self, start, end):
         v = end - start
-        v /= v.manhattan()
+        v /= v.maxhattan()
         x = start
         while True:
             self.points[x] += 1
