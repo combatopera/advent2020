@@ -23,7 +23,6 @@ class Image:
                 borderpixels_add(q)
                 k = self.border
             n = (n << 1) + k
-        print(n)
         return n
 
     def apply(self, algo):
