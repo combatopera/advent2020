@@ -47,7 +47,6 @@ def main():
     algo = ['#' == c for c in algo]
     image = Image({Vector([x, y]): '#' == c for y, l in enumerate(lines) for x, c in enumerate(l)})
     for _ in range(50):
-        print(_)
         image.apply(algo)
     print(image.lit())
 
