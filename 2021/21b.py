@@ -22,18 +22,17 @@ class Player(dict):
 
 def main():
     players = [Player({State(int(l.split(':')[-1]), 0): 1}) for l in Path('input', '21').read_text().splitlines()]
-    while any(t.score < 21 for p in players for t in p):
+    while any(state.score < 21 for p in players for state in p):
         for p in players:
-            q = {}
-            for state, m in p.items():
+            items = list(p.items())
+            p.clear()
+            for state, m in items:
                 for state_, n in state.next():
                     n *= m
-                    if n < 21:
-                        q[state_] = n
+                    if state_.score < 21:
+                        p[state_] = n
                     else:
                         p.wins += n
-            p.clear()
-            p.update(q)
     print(max(p.wins for p in players))
 
 if '__main__' == __name__:
