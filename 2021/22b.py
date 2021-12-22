@@ -18,13 +18,15 @@ class Box:
 
     def sub(self, that):
         if self.x1 < that.x2 and that.x1 < self.x2 and self.y1 < that.y2 and that.y1 < self.y2 and self.z1 < that.z2 and that.z1 < self.z2:
-            w1 = type(self)(self.x1, self.x2, self.y1, self.y2, self.z1, that.z1)
-            w2 = type(self)(self.x1, self.x2, self.y1, self.y2, that.z2, self.z2)
-            u1 = type(self)(self.x1, that.x1, self.y1, self.y2, max(self.z1, that.z1), min(self.z2, that.z2))
-            u2 = type(self)(that.x2, self.x2, self.y1, self.y2, max(self.z1, that.z1), min(self.z2, that.z2))
-            v1 = type(self)(max(self.x1, that.x1), min(self.x2, that.x2), self.y1, that.y1, max(self.z1, that.z1), min(self.z2, that.z2))
-            v2 = type(self)(max(self.x1, that.x1), min(self.x2, that.x2), that.y2, self.y2, max(self.z1, that.z1), min(self.z2, that.z2))
-            for b in w1, w2, u1, u2, v1, v2:
+            def g():
+                yield self.x1, self.x2, self.y1, self.y2, self.z1, that.z1
+                yield self.x1, self.x2, self.y1, self.y2, that.z2, self.z2
+                yield self.x1, that.x1, self.y1, self.y2, max(self.z1, that.z1), min(self.z2, that.z2)
+                yield that.x2, self.x2, self.y1, self.y2, max(self.z1, that.z1), min(self.z2, that.z2)
+                yield max(self.x1, that.x1), min(self.x2, that.x2), self.y1, that.y1, max(self.z1, that.z1), min(self.z2, that.z2)
+                yield max(self.x1, that.x1), min(self.x2, that.x2), that.y2, self.y2, max(self.z1, that.z1), min(self.z2, that.z2)
+            for v in g():
+                b = type(self)(*v)
                 if b.valid():
                     yield b
         else:
