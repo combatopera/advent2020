@@ -42,11 +42,11 @@ class Reactor:
     def __init__(self):
         self.boxes = []
 
-    def apply(self, command, box):
+    def apply(self, ison, box):
         boxes = []
         for b in self.boxes:
             boxes.extend(b.sub(box))
-        if 'on' == command:
+        if ison:
             boxes.append(box)
         self.boxes[:] = boxes
 
@@ -56,8 +56,7 @@ def main():
         for i, l in enumerate(f):
             command, l = l.split()
             v = list(map(int, re.findall('-?[0-9]+', l)))
-            b = Box(v[0], v[1]+1, v[2], v[3]+1, v[4], v[5]+1)
-            r.apply(command, b)
+            r.apply('on' == command, Box(v[0], v[1]+1, v[2], v[3]+1, v[4], v[5]+1))
     print(sum(b.volume() for b in r.boxes))
 
 if '__main__' == __name__:
