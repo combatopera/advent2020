@@ -21,10 +21,12 @@ class Box:
             def g():
                 yield self.x1, self.x2, self.y1, self.y2, self.z1, that.z1
                 yield self.x1, self.x2, self.y1, self.y2, that.z2, self.z2
-                yield self.x1, that.x1, self.y1, self.y2, max(self.z1, that.z1), min(self.z2, that.z2)
-                yield that.x2, self.x2, self.y1, self.y2, max(self.z1, that.z1), min(self.z2, that.z2)
-                yield max(self.x1, that.x1), min(self.x2, that.x2), self.y1, that.y1, max(self.z1, that.z1), min(self.z2, that.z2)
-                yield max(self.x1, that.x1), min(self.x2, that.x2), that.y2, self.y2, max(self.z1, that.z1), min(self.z2, that.z2)
+                z = max(self.z1, that.z1), min(self.z2, that.z2)
+                yield [self.x1, that.x1, self.y1, self.y2, *z]
+                yield [that.x2, self.x2, self.y1, self.y2, *z]
+                x = max(self.x1, that.x1), min(self.x2, that.x2)
+                yield [*x, self.y1, that.y1, *z]
+                yield [*x, that.y2, self.y2, *z]
             for v in g():
                 b = type(self)(*v)
                 if b.valid():
