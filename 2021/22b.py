@@ -33,9 +33,6 @@ class Box:
     def volume(self):
         return (self.x2 - self.x1) * (self.y2 - self.y1) * (self.z2 - self.z1)
 
-    def __str__(self):
-        return ' '.join(map(str, [self.x1, self.x2-1, self.y1, self.y2-1, self.z1, self.z2-1]))
-
 class Reactor:
 
     def __init__(self):
