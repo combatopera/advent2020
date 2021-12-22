@@ -20,12 +20,12 @@ class Box:
         if self.x2 <= that.x1 or that.x2 <= self.x1 or self.y2 <= that.y1 or that.y2 <= self.y1 or self.z2 <= that.z1 or that.z2 <= self.z1:
             yield self
             return
-        w1 = type(self)(self.x1, self.x2, self.y1, self.y2, self.z1, min(self.z2, that.z1))
-        w2 = type(self)(self.x1, self.x2, self.y1, self.y2, max(self.z1, that.z2), self.z2)
-        u1 = type(self)(self.x1, min(self.x2, that.x1), self.y1, self.y2, max(self.z1, that.z1), min(self.z2, that.z2))
-        u2 = type(self)(max(self.x1, that.x2), self.x2, self.y1, self.y2, max(self.z1, that.z1), min(self.z2, that.z2))
-        v1 = type(self)(max(self.x1, that.x1), min(self.x2, that.x2), self.y1, min(self.y2, that.y1), max(self.z1, that.z1), min(self.z2, that.z2))
-        v2 = type(self)(max(self.x1, that.x1), min(self.x2, that.x2), max(self.y1, that.y2), self.y2, max(self.z1, that.z1), min(self.z2, that.z2))
+        w1 = type(self)(self.x1, self.x2, self.y1, self.y2, self.z1, that.z1)
+        w2 = type(self)(self.x1, self.x2, self.y1, self.y2, that.z2, self.z2)
+        u1 = type(self)(self.x1, that.x1, self.y1, self.y2, max(self.z1, that.z1), min(self.z2, that.z2))
+        u2 = type(self)(that.x2, self.x2, self.y1, self.y2, max(self.z1, that.z1), min(self.z2, that.z2))
+        v1 = type(self)(max(self.x1, that.x1), min(self.x2, that.x2), self.y1, that.y1, max(self.z1, that.z1), min(self.z2, that.z2))
+        v2 = type(self)(max(self.x1, that.x1), min(self.x2, that.x2), that.y2, self.y2, max(self.z1, that.z1), min(self.z2, that.z2))
         for b in w1, w2, u1, u2, v1, v2:
             if b.valid():
                 yield b
