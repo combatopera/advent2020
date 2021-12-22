@@ -3,6 +3,33 @@
 from pathlib import Path
 import re
 
+class Box:
+
+    def __init__(self, x1, x2, y1, y2, z1, z2):
+        self.x1 = x1
+        self.x2 = x2
+        self.y1 = y1
+        self.y2 = y2
+        self.z1 = z1
+        self.z2 = z2
+
+    def valid(self):
+        return self.x1 < self.x2 and self.y1 < self.y2 and self.z1 < self.z2
+
+    def sub(self, that):
+        w1 = type(self)(self.x1, self.x2, self.y1, self.y2, self.z1, min(self.z2, that.z1))
+        w2 = type(self)(self.x1, self.x2, self.y1, self.y2, max(self.z1, that.z2), self.z2)
+        u1 = type(self)(self.x1, min(self.x2, that.x1), self.y1, self.y2, max(self.z1, that.z1), min(self.z2, that.z2))
+        u2 = type(self)(max(self.x1, that.x2), self.x2, self.y1, self.y2, max(self.z1, that.z1), min(self.z2, that.z2))
+        v1 = type(self)(max(self.x1, that.x1), min(self.x2, that.x2), self.y1, min(self.y2, that.y1), max(self.z1, that.z1), min(self.z2, that.z2))
+        v2 = type(self)(max(self.x1, that.x1), min(self.x2, that.x2), max(self.y1, that.y2), self.y2, max(self.z1, that.z1), min(self.z2, that.z2))
+        for b in w1, w2, u1, u2, v1, v2:
+            if b.valid():
+                yield b
+
+    def __str__(self):
+        return ' '.join(map(str, [self.x1, self.x2-1, self.y1, self.y2-1, self.z1, self.z2-1]))
+
 class Command:
 
     def __init__(self, on, u, v):
@@ -12,46 +39,27 @@ class Command:
 
 class Reactor:
 
-    def __init__(self, xplanes, yplanes, zplanes):
-        self.on = set()
-        self.xplanes = {x: i for i, x in enumerate(sorted(xplanes))}
-        self.yplanes = {x: i for i, x in enumerate(sorted(yplanes))}
-        self.zplanes = {x: i for i, x in enumerate(sorted(zplanes))}
+    def __init__(self):
+        self.boxes = []
 
-    def apply(self, command):
-        x1 = self.xplanes[command.u[0]]
-        x2 = self.xplanes[command.v[0]+1]
-        y1 = self.yplanes[command.u[1]]
-        y2 = self.yplanes[command.v[1]+1]
-        z1 = self.zplanes[command.u[2]]
-        z2 = self.zplanes[command.v[2]+1]
-        for x in range(x1, x2):
-            for y in range(y1, y2):
-                for z in range(z1, z2):
-                    (self.on.add if command.on else self.on.discard)((x, y, z))
+    def apply(self, command, box):
+        boxes = []
+        for b in self.boxes:
+            boxes.extend(b.sub(box))
+        if 'on' == command:
+            boxes.append(box)
+        self.boxes[:] = boxes
 
 def main():
-    commands = []
+    r = Reactor()
     with Path('input', '22').open() as f:
         for l in f:
             command, l = l.split()
             v = list(map(int, re.findall('-?[0-9]+', l)))
-            commands.append(Command('on' == command, v[::2], v[1::2]))
-    xplanes = set()
-    yplanes = set()
-    zplanes = set()
-    for c in commands:
-        xplanes.add(c.u[0])
-        xplanes.add(c.v[0]+1)
-        yplanes.add(c.u[1])
-        yplanes.add(c.v[1]+1)
-        zplanes.add(c.u[2])
-        zplanes.add(c.v[2]+1)
-    r = Reactor(xplanes, yplanes, zplanes)
-    for c in commands:
-        print(c)
-        r.apply(c)
-        print(len(r.on))
+            b = Box(v[0], v[1]+1, v[2], v[3]+1, v[4], v[5]+1)
+            print(command,b)
+            r.apply(command, b)
+            print(len(r.boxes))
 
 if '__main__' == __name__:
     main()
