@@ -54,20 +54,21 @@ class Map(dict):
     def solved(self):
         return all(self[e] == c and self[e + down] == c for e, c in self.entrances.items())
 
-def _solutions(m):
-    print(m)
-    if m.solved():
-        yield m
+def _solutions(maps):
+    if maps[-1].solved():
+        yield maps[-1]
     else:
-        for path in m.moves():
-            yield from _solutions(m.apply(path))
+        for path in maps[-1].moves():
+            m = maps[-1].apply(path)
+            if m not in maps:
+                yield from _solutions([*maps, m])
 
 def main():
     m = Map()
     for y, l in enumerate(Path('input', '23').read_text().splitlines()):
         for x, c in enumerate(l):
             m[Vector([x, y])] = c
-    for s in _solutions(m):
+    for s in _solutions([m]):
         print(s)
 
 if '__main__' == __name__:
