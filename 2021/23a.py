@@ -8,6 +8,7 @@ down = Vector([0, 1])
 
 class Map(dict):
 
+    cost = 0
     hally = 1
     types = {c: None for c in 'ABCD'}
     entrances = {Vector([i * 2 + 3, y]): c for y, types in [(hally + 1, types)] for i, c in enumerate(types)}
@@ -44,8 +45,10 @@ class Map(dict):
 
     def apply(self, path):
         d = type(self)(self)
-        d[path[-1]] = d[path[0]]
+        c = d[path[0]]
         d[path[0]] = '.'
+        d[path[-1]] = c
+        d.cost = self.cost + 10 ** (ord(c) - ord('A')) * (len(path) - 1)
         return d
 
     def __str__(self):
@@ -69,7 +72,7 @@ def main():
         for x, c in enumerate(l):
             m[Vector([x, y])] = c
     for s in _solutions([m]):
-        print(s)
+        print(s.cost)
 
 if '__main__' == __name__:
     main()
