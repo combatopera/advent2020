@@ -26,6 +26,8 @@ class Map(dict):
                     qq = path[-1] + d
                     if '.' == self[qq]:
                         path = [*path, qq]
+                    elif self[qq] != c:
+                        continue
                 else:
                     qq = path[-1] + d
                     if '.' != self[qq]:
@@ -40,13 +42,33 @@ class Map(dict):
             if c in self.types:
                 yield from self._moves([p])
 
+    def apply(self, path):
+        d = type(self)(self)
+        d[path[-1]] = d[path[0]]
+        d[path[0]] = '.'
+        return d
+
+    def __str__(self):
+        return '\n'.join(''.join(self.get((x, y), ' ') for x in range(13)) for y in range(5))
+
+    def solved(self):
+        return all(self[e] == c and self[e + down] == c for e, c in self.entrances.items())
+
+def _solutions(m):
+    print(m)
+    if m.solved():
+        yield m
+    else:
+        for path in m.moves():
+            yield from _solutions(m.apply(path))
+
 def main():
     m = Map()
     for y, l in enumerate(Path('input', '23').read_text().splitlines()):
         for x, c in enumerate(l):
             m[Vector([x, y])] = c
-    for path in m.moves():
-        print(m[path[0]], path)
+    for s in _solutions(m):
+        print(s)
 
 if '__main__' == __name__:
     main()
