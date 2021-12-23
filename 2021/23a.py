@@ -8,22 +8,38 @@ down = Vector([0, 1])
 
 class Map(dict):
 
-    nostop = {(x, 1) for x in [3, 5, 7, 9]}
-    heavy = {(x, 2) for x, _ in nostop}
+    types = {c: None for c in 'ABCD'}
+    entrances = {Vector([i * 2 + 3, 2]): c for i, c in enumerate(types)}
+    nostop = {p - down for p in entrances}
 
     def _moves(self, inpath):
         for d in dirs:
             q = inpath[-1] + d
             if self.get(q) != '.' or q in inpath:
                 continue
+            c = self.entrances.get(q)
+            if c is not None:
+                if d == down:
+                    if c != self[inpath[0]]:
+                        continue
+                    qq = q + d
+                    if '.' == self[qq]:
+                        inpath = [*inpath, q]
+                        q = qq
+                else:
+                    qq = q + d
+                    if '.' != self[qq]:
+                        continue
+                    inpath = [*inpath, q]
+                    q = qq
             path = [*inpath, q]
-            if q not in self.nostop and (q not in self.heavy or self[q+down]!='.'):
+            if q not in self.nostop:
                 yield path
             yield from self._moves(path)
 
     def moves(self):
         for p, c in self.items():
-            if c not in {'.', '#'}:
+            if c in self.types:
                 yield from self._moves([p])
 
 def main():
