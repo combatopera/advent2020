@@ -34,13 +34,28 @@ def main():
     lines = Path('input', '24').read_text().splitlines()
     inps = [i for i, l in enumerate(lines) if l.split()[0] == 'inp']
     digits = [comp(str(k), lines[i:j]) for i, j, k in zip(inps, inps[1:]+[None], range(len(inps)))]
-    for d in digits:
+    accepts = {(len(inps), w): {0} for w in range(1, 10)}
+    for i, d in reversed(list(enumerate(digits))):
+        print(accepts)
         for w in range(1, 10):
-            for z in range(-1000, 1000):
+            accept = accepts[i+1, w]
+            accepts[i, w] = set()
+            z = 0
+            while True:
                 g = dict(w = w, z = z)
                 exec(d, g)
-                if not g['z']:
-                    print(d, w, z)
+                if g['z'] in accept:
+                    accepts[i, w].add(z)
+                    break
+                z += 1
+            z = -1
+            while True:
+                g = dict(w = w, z = z)
+                exec(d, g)
+                if g['z'] in accept:
+                    accepts[i, w].add(z)
+                    break
+                z -= 1
 
 if '__main__' == __name__:
     main()
