@@ -58,6 +58,9 @@ class Vector(tuple):
     def __truediv__(self, n):
         return type(self)(x / n for x in self)
 
+    def __mod__(self, that):
+        return type(self)(x % y for x, y in zip(self, that))
+
     def maxhattan(self):
         return max(map(abs, self))
 
