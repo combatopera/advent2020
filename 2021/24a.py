@@ -2,7 +2,7 @@
 
 from pathlib import Path
 
-class NeverMind(Exception): pass
+class Rejection(Exception): pass
 
 class Digit:
 
@@ -21,10 +21,11 @@ class Digit:
                 elif 'mul' == w:
                     yield f"{a} *= {b}"
                 elif 'div' == w:
-                    yield f"if {b} == 0: raise Exception"
-                    yield f"{a} = int({a} / {b})"
+                    yield f"if {a} < 0: raise Exception"
+                    yield f"if {b} <= 0: raise Exception"
+                    yield f"{a} //= {b}"
                 elif 'mod' == w:
-                    yield f"if {a} < 0: raise NeverMind"
+                    yield f"if {a} < 0: raise Rejection"
                     yield f"if {b} <= 0: raise Exception"
                     yield f"{a} %= {b}"
                 elif 'eql' == w:
@@ -35,11 +36,11 @@ class Digit:
         self.index = index
 
     def getz(self, z, w):
-        g = dict(NeverMind = NeverMind, z = z, w = w)
+        g = dict(Rejection = Rejection, z = z, w = w)
         try:
             exec(self.code, g)
             return g['z']
-        except NeverMind:
+        except Rejection:
             pass
 
 def main():
@@ -49,12 +50,12 @@ def main():
     nextztow = {0}
     for d in reversed(digits):
         ztow = {}
-        for z in range(-10000, 10000):
+        for z in range(-20000, 20000):
             for w in range(9, 0, -1):
                 if d.getz(z, w) in nextztow:
                     ztow[z] = w
+                    print(d.index, ztow)
                     break
-        print(d.index, ztow)
         nextztow = ztow
 
 if '__main__' == __name__:
