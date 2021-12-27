@@ -15,20 +15,20 @@ class Digit:
                     break
         def g():
             yield 'x = y = 0'
-            for s in instructions[1:]:
-                s = s.split()
-                assert 'inp' != s[0]
-                if 'add' == s[0]:
-                    yield f"{s[1]} += {s[2]}"
-                elif 'mul' == s[0]:
-                    yield f"{s[1]} *= {s[2]}"
-                elif 'div' == s[0]:
-                    yield f"{s[1]} = {s[1]} // {s[2]}"
-                elif 'mod' == s[0]:
-                    yield f"if {s[1]} < 0: raise NeverMind"
-                    yield f"{s[1]} %= {s[2]}"
-                elif 'eql' == s[0]:
-                    yield f"{s[1]} = {s[1]} == {s[2]}"
+            for w, a, b in (s.split() for s in instructions[1:]):
+                if 'add' == w:
+                    yield f"{a} += {b}"
+                elif 'mul' == w:
+                    yield f"{a} *= {b}"
+                elif 'div' == w:
+                    yield f"if {b} == 0: raise Exception"
+                    yield f"{a} = int({a} / {b})"
+                elif 'mod' == w:
+                    yield f"if {a} < 0: raise NeverMind"
+                    yield f"if {b} <= 0: raise Exception"
+                    yield f"{a} %= {b}"
+                elif 'eql' == w:
+                    yield f"{a} = {a} == {b}"
                 else:
                     raise Exception
         self.code = compile('\n'.join(g()), str(index), 'exec')
