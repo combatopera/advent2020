@@ -27,12 +27,6 @@ class Floor:
     def step(self):
         return self._step(self.east, Vector([1, 0])) + self._step(self.south, Vector([0, 1]))
 
-    def __str__(self):
-        def lines():
-            for y in range(self.size[1]):
-                yield ''.join('>' if (x, y) in self.east else ('v' if (x, y) in self.south else '.') for x in range(self.size[0]))
-        return '\n'.join(lines())
-
 def main():
     lines = Path('input', '25').read_text().splitlines()
     floor = Floor(len(lines[0]), len(lines))
@@ -41,12 +35,9 @@ def main():
             if '.' != c:
                 (floor.east if '>' == c else floor.south).add(Vector([x, y]))
     n = 1
-    while True:
-        m = floor.step()
-        if not m:
-            break
+    while floor.step():
         n += 1
-        print(m, n)
+    print(n)
 
 if '__main__' == __name__:
     main()
