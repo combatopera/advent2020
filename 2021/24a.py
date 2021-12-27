@@ -46,16 +46,16 @@ def main():
     lines = Path('input', '24').read_text().splitlines()
     inps = [i for i, l in enumerate(lines) if l.split()[0] == 'inp']
     digits = [Digit(k, lines[i:j]) for k, (i, j) in enumerate(zip(inps, [*inps[1:], None]))]
-    accepts = {len(inps): {0: None}}
+    nextztow = {0}
     for d in reversed(digits):
-        accept = accepts[d.index + 1]
-        accepts[d.index] = {}
+        ztow = {}
         for z in range(-10000, 10000):
-            for w in range(1, 10):
-                z_ = d.getz(z, w)
-                if z_ in accept:
-                    accepts[d.index][z] = w
-        print(d.index, accepts[d.index])
+            for w in range(9, 0, -1):
+                if d.getz(z, w) in nextztow:
+                    ztow[z] = w
+                    break
+        print(d.index, ztow)
+        nextztow = ztow
 
 if '__main__' == __name__:
     main()
