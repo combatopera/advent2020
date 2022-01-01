@@ -44,21 +44,29 @@ class Digit:
         except Rejection:
             pass
 
+def _candidates(nextzs):
+    for z in nextzs:
+        for c in range(-25, 22):
+            yield z + c
+        for c in range(26):
+            yield z * 26 + c
+
 def main():
     lines = Path('input', '24').read_text().splitlines()
     inps = [i for i, l in enumerate(lines) if l.split()[0] == 'inp']
     digits = [Digit(str(k), lines[i:j]) for k, (i, j) in enumerate(zip(inps, [*inps[1:], None]))]
     def g():
-        nextztow = {0}
+        nextzs = [0]
         for d in reversed(digits):
             ztow = {}
-            for z in range(-1000000, 1000000):
+            for z in set(_candidates(nextzs)):
                 for w in range(1, 10):
-                    if d.getz(z, w) in nextztow:
+                    if d.getz(z, w) in nextzs:
                         ztow[z] = w
                         break
+            print(ztow)
             yield ztow
-            nextztow = ztow
+            nextzs = ztow
     digittoztow = list(g())
     digittoztow.reverse()
     def h():
