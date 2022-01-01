@@ -64,7 +64,6 @@ def main():
                     if d.getz(z, w) in nextzs:
                         ztow[z] = w
                         break
-            print(ztow)
             yield ztow
             nextzs = ztow
     digittoztow = list(g())
