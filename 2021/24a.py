@@ -46,8 +46,6 @@ class Digit:
 
 def _candidates(nextzs):
     for z in nextzs:
-        for c in range(-1, 1):
-            yield z // 26 + c
         for c in range(-25, 22):
             yield z + c
         for c in range(26):
