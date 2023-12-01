@@ -1,6 +1,6 @@
+from adventlib import inpath
 from functools import reduce
 from itertools import islice
-from adventlib import inpath
 import operator, re
 
 ops = {'+': operator.add, '*': operator.mul}

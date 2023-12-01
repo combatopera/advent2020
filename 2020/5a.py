@@ -1,5 +1,4 @@
-from adventlib import SeatReader
-from adventlib import inpath
+from adventlib import inpath, SeatReader
 
 def main():
     with inpath().open() as f:

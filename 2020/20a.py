@@ -1,7 +1,6 @@
-from adventlib import readchunks
+from adventlib import inpath, readchunks
 from collections import defaultdict
 from functools import reduce
-from adventlib import inpath
 import operator, re
 
 def _normedge(e):

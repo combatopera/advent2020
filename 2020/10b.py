@@ -1,6 +1,5 @@
-from adventlib import differentiate
+from adventlib import differentiate, inpath
 from functools import lru_cache, reduce
-from adventlib import inpath
 import operator, re
 
 @lru_cache()

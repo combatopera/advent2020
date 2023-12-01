@@ -1,5 +1,5 @@
-from itertools import permutations
 from adventlib import inpath
+from itertools import permutations
 
 class Figure(frozenset):
 

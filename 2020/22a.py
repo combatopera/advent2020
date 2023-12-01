@@ -1,5 +1,4 @@
-from adventlib import readchunks
-from adventlib import inpath
+from adventlib import inpath, readchunks
 
 def consume(decks):
     while True:

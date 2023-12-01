@@ -1,5 +1,5 @@
-from collections import Counter, namedtuple
 from adventlib import inpath
+from collections import Counter, namedtuple
 
 winscore = 21
 die = Counter()

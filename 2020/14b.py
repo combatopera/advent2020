@@ -1,5 +1,5 @@
-from itertools import combinations
 from adventlib import inpath
+from itertools import combinations
 import re
 
 pattern = re.compile(r'(?:mask|mem\[([0-9]+)\]) = (.+)')

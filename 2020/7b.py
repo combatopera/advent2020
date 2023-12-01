@@ -1,5 +1,4 @@
-from adventlib import BagRule
-from adventlib import inpath
+from adventlib import BagRule, inpath
 
 def main():
     colortocontained = {}

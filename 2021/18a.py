@@ -1,5 +1,5 @@
-from collections import namedtuple
 from adventlib import inpath
+from collections import namedtuple
 
 class Address(namedtuple('BaseAddress', 'number index')):
 

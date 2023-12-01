@@ -1,5 +1,5 @@
-from collections import Counter
 from adventlib import inpath
+from collections import Counter
 
 def main():
     sums = Counter()

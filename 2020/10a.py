@@ -1,5 +1,4 @@
-from adventlib import differentiate
-from adventlib import inpath
+from adventlib import differentiate, inpath
 
 def main():
     with inpath().open() as f:

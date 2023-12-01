@@ -1,5 +1,4 @@
-from adventlib import readchunks, Vector
-from adventlib import inpath
+from adventlib import inpath, readchunks, Vector
 
 def _getmap(u, v):
     (a, i), = ([a, i] for i in range(3) for a in [-1, 1] if a * u[i] == v[0])

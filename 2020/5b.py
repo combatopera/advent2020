@@ -1,5 +1,4 @@
-from adventlib import answerof, SeatReader
-from adventlib import inpath
+from adventlib import answerof, inpath, SeatReader
 
 def main():
     s = answerof('5a')

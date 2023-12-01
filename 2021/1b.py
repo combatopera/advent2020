@@ -1,5 +1,5 @@
-from itertools import islice
 from adventlib import inpath
+from itertools import islice
 
 def main():
     v = list(map(int, inpath().read_text().splitlines()))

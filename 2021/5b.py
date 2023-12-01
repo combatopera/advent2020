@@ -1,6 +1,5 @@
-from adventlib import Vector
+from adventlib import inpath, Vector
 from collections import Counter
-from adventlib import inpath
 
 class Diagram:
 

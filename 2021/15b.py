@@ -1,7 +1,6 @@
-from adventlib import intcos, intsin, Vector
+from adventlib import inpath, intcos, intsin, Vector
 from collections import defaultdict
 from heapq import heappop, heappush
-from adventlib import inpath
 
 inf = float('inf')
 steps = [Vector([intcos(x), intsin(x)]) for x in range(4)]

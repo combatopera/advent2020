@@ -1,7 +1,6 @@
-from adventlib import BagRule
+from adventlib import inpath, BagRule
 from collections import defaultdict
 from itertools import chain
-from adventlib import inpath
 
 def main():
     colortocontainers = defaultdict(set)

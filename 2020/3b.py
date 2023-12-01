@@ -1,5 +1,5 @@
-from functools import reduce
 from adventlib import inpath
+from functools import reduce
 import operator
 
 slopes = (

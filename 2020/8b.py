@@ -1,5 +1,5 @@
-from adventlib.handheld import Computer, Program
 from adventlib import inpath
+from adventlib.handheld import Computer, Program
 
 def main():
     with inpath().open() as f:

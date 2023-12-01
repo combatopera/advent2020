@@ -1,7 +1,6 @@
-from adventlib import readchunks
+from adventlib import inpath, readchunks
 from collections import Counter
 from itertools import islice
-from adventlib import inpath
 
 class Template:
 

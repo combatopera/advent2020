@@ -1,5 +1,4 @@
-from adventlib import readchunks, Vector
-from adventlib import inpath
+from adventlib import inpath, readchunks, Vector
 
 tile = [Vector([x, y]) for y in range(-1, 2) for x in range(-1, 2)]
 infinity = Vector([float('inf')] * 2)

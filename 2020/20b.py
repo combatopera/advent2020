@@ -1,6 +1,5 @@
-from adventlib import readchunks
+from adventlib import inpath, readchunks
 from collections import defaultdict
-from adventlib import inpath
 
 top, right, bottom, left = range(4)
 tilesize = 10

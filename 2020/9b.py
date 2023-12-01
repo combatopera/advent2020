@@ -1,5 +1,4 @@
-from adventlib import answerof
-from adventlib import inpath
+from adventlib import answerof, inpath
 
 def main():
     target = answerof('9a')

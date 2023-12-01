@@ -1,6 +1,5 @@
-from adventlib import readchunks
+from adventlib import inpath, readchunks
 from itertools import islice
-from adventlib import inpath
 
 fields = None
 

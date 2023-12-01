@@ -1,6 +1,6 @@
+from adventlib import inpath
 from functools import reduce
 from operator import eq, gt, lt, mul
-from adventlib import inpath
 from types import SimpleNamespace
 
 literaltype = 4

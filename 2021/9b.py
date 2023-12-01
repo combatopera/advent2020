@@ -1,7 +1,6 @@
-from adventlib import intcos, intsin, Vector
+from adventlib import inpath, intcos, intsin, Vector
 from functools import reduce
 from operator import mul
-from adventlib import inpath
 
 class Grid(set):
 

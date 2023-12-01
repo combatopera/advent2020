@@ -1,5 +1,4 @@
-from adventlib import Vector
-from adventlib import inpath
+from adventlib import inpath, Vector
 
 class Floor:
 

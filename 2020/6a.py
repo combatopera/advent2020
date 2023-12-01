@@ -1,6 +1,5 @@
-from adventlib import readchunks
+from adventlib import inpath, readchunks
 from itertools import chain
-from adventlib import inpath
 
 def main():
     def counts():
