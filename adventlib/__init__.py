@@ -45,7 +45,8 @@ def answerof(taskname):
             else:
                 raise Exception
     capture = Capture()
-    exec(f"""{(_callerpath(inspect.stack()).parent / f"{taskname}.py").read_text()}main()""", dict(print = capture))
+    path = _callerpath(inspect.stack()).parent / f"{taskname}.py"
+    exec(f"{path.read_text()}main()", dict(print = capture, __file__ = str(path)))
     return capture.answer
 
 class BagRule:
