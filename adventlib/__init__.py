@@ -27,8 +27,11 @@ class SeatReader:
         for l in f:
             yield sum(f * self.xform[l[i]] for i, f in enumerate(self.factors))
 
+def _callerpath(stack):
+    return Path(stack[1].frame.f_globals['__file__'])
+
 def inpath():
-    path = Path(inspect.stack()[1].frame.f_globals['__file__'])
+    path = _callerpath(inspect.stack())
     return path.parent / 'input' / re.match('[0-9]+', path.name).group()
 
 def answerof(taskname):
@@ -42,7 +45,7 @@ def answerof(taskname):
             else:
                 raise Exception
     capture = Capture()
-    exec(f"""{(Path(inspect.stack()[1].frame.f_globals['__file__']).parent / f"{taskname}.py").read_text()}main()""", dict(print = capture))
+    exec(f"""{(_callerpath(inspect.stack()).parent / f"{taskname}.py").read_text()}main()""", dict(print = capture))
     return capture.answer
 
 class BagRule:
