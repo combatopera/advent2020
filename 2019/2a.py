@@ -1,5 +1,3 @@
-#!/usr/bin/env python3
-
 from pathlib import Path
 
 class Computer:
@@ -26,6 +24,3 @@ def main():
     program[2] = 2
     Computer(program).run()
     print(program[0])
-
-if '__main__' == __name__:
-    main()

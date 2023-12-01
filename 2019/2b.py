@@ -1,5 +1,3 @@
-#!/usr/bin/env python3
-
 from pathlib import Path
 
 class Computer:
@@ -31,6 +29,3 @@ def main():
             if 19690720 == p[0]:
                 print(100 * noun + verb)
                 return
-
-if '__main__' == __name__:
-    main()

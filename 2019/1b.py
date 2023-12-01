@@ -1,5 +1,3 @@
-#!/usr/bin/env python3
-
 from pathlib import Path
 
 def _fuel(mass):
@@ -11,6 +9,3 @@ def main():
     for mass in map(int, Path('input', '1').read_text().splitlines()):
         fuel += _fuel(mass)
     print(fuel)
-
-if '__main__' == __name__:
-    main()
