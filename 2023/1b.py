@@ -1,5 +1,3 @@
-#!/usr/bin/env python3
-
 from pathlib import Path
 import re
 
@@ -14,6 +12,3 @@ def main():
         for l in Path('input', '1').open():
             yield names[re.search(regexfirst, l).group(1)] * 10 + names[re.search(regexlast, l).group(1)]
     print(sum(g()))
-
-if '__main__' == __name__:
-    main()

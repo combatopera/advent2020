@@ -1,5 +1,3 @@
-#!/usr/bin/env python3
-
 from pathlib import Path
 import re
 
@@ -9,6 +7,3 @@ def main():
             digits = re.findall('[0-9]', l)
             yield int(''.join(digits[i] for i in [0, -1]))
     print(sum(g()))
-
-if '__main__' == __name__:
-    main()
