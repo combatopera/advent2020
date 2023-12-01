@@ -1,5 +1,5 @@
 from adventlib import readchunks
-from pathlib import Path
+from adventlib import inpath
 
 class Ref:
 
@@ -70,7 +70,7 @@ class Or(Rule):
 
 def main():
     rules = {}
-    with Path('input', '19').open() as f:
+    with inpath().open() as f:
         rulelines, messages = readchunks(f)
         for r in rulelines:
             i, text = r.split(': ')

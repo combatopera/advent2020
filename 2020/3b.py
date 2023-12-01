@@ -1,5 +1,5 @@
 from functools import reduce
-from pathlib import Path
+from adventlib import inpath
 import operator
 
 slopes = (
@@ -31,5 +31,5 @@ class Map:
             return trees
 
 def main():
-    m = Map(Path('input', '3').read_text().splitlines())
+    m = Map(inpath().read_text().splitlines())
     print(reduce(operator.mul, map(m.trees, slopes)))

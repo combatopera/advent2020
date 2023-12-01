@@ -1,8 +1,8 @@
 from adventlib import differentiate
-from pathlib import Path
+from adventlib import inpath
 
 def main():
-    with Path('input', '10').open() as f:
+    with inpath().open() as f:
         joltages = [int(l) for l in f]
     joltages.append(max(joltages) + 3)
     joltages.append(0)

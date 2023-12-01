@@ -1,9 +1,9 @@
-from pathlib import Path
+from adventlib import inpath
 
 target = 2020
 
 def main():
-    v = list(map(int, Path('input', '1').read_text().splitlines()))
+    v = list(map(int, inpath().read_text().splitlines()))
     v.sort()
     k = len(v) - 1
     while k >= 2:

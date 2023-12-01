@@ -1,4 +1,4 @@
-from pathlib import Path
+from adventlib import inpath
 
 slope = 3, 1
 
@@ -12,7 +12,7 @@ class Map:
         return '#' == self.rows[y][x % self.w]
 
 def main():
-    m = Map(Path('input', '3').read_text().splitlines())
+    m = Map(inpath().read_text().splitlines())
     xy = [0, 0]
     trees = 0
     try:

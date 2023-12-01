@@ -1,10 +1,10 @@
 from adventlib import readchunks
-from pathlib import Path
+from adventlib import inpath
 from string import ascii_lowercase
 
 def main():
     def counts():
-        with Path('input', '6').open() as f:
+        with inpath().open() as f:
             for group in readchunks(f):
                 conjunction = set(ascii_lowercase)
                 conjunction.intersection_update(*group)

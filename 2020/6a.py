@@ -1,10 +1,10 @@
 from adventlib import readchunks
 from itertools import chain
-from pathlib import Path
+from adventlib import inpath
 
 def main():
     def counts():
-        with Path('input', '6').open() as f:
+        with inpath().open() as f:
             for group in readchunks(f):
                 yield len(set(chain(*group)))
     print(sum(counts()))

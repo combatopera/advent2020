@@ -1,12 +1,12 @@
 from adventlib import readchunks
 from itertools import islice
-from pathlib import Path
+from adventlib import inpath
 
 fields = None
 
 def main():
     def badvals():
-        with Path('input', '16').open() as f:
+        with inpath().open() as f:
             for chunk in readchunks(f):
                 if 'your ticket:' == chunk[0]:
                     pass

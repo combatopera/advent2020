@@ -1,8 +1,8 @@
 from adventlib.handheld import Computer, Program
-from pathlib import Path
+from adventlib import inpath
 
 def main():
     c = Computer()
-    with Path('input', '8').open() as f:
+    with inpath().open() as f:
         c.exec(Program.load(f))
     print(c.accumulator)

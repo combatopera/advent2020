@@ -1,4 +1,4 @@
-from pathlib import Path
+from adventlib import inpath
 
 class Loop:
 
@@ -11,7 +11,7 @@ class Loop:
         self.value = self.value * self.subject % 20201227
 
 def main():
-    with Path('input', '25').open() as f:
+    with inpath().open() as f:
         publickeys = [int(l) for l in f]
     loop = Loop(7)
     size = 0

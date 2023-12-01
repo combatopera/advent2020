@@ -1,5 +1,5 @@
 from itertools import islice
-from pathlib import Path
+from adventlib import inpath
 
 width = 25
 
@@ -31,7 +31,7 @@ class Triangle:
         self.cursor = (self.cursor + 1) % len(self.rows)
 
 def main():
-    with Path('input', '9').open() as f:
+    with inpath().open() as f:
         values = [int(l) for l in f]
     t = Triangle(width)
     for i, x in enumerate(values):

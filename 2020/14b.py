@@ -1,12 +1,12 @@
 from itertools import combinations
-from pathlib import Path
+from adventlib import inpath
 import re
 
 pattern = re.compile(r'(?:mask|mem\[([0-9]+)\]) = (.+)')
 
 def main():
     memory = {}
-    with Path('input', '14').open() as f:
+    with inpath().open() as f:
         for l in f:
             addrstr, rhs = pattern.fullmatch(l.rstrip()).groups()
             if addrstr is None:

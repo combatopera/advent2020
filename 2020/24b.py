@@ -1,4 +1,4 @@
-from pathlib import Path
+from adventlib import inpath
 import re
 
 pattern = re.compile('[sn]?[ew]')
@@ -57,7 +57,7 @@ class Tile2(tuple):
 
 def main():
     black = set()
-    with Path('input', '24').open() as f:
+    with inpath().open() as f:
         for l in f:
             tile = Tile()
             for d in pattern.findall(l):

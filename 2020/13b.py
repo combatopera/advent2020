@@ -1,5 +1,5 @@
 from itertools import islice
-from pathlib import Path
+from adventlib import inpath
 
 class Bus:
 
@@ -8,7 +8,7 @@ class Bus:
         self.period = period
 
 def main():
-    with Path('input', '13').open() as f:
+    with inpath().open() as f:
         buses, = islice(f, 1, None)
     buses = [Bus(offset, int(period)) for offset, period in enumerate(buses.split(',')) if 'x' != period]
     # Chinese remainder theorem, search by sieving:

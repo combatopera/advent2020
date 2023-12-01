@@ -1,11 +1,11 @@
 from adventlib import BagRule
 from collections import defaultdict
 from itertools import chain
-from pathlib import Path
+from adventlib import inpath
 
 def main():
     colortocontainers = defaultdict(set)
-    with Path('input', '7').open() as f:
+    with inpath().open() as f:
         for r in BagRule.readmany(f):
             for c in r.rhs:
                 colortocontainers[c].add(r.lhs)

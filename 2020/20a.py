@@ -1,7 +1,7 @@
 from adventlib import readchunks
 from collections import defaultdict
 from functools import reduce
-from pathlib import Path
+from adventlib import inpath
 import operator, re
 
 def _normedge(e):
@@ -33,7 +33,7 @@ class Tile:
 
 def main():
     tiles = []
-    with Path('input', '20').open() as f:
+    with inpath().open() as f:
         for chunk in readchunks(f):
             tiles.append(Tile.parse(chunk))
     normedgetotiles = defaultdict(list)

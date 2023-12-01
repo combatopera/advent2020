@@ -1,8 +1,8 @@
 from adventlib.handheld import Computer, Program
-from pathlib import Path
+from adventlib import inpath
 
 def main():
-    with Path('input', '8').open() as f:
+    with inpath().open() as f:
         program = Program.load(f)
     c = Computer()
     subs = dict(jmp = 'nop', nop = 'jmp')

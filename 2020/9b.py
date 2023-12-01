@@ -1,9 +1,9 @@
 from adventlib import answerof
-from pathlib import Path
+from adventlib import inpath
 
 def main():
     target = answerof('9a')
-    with Path('input', '9').open() as f:
+    with inpath().open() as f:
         v = [int(l) for l in f]
     i = j = 1
     total = v[i]

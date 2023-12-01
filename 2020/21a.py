@@ -1,4 +1,4 @@
-from pathlib import Path
+from adventlib import inpath
 import re
 
 pattern = re.compile('(.+) [(]contains (.+)[)]\n')
@@ -20,7 +20,7 @@ def intersect(iterables):
 
 def main():
     foods = []
-    with Path('input', '21').open() as f:
+    with inpath().open() as f:
         for l in f:
             ingredients, allergens = pattern.fullmatch(l).groups()
             foods.append(Food(ingredients.split(' '), allergens.split(', ')))

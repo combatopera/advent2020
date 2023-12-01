@@ -1,12 +1,12 @@
 from functools import reduce
-from pathlib import Path
+from adventlib import inpath
 import operator
 
 def intceil(x, y):
     return -(x // -y)
 
 def main():
-    with Path('input', '13').open() as f:
+    with inpath().open() as f:
         seaport, buses = f
     seaport = int(seaport)
     buses = [int(b) for b in buses.split(',') if 'x' != b]

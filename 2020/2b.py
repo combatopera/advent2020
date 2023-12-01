@@ -1,10 +1,10 @@
-from pathlib import Path
+from adventlib import inpath
 import re
 
 pattern = re.compile('([0-9]+)-([0-9]+) (.): (.+)')
 
 def main():
-    v = [pattern.fullmatch(l).groups() for l in Path('input', '2').read_text().splitlines()]
+    v = [pattern.fullmatch(l).groups() for l in inpath().read_text().splitlines()]
     valid = 0
     for *positions, c, p in v:
         indices = [int(s) - 1 for s in positions]

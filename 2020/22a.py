@@ -1,5 +1,5 @@
 from adventlib import readchunks
-from pathlib import Path
+from adventlib import inpath
 
 def consume(decks):
     while True:
@@ -10,6 +10,6 @@ def consume(decks):
             return decks.index(cards[0][1])
 
 def main():
-    with Path('input', '22').open() as f:
+    with inpath().open() as f:
         decks = [[int(l) for l in chunk[1:]] for chunk in readchunks(f)]
     print(sum(c * (1 + i) for i, c in enumerate(reversed(decks[consume(decks)]))))

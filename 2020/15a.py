@@ -1,4 +1,4 @@
-from pathlib import Path
+from adventlib import inpath
 
 totalturns = 2020
 
@@ -6,7 +6,7 @@ def main():
     t1 = {}
     t2 = {}
     turn = 1
-    with Path('input', '15').open() as f:
+    with inpath().open() as f:
         for n in map(int, f.read().split(',')):
             t1[n] = t2.get(n)
             t2[n] = turn

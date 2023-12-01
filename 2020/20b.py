@@ -1,6 +1,6 @@
 from adventlib import readchunks
 from collections import defaultdict
-from pathlib import Path
+from adventlib import inpath
 
 top, right, bottom, left = range(4)
 tilesize = 10
@@ -90,7 +90,7 @@ nessie = BaseTile([
 ])
 
 def main():
-    with Path('input', '20').open() as f:
+    with inpath().open() as f:
         tiles = [Tile(chunk[1:]) for chunk in readchunks(f)]
     void = Void(tiles)
     solution = {}

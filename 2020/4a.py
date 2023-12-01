@@ -1,5 +1,5 @@
 from adventlib import readchunks
-from pathlib import Path
+from adventlib import inpath
 
 fields = {
     'byr',
@@ -13,7 +13,7 @@ fields = {
 
 def main():
     valid = 0
-    with Path('input', '4').open() as f:
+    with inpath().open() as f:
         for chunk in readchunks(f):
             p = {}
             for l in chunk:

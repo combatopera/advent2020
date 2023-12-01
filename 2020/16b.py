@@ -1,7 +1,7 @@
 from adventlib import readchunks
 from functools import reduce
 from itertools import islice
-from pathlib import Path
+from adventlib import inpath
 import operator
 
 fields = None
@@ -18,7 +18,7 @@ class Field:
 def main():
     oktickets = []
     if True:
-        with Path('input', '16').open() as f:
+        with inpath().open() as f:
             for chunk in readchunks(f):
                 if 'your ticket:' == chunk[0]:
                     myticket = [int(w) for w in chunk[1].split(',')]

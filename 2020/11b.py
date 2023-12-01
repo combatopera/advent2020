@@ -1,4 +1,4 @@
-from pathlib import Path
+from adventlib import inpath
 
 class Seats:
 
@@ -38,7 +38,7 @@ class Seats:
         return sum(1 for s in self.seats.values() if '#' == s)
 
 def main():
-    with Path('input', '11').open() as f:
+    with inpath().open() as f:
         seats = Seats(f)
     while seats.round():
         pass

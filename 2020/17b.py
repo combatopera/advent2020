@@ -1,4 +1,4 @@
-from pathlib import Path
+from adventlib import inpath
 
 kernel = [(x, y, z, w) for r in [range(-1, 2)] for x in r for y in r for z in r for w in r if x or y or z or w]
 
@@ -7,7 +7,7 @@ def vadd(u, v):
 
 def main():
     active = set()
-    with Path('input', '17').open() as f:
+    with inpath().open() as f:
         for y, l in enumerate(f):
             for x, c in enumerate(l.rstrip()):
                 if '#' == c:

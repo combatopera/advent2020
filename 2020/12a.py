@@ -1,4 +1,4 @@
-from pathlib import Path
+from adventlib import inpath
 
 class Turtle:
 
@@ -35,7 +35,7 @@ class Turtle:
 
 def main():
     t = Turtle()
-    with Path('input', '12').open() as f:
+    with inpath().open() as f:
         for l in f:
             getattr(t, l[0])(int(l[1:]))
     print(t.manhattan())

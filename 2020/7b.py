@@ -1,9 +1,9 @@
 from adventlib import BagRule
-from pathlib import Path
+from adventlib import inpath
 
 def main():
     colortocontained = {}
-    with Path('input', '7').open() as f:
+    with inpath().open() as f:
         for r in BagRule.readmany(f):
             colortocontained[r.lhs] = r.rhs
     def contains(color):

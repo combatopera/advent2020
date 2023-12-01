@@ -1,5 +1,5 @@
 from itertools import islice
-from pathlib import Path
+from adventlib import inpath
 import operator, re
 
 ops = {'+': operator.add, '*': operator.mul}
@@ -47,7 +47,7 @@ class Expr:
 
 def main():
     def g():
-        with Path('input', '18').open() as f:
+        with inpath().open() as f:
             for l in f:
                 yield Expr.parse(l).eval()
     print(sum(g()))
