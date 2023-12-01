@@ -1,4 +1,4 @@
-from pathlib import Path
+from adventlib import inpath
 
 class Pair:
 
@@ -29,7 +29,7 @@ def _score(line):
 
 def main():
     scores = []
-    with Path('input', '10').open() as f:
+    with inpath().open() as f:
         for line in f:
             s = _score(line.rstrip())
             if s is not None:

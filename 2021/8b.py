@@ -1,5 +1,5 @@
 from itertools import permutations
-from pathlib import Path
+from adventlib import inpath
 
 class Figure(frozenset):
 
@@ -52,7 +52,7 @@ figures = {f: digit for digit, f in enumerate(Figure.parse('''
 
 def main():
     n = 0
-    with Path('input', '8').open() as f:
+    with inpath().open() as f:
         for line in f:
             patterns, digits = (s.split() for s in line.split('|'))
             patch, = emptypatch.search(sorted(patterns, key = len), figures.keys())

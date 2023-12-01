@@ -1,7 +1,7 @@
 from adventlib import readchunks
 from collections import Counter
 from itertools import islice
-from pathlib import Path
+from adventlib import inpath
 
 class Template:
 
@@ -38,7 +38,7 @@ class Template:
         return (max(d.values()) - min(d.values())) // 2
 
 def main():
-    with Path('input', '14').open() as f:
+    with inpath().open() as f:
         (template,), rules = readchunks(f)
     template = Template.compile(template)
     rules = {x: y for x, _, y in (r.split() for r in rules)}

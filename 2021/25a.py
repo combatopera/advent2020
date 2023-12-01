@@ -1,5 +1,5 @@
 from adventlib import Vector
-from pathlib import Path
+from adventlib import inpath
 
 class Floor:
 
@@ -26,7 +26,7 @@ class Floor:
         return self._step(self.east, Vector([1, 0])) + self._step(self.south, Vector([0, 1]))
 
 def main():
-    lines = Path('input', '25').read_text().splitlines()
+    lines = inpath().read_text().splitlines()
     floor = Floor(len(lines[0]), len(lines))
     for y, l in enumerate(lines):
         for x, c in enumerate(l):

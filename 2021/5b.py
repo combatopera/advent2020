@@ -1,6 +1,6 @@
 from adventlib import Vector
 from collections import Counter
-from pathlib import Path
+from adventlib import inpath
 
 class Diagram:
 
@@ -19,7 +19,7 @@ class Diagram:
 
 def main():
     d = Diagram()
-    with Path('input', '5').open() as f:
+    with inpath().open() as f:
         for line in f:
             start, _, end = line.split()
             d.line(*(Vector(map(int, p.split(','))) for p in [start, end]))

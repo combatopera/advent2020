@@ -1,5 +1,5 @@
 from collections import Counter, namedtuple
-from pathlib import Path
+from adventlib import inpath
 
 winscore = 21
 die = Counter()
@@ -21,7 +21,7 @@ class Game(namedtuple('BaseGame', 'p1 s1 p2 s2')):
         return self[player * 2 + 1]
 
 def main():
-    p1, p2 = (int(l.split(':')[-1]) for l in Path('input', '21').read_text().splitlines())
+    p1, p2 = (int(l.split(':')[-1]) for l in inpath().read_text().splitlines())
     games = Counter({Game(p1, 0, p2, 0): 1})
     wins = [0, 0]
     while games:

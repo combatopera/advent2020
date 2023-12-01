@@ -1,6 +1,6 @@
 from functools import reduce
 from operator import eq, gt, lt, mul
-from pathlib import Path
+from adventlib import inpath
 from types import SimpleNamespace
 
 literaltype = 4
@@ -60,6 +60,6 @@ class Packet(SimpleNamespace):
         return self.payload if literaltype == self.type else self.ops[self.type](p.calc() for p in self.payload)
 
 def main():
-    text = Path('input', '16').read_text().rstrip()
+    text = inpath().read_text().rstrip()
     cursor = Cursor([(i >> b) & 1 for c in text for i in [int(c, 16)] for b in range(3, -1, -1)])
     print(cursor.packet().calc())

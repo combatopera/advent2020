@@ -1,4 +1,4 @@
-from pathlib import Path
+from adventlib import inpath
 
 def main():
     def rating(common):
@@ -10,5 +10,5 @@ def main():
             lines = [l for l in lines if l[i] == keep]
             if 1 == len(lines):
                 return int(lines[0], 2)
-    alllines = Path('input', '3').read_text().splitlines()
+    alllines = inpath().read_text().splitlines()
     print(rating(True) * rating(False))

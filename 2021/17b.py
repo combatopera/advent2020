@@ -1,4 +1,4 @@
-from pathlib import Path
+from adventlib import inpath
 import re
 
 class Probe:
@@ -39,5 +39,5 @@ class Target:
                 yield h
 
 def main():
-    t = Target(*map(int, re.findall('-?[0-9]+', Path('input', '17').read_text())))
+    t = Target(*map(int, re.findall('-?[0-9]+', inpath().read_text())))
     print(sum(1 for u in range(t.x2 + 1) for _ in t.heights(u)))

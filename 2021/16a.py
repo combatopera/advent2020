@@ -1,4 +1,4 @@
-from pathlib import Path
+from adventlib import inpath
 from types import SimpleNamespace
 
 literaltype = 4
@@ -51,6 +51,6 @@ class Packet(SimpleNamespace):
                 yield from p.versions()
 
 def main():
-    text = Path('input', '16').read_text().rstrip()
+    text = inpath().read_text().rstrip()
     cursor = Cursor([(i >> b) & 1 for c in text for i in [int(c, 16)] for b in range(3, -1, -1)])
     print(sum(cursor.packet().versions()))

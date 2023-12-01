@@ -1,5 +1,5 @@
 from collections import namedtuple
-from pathlib import Path
+from adventlib import inpath
 
 class Address(namedtuple('BaseAddress', 'number index')):
 
@@ -85,7 +85,7 @@ class Null:
 
 def main():
     n = Null()
-    with Path('input', '18').open() as f:
+    with inpath().open() as f:
         for line in f:
             n = n.add(Number.xform(eval(line)))
     print(n.magnitude())

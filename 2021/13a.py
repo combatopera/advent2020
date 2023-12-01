@@ -1,5 +1,5 @@
 from adventlib import readchunks
-from pathlib import Path
+from adventlib import inpath
 
 class Paper(set):
 
@@ -10,7 +10,7 @@ class Paper(set):
                 self.add(tuple(2 * n - x if a == i else x for i, x in enumerate(v)))
 
 def main():
-    with Path('input', '13').open() as f:
+    with inpath().open() as f:
         dots, folds = readchunks(f)
     paper = Paper(tuple(map(int, d.split(','))) for d in dots)
     for fold in folds[:1]:

@@ -1,7 +1,7 @@
 from adventlib import intcos, intsin, Vector
 from collections import defaultdict
 from heapq import heappop, heappush
-from pathlib import Path
+from adventlib import inpath
 
 inf = float('inf')
 steps = [Vector([intcos(x), intsin(x)]) for x in range(4)]
@@ -47,7 +47,7 @@ class State:
 
 def main():
     weights = {}
-    for y, line in enumerate(Path('input', '15').read_text().splitlines()):
+    for y, line in enumerate(inpath().read_text().splitlines()):
         for x, c in enumerate(line):
             weights[Vector([x, y])] = int(c)
     w = x + 1

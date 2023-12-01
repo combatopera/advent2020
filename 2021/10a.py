@@ -1,4 +1,4 @@
-from pathlib import Path
+from adventlib import inpath
 
 class Pair:
 
@@ -27,7 +27,7 @@ def _error(line):
 
 def main():
     e = 0
-    with Path('input', '10').open() as f:
+    with inpath().open() as f:
         for line in f:
             e += _error(line.rstrip())
     print(e)

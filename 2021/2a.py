@@ -1,4 +1,4 @@
-from pathlib import Path
+from adventlib import inpath
 
 class Pos:
 
@@ -15,7 +15,7 @@ class Pos:
 
 def main():
     p = Pos()
-    with Path('input', '2').open() as f:
+    with inpath().open() as f:
         for line in f:
             w, k = line.split()
             getattr(p, w)(int(k))

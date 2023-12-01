@@ -1,4 +1,4 @@
-from pathlib import Path
+from adventlib import inpath
 
 class Rejection(Exception): pass
 
@@ -50,7 +50,7 @@ def _candidates(nextzs):
             yield z * 26 + c
 
 def main():
-    lines = Path('input', '24').read_text().splitlines()
+    lines = inpath().read_text().splitlines()
     inps = [i for i, l in enumerate(lines) if l.split()[0] == 'inp']
     digits = [Digit(str(k), lines[i:j]) for k, (i, j) in enumerate(zip(inps, [*inps[1:], None]))]
     def g():

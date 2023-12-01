@@ -1,5 +1,5 @@
 from collections import namedtuple
-from pathlib import Path
+from adventlib import inpath
 
 class Address(namedtuple('BaseAddress', 'number index')):
 
@@ -79,5 +79,5 @@ class Number(list):
         return sum(k * n.magnitude() for k, n in zip([3, 2], self))
 
 def main():
-    numbers = [Number.xform(eval(l)) for l in Path('input', '18').read_text().splitlines()]
+    numbers = [Number.xform(eval(l)) for l in inpath().read_text().splitlines()]
     print(max(m.add(n).magnitude() for m in numbers for n in numbers if m is not n))

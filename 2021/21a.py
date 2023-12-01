@@ -1,4 +1,4 @@
-from pathlib import Path
+from adventlib import inpath
 
 class Die:
 
@@ -11,7 +11,7 @@ class Die:
         return self.last
 
 def main():
-    players = [int(l.split(':')[-1]) for l in Path('input', '21').read_text().splitlines()]
+    players = [int(l.split(':')[-1]) for l in inpath().read_text().splitlines()]
     scores = [0 for _ in players]
     d = Die()
     while True:

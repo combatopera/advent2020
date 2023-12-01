@@ -1,7 +1,7 @@
 from adventlib import intcos, intsin, Vector
 from functools import reduce
 from operator import mul
-from pathlib import Path
+from adventlib import inpath
 
 class Grid(set):
 
@@ -24,7 +24,7 @@ class Grid(set):
 
 def main():
     grid = Grid()
-    for y, line in enumerate(Path('input', '9').read_text().splitlines()):
+    for y, line in enumerate(inpath().read_text().splitlines()):
         for x, c in enumerate(line):
             if '9' != c:
                 grid.add(Vector([x, y]))

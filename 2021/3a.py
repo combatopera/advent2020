@@ -1,10 +1,10 @@
 from collections import Counter
-from pathlib import Path
+from adventlib import inpath
 
 def main():
     sums = Counter()
     n = 0
-    with Path('input', '3').open() as f:
+    with inpath().open() as f:
         for line in f:
             for i, c in enumerate(line.rstrip()):
                 sums[i] += ord(c)

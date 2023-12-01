@@ -1,8 +1,8 @@
 from itertools import islice
-from pathlib import Path
+from adventlib import inpath
 
 def main():
-    v = list(map(int, Path('input', '1').read_text().splitlines()))
+    v = list(map(int, inpath().read_text().splitlines()))
     w = sum(islice(v, 3))
     n = 0
     for x, y in zip(v, islice(v, 3, None)):

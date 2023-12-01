@@ -1,5 +1,5 @@
 from adventlib import readchunks
-from pathlib import Path
+from adventlib import inpath
 
 emptyset = set()
 
@@ -22,7 +22,7 @@ class Board:
             yield from r
 
 def main():
-    with Path('input', '4').open() as f:
+    with inpath().open() as f:
         i = readchunks(f)
         numbers, = ([int(n) for n in l.split(',')] for l in next(i))
         boards = [Board(lines) for lines in i]

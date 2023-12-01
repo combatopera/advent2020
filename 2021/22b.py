@@ -1,4 +1,4 @@
-from pathlib import Path
+from adventlib import inpath
 import re
 
 class Box:
@@ -50,7 +50,7 @@ class Reactor:
 
 def main():
     r = Reactor()
-    with Path('input', '22').open() as f:
+    with inpath().open() as f:
         for i, l in enumerate(f):
             command, l = l.split()
             v = list(map(int, re.findall('-?[0-9]+', l)))

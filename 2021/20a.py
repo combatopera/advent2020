@@ -1,5 +1,5 @@
 from adventlib import readchunks, Vector
-from pathlib import Path
+from adventlib import inpath
 
 tile = [Vector([x, y]) for y in range(-1, 2) for x in range(-1, 2)]
 infinity = Vector([float('inf')] * 2)
@@ -40,7 +40,7 @@ class Image:
         return sum(self.pixels.values())
 
 def main():
-    with Path('input', '20').open() as f:
+    with inpath().open() as f:
         (algo,), lines = readchunks(f)
     algo = ['#' == c for c in algo]
     image = Image({Vector([x, y]): '#' == c for y, l in enumerate(lines) for x, c in enumerate(l)})

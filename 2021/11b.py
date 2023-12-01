@@ -1,5 +1,5 @@
 from adventlib import Vector
-from pathlib import Path
+from adventlib import inpath
 
 class Grid(dict):
 
@@ -24,7 +24,7 @@ class Grid(dict):
 
 def main():
     grid = Grid()
-    for y, line in enumerate(Path('input', '11').read_text().splitlines()):
+    for y, line in enumerate(inpath().read_text().splitlines()):
         for x, c in enumerate(line):
             grid[Vector([x, y])] = int(c)
     s = 1

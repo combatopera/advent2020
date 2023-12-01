@@ -1,4 +1,4 @@
-from pathlib import Path
+from adventlib import inpath
 
 class Graph:
 
@@ -21,5 +21,5 @@ class Graph:
         yield from self._paths(['start'], {'start'})
 
 def main():
-    g = Graph([set(line.split('-')) for line in Path('input', '12').read_text().splitlines()])
+    g = Graph([set(line.split('-')) for line in inpath().read_text().splitlines()])
     print(sum(1 for _ in g.paths()))

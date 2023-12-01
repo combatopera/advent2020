@@ -1,5 +1,5 @@
 from adventlib import readchunks, Vector
-from pathlib import Path
+from adventlib import inpath
 
 def _getmap(u, v):
     (a, i), = ([a, i] for i in range(3) for a in [-1, 1] if a * u[i] == v[0])
@@ -30,7 +30,7 @@ class Scanner:
                     return True
 
 def main():
-    with Path('input', '19').open() as f:
+    with inpath().open() as f:
         scanners = [Scanner([Vector(map(int, p.split(','))) for p in chunk[1:]]) for chunk in readchunks(f)]
     oriented = {scanners[0]}
     while True:

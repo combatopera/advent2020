@@ -1,9 +1,9 @@
 from collections import Counter
-from pathlib import Path
+from adventlib import inpath
 
 def main():
     fish = Counter()
-    for timer in map(int, Path('input', '6').read_text().split(',')):
+    for timer in map(int, inpath().read_text().split(',')):
         fish[timer] += 1
     for _ in range(256):
         fish_ = Counter()

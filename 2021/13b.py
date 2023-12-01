@@ -1,5 +1,5 @@
 from adventlib import readchunks
-from pathlib import Path
+from adventlib import inpath
 
 class Paper(set):
 
@@ -15,7 +15,7 @@ class Paper(set):
             yield ''.join('#' if (x, y) in self else '.' for x in range(w))
 
 def main():
-    with Path('input', '13').open() as f:
+    with inpath().open() as f:
         dots, folds = readchunks(f)
     paper = Paper(tuple(map(int, d.split(','))) for d in dots)
     for fold in folds:
