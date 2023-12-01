@@ -1,4 +1,4 @@
-from pathlib import Path
+from adventlib import inpath
 import re
 
 names = {n: 1 + i for i, n in enumerate('one two three four five six seven eight nine'.split())}
@@ -9,6 +9,6 @@ for i in range(10):
 
 def main():
     def g():
-        for l in Path('input', '1').open():
+        for l in inpath().open():
             yield names[re.search(regexfirst, l).group(1)] * 10 + names[re.search(regexlast, l).group(1)]
     print(sum(g()))

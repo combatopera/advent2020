@@ -27,6 +27,10 @@ class SeatReader:
         for l in f:
             yield sum(f * self.xform[l[i]] for i, f in enumerate(self.factors))
 
+def inpath():
+    path = Path(inspect.stack()[1].frame.f_globals['__file__'])
+    return path.parent / 'input' / re.match('[0-9]+', path.name).group()
+
 def answerof(taskname):
     'Pretend we saved it.'
     class Capture:
