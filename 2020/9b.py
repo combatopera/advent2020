@@ -1,5 +1,3 @@
-#!/usr/bin/env python3
-
 from adventlib import answerof
 from pathlib import Path
 
@@ -19,6 +17,3 @@ def main():
         assert i <= j
     r = v[i:j + 1]
     print(min(r) + max(r))
-
-if '__main__' == __name__:
-    main()

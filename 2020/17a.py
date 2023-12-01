@@ -1,5 +1,3 @@
-#!/usr/bin/env python3
-
 from pathlib import Path
 
 kernel = [(x, y, z) for r in [range(-1, 2)] for x in r for y in r for z in r if x or y or z]
@@ -27,6 +25,3 @@ def main():
                 newactive.add(cube)
         active = newactive
     print(len(active))
-
-if '__main__' == __name__:
-    main()

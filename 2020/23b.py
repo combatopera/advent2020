@@ -1,5 +1,3 @@
-#!/usr/bin/env python3
-
 from itertools import chain, islice
 
 input = '538914762'
@@ -57,6 +55,3 @@ def main():
     for _ in range(10000000):
         cups.move()
     print(cups.report())
-
-if '__main__' == __name__:
-    main()

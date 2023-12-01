@@ -1,5 +1,3 @@
-#!/usr/bin/env python3
-
 from adventlib import readchunks
 from pathlib import Path
 import re
@@ -62,6 +60,3 @@ def main():
                 p.update(e.split(':') for e in l.split(' '))
             valid += all(f in p and rule(p[f]) for f, rule in rules.items())
     print(valid)
-
-if '__main__' == __name__:
-    main()

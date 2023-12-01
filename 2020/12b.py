@@ -1,5 +1,3 @@
-#!/usr/bin/env python3
-
 from pathlib import Path
 
 class Turtle:
@@ -46,6 +44,3 @@ def main():
         for l in f:
             getattr(t, l[0])(int(l[1:]))
     print(t.manhattan())
-
-if '__main__' == __name__:
-    main()

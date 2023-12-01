@@ -1,5 +1,3 @@
-#!/usr/bin/env python3
-
 from adventlib import readchunks
 from collections import defaultdict
 from functools import reduce
@@ -47,6 +45,3 @@ def main():
         if 1 == len(etiles):
             outertiles[etiles[0]] += 1
     print(reduce(operator.mul, (t.n for t, k in outertiles.items() if k == 2)))
-
-if '__main__' == __name__:
-    main()

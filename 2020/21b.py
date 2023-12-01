@@ -1,5 +1,3 @@
-#!/usr/bin/env python3
-
 from pathlib import Path
 import re
 
@@ -34,6 +32,3 @@ def main():
                 if 1 == len(intersection):
                     allergens[a], = intersection
     print(','.join(i for a, i in sorted(allergens.items())))
-
-if '__main__' == __name__:
-    main()

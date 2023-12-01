@@ -1,5 +1,3 @@
-#!/usr/bin/env python3
-
 from adventlib import readchunks
 from itertools import islice
 from pathlib import Path
@@ -25,6 +23,3 @@ def main():
                         ranges = ranges.split(' or ')
                         fields[name] = [range(min, max+1) for r in ranges for min, max in [map(int, r.split('-'))]]
     print(sum(badvals()))
-
-if '__main__' == __name__:
-    main()

@@ -1,5 +1,3 @@
-#!/usr/bin/env python3
-
 from adventlib.handheld import Computer, Program
 from pathlib import Path
 
@@ -13,6 +11,3 @@ def main():
         if sub is not None and c.exec(program.patched(index, sub)):
             break
     print(c.accumulator)
-
-if '__main__' == __name__:
-    main()

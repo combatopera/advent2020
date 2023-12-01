@@ -1,5 +1,3 @@
-#!/usr/bin/env python3
-
 from itertools import combinations
 from pathlib import Path
 import re
@@ -23,6 +21,3 @@ def main():
                     for n in map(sum, combinations(floats, size)):
                         memory[addr0 | n] = val
     print(sum(memory.values()))
-
-if '__main__' == __name__:
-    main()

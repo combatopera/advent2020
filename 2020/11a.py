@@ -1,5 +1,3 @@
-#!/usr/bin/env python3
-
 from pathlib import Path
 
 class Seats:
@@ -35,6 +33,3 @@ def main():
     while seats.round():
         pass
     print(seats.occupied())
-
-if '__main__' == __name__:
-    main()

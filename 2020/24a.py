@@ -1,5 +1,3 @@
-#!/usr/bin/env python3
-
 from pathlib import Path
 import re
 
@@ -45,6 +43,3 @@ def main():
                 getattr(tile, d)()
             tile.flip(black)
     print(len(black))
-
-if '__main__' == __name__:
-    main()

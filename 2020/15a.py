@@ -1,5 +1,3 @@
-#!/usr/bin/env python3
-
 from pathlib import Path
 
 totalturns = 2020
@@ -19,6 +17,3 @@ def main():
         t2[n] = turn
         turn += 1
     print(n)
-
-if '__main__' == __name__:
-    main()

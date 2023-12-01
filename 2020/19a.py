@@ -1,5 +1,3 @@
-#!/usr/bin/env python3
-
 from adventlib import readchunks
 from pathlib import Path
 
@@ -78,6 +76,3 @@ def main():
             i, text = r.split(': ')
             rules[int(i)] = Or.parse(rules, text)
         print(sum(1 for m in messages if rules[0].accept(m)))
-
-if '__main__' == __name__:
-    main()

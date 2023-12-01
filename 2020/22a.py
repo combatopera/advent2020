@@ -1,5 +1,3 @@
-#!/usr/bin/env python3
-
 from adventlib import readchunks
 from pathlib import Path
 
@@ -15,6 +13,3 @@ def main():
     with Path('input', '22').open() as f:
         decks = [[int(l) for l in chunk[1:]] for chunk in readchunks(f)]
     print(sum(c * (1 + i) for i, c in enumerate(reversed(decks[consume(decks)]))))
-
-if '__main__' == __name__:
-    main()

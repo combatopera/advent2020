@@ -1,5 +1,3 @@
-#!/usr/bin/env python3
-
 from adventlib import differentiate
 from pathlib import Path
 
@@ -11,6 +9,3 @@ def main():
     joltages.sort()
     diffs = differentiate(joltages)
     print(diffs.count(1) * diffs.count(3))
-
-if '__main__' == __name__:
-    main()

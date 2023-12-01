@@ -1,5 +1,3 @@
-#!/usr/bin/env python3
-
 from adventlib import readchunks
 from pathlib import Path
 
@@ -22,6 +20,3 @@ def main():
                 p.update(e.split(':') for e in l.split(' '))
             valid += fields <= p.keys()
     print(valid)
-
-if '__main__' == __name__:
-    main()

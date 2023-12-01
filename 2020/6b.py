@@ -1,5 +1,3 @@
-#!/usr/bin/env python3
-
 from adventlib import readchunks
 from pathlib import Path
 from string import ascii_lowercase
@@ -12,6 +10,3 @@ def main():
                 conjunction.intersection_update(*group)
                 yield len(conjunction)
     print(sum(counts()))
-
-if '__main__' == __name__:
-    main()

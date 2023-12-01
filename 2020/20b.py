@@ -1,5 +1,3 @@
-#!/usr/bin/env python3
-
 from adventlib import readchunks
 from collections import defaultdict
 from pathlib import Path
@@ -120,6 +118,3 @@ def main():
     for loc in locations:
         grid.delete(o, *loc)
     print(grid.hashes())
-
-if '__main__' == __name__:
-    main()

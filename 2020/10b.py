@@ -1,5 +1,3 @@
-#!/usr/bin/env python3
-
 from adventlib import differentiate
 from functools import lru_cache, reduce
 from pathlib import Path
@@ -26,6 +24,3 @@ def main():
     diffs = differentiate(joltages)
     assert 2 not in diffs # Convenient!
     print(reduce(operator.mul, (len(runarrangements(len(run) - 1)) for run in re.findall('1+', ''.join(map(str, diffs))))))
-
-if '__main__' == __name__:
-    main()

@@ -1,5 +1,3 @@
-#!/usr/bin/env python3
-
 from adventlib import answerof, SeatReader
 from pathlib import Path
 
@@ -10,6 +8,3 @@ def main():
     while s in taken:
         s -= 1
     print(s)
-
-if '__main__' == __name__:
-    main()

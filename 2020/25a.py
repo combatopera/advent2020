@@ -1,5 +1,3 @@
-#!/usr/bin/env python3
-
 from pathlib import Path
 
 class Loop:
@@ -24,6 +22,3 @@ def main():
     for _ in range(size):
         loop.step()
     print(loop.value)
-
-if '__main__' == __name__:
-    main()

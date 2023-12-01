@@ -1,5 +1,3 @@
-#!/usr/bin/env python3
-
 from pathlib import Path
 
 slope = 3, 1
@@ -24,6 +22,3 @@ def main():
             trees += m.tree(*xy)
     except IndexError:
         print(trees)
-
-if '__main__' == __name__:
-    main()

@@ -1,5 +1,3 @@
-#!/usr/bin/env python3
-
 from itertools import islice
 from pathlib import Path
 import operator, re
@@ -53,6 +51,3 @@ def main():
             for l in f:
                 yield Expr.parse(l).eval()
     print(sum(g()))
-
-if '__main__' == __name__:
-    main()

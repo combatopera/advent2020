@@ -1,5 +1,3 @@
-#!/usr/bin/env python3
-
 from pathlib import Path
 import re
 
@@ -12,6 +10,3 @@ def main():
         indices = [int(s) - 1 for s in positions]
         valid += 1 == sum(p[i] == c for i in indices)
     print(valid)
-
-if '__main__' == __name__:
-    main()

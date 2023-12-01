@@ -1,5 +1,3 @@
-#!/usr/bin/env python3
-
 from pathlib import Path
 
 target = 2020
@@ -17,6 +15,3 @@ def main():
             i += 1
         else:
             j -= 1
-
-if '__main__' == __name__:
-    main()

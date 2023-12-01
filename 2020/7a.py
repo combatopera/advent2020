@@ -1,5 +1,3 @@
-#!/usr/bin/env python3
-
 from adventlib import BagRule
 from collections import defaultdict
 from itertools import chain
@@ -17,6 +15,3 @@ def main():
         containers.update(nextcontainers)
         nextcontainers = set(chain(*(colortocontainers[c] for c in nextcontainers)))
     print(len(containers))
-
-if '__main__' == __name__:
-    main()

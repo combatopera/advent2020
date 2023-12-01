@@ -1,5 +1,3 @@
-#!/usr/bin/env python3
-
 from pathlib import Path
 import re
 
@@ -13,6 +11,3 @@ def main():
         k = p.count(c)
         valid += m <= k and k <= n
     print(valid)
-
-if '__main__' == __name__:
-    main()

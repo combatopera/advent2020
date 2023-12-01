@@ -1,5 +1,3 @@
-#!/usr/bin/env python3
-
 from adventlib import BagRule
 from pathlib import Path
 
@@ -11,6 +9,3 @@ def main():
     def contains(color):
         return sum(n * (1 + contains(c)) for c, n in colortocontained[color].items())
     print(contains('shiny gold'))
-
-if '__main__' == __name__:
-    main()

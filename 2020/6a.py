@@ -1,5 +1,3 @@
-#!/usr/bin/env python3
-
 from adventlib import readchunks
 from itertools import chain
 from pathlib import Path
@@ -10,6 +8,3 @@ def main():
             for group in readchunks(f):
                 yield len(set(chain(*group)))
     print(sum(counts()))
-
-if '__main__' == __name__:
-    main()

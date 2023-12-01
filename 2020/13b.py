@@ -1,5 +1,3 @@
-#!/usr/bin/env python3
-
 from itertools import islice
 from pathlib import Path
 
@@ -21,6 +19,3 @@ def main():
             timestamp += prevperiods
         prevperiods *= b.period
     print(timestamp)
-
-if '__main__' == __name__:
-    main()

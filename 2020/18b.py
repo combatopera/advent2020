@@ -1,5 +1,3 @@
-#!/usr/bin/env python3
-
 from functools import reduce
 from itertools import islice
 from pathlib import Path
@@ -66,6 +64,3 @@ def main():
             for l in f:
                 yield Expr.parse(l).eval()
     print(sum(g()))
-
-if '__main__' == __name__:
-    main()

@@ -1,5 +1,3 @@
-#!/usr/bin/env python3
-
 from functools import reduce
 from pathlib import Path
 import operator
@@ -35,6 +33,3 @@ class Map:
 def main():
     m = Map(Path('input', '3').read_text().splitlines())
     print(reduce(operator.mul, map(m.trees, slopes)))
-
-if '__main__' == __name__:
-    main()

@@ -1,5 +1,3 @@
-#!/usr/bin/env python3
-
 from adventlib import readchunks
 from functools import reduce
 from itertools import islice
@@ -52,6 +50,3 @@ def main():
         for s in indexsets.values():
             s.difference_update(indexes.values())
     print(reduce(operator.mul, (myticket[indexes[f]] for f in fields if f.name.startswith('departure'))))
-
-if '__main__' == __name__:
-    main()

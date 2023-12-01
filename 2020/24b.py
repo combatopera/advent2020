@@ -1,5 +1,3 @@
-#!/usr/bin/env python3
-
 from pathlib import Path
 import re
 
@@ -71,6 +69,3 @@ def main():
         newblack.update(t for t in candidates if t.vivify(black))
         black = newblack
     print(len(black))
-
-if '__main__' == __name__:
-    main()
