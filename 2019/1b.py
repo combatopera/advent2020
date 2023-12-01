@@ -1,4 +1,4 @@
-from pathlib import Path
+from adventlib import inpath
 
 def _fuel(mass):
     f = mass // 3 - 2
@@ -6,6 +6,6 @@ def _fuel(mass):
 
 def main():
     fuel = 0
-    for mass in map(int, Path('input', '1').read_text().splitlines()):
+    for mass in map(int, inpath().read_text().splitlines()):
         fuel += _fuel(mass)
     print(fuel)

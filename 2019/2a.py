@@ -1,4 +1,4 @@
-from pathlib import Path
+from adventlib import inpath
 
 class Computer:
 
@@ -19,7 +19,7 @@ class Computer:
             self.cursor += 4
 
 def main():
-    program = [int(s) for s in Path('input', '2').read_text().split(',')]
+    program = [int(s) for s in inpath().read_text().split(',')]
     program[1] = 12
     program[2] = 2
     Computer(program).run()
