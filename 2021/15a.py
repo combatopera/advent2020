@@ -1,5 +1,3 @@
-#!/usr/bin/env python3
-
 from adventlib import intcos, intsin, Vector
 from collections import defaultdict
 from heapq import heappop, heappush
@@ -58,6 +56,3 @@ def main():
     while cursor != target:
         cursor = state.update(cursor)
     print(state.costs[target])
-
-if '__main__' == __name__:
-    main()

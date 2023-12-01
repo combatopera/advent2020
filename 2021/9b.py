@@ -1,5 +1,3 @@
-#!/usr/bin/env python3
-
 from adventlib import intcos, intsin, Vector
 from functools import reduce
 from operator import mul
@@ -35,6 +33,3 @@ def main():
         basins.append(grid.takebasin())
     basins.sort()
     print(reduce(mul, basins[-3:]))
-
-if '__main__' == __name__:
-    main()

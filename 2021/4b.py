@@ -1,5 +1,3 @@
-#!/usr/bin/env python3
-
 from adventlib import readchunks
 from pathlib import Path
 
@@ -37,6 +35,3 @@ def main():
             print(sum(b.unmarked()) * n)
             break
         boards = boards_
-
-if '__main__' == __name__:
-    main()

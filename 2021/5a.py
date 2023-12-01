@@ -1,5 +1,3 @@
-#!/usr/bin/env python3
-
 from adventlib import Vector
 from collections import Counter
 from pathlib import Path
@@ -28,6 +26,3 @@ def main():
             start, _, end = line.split()
             d.line(*(Vector(map(int, p.split(','))) for p in [start, end]))
     print(sum(1 for n in d.points.values() if n >= 2))
-
-if '__main__' == __name__:
-    main()

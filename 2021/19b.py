@@ -1,5 +1,3 @@
-#!/usr/bin/env python3
-
 from adventlib import readchunks, Vector
 from pathlib import Path
 
@@ -55,6 +53,3 @@ def main():
             for t in scanners[i + 1:]:
                 yield (s.loc - t.loc).manhattan()
     print(max(distances()))
-
-if '__main__' == __name__:
-    main()

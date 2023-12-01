@@ -1,5 +1,3 @@
-#!/usr/bin/env python3
-
 from pathlib import Path
 
 def _cost(n):
@@ -11,6 +9,3 @@ def main():
         for target in range(min(positions), max(positions)+1):
             yield sum(_cost(abs(p-target)) for p in positions)
     print(min(fuels()))
-
-if '__main__' == __name__:
-    main()

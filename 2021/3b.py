@@ -1,5 +1,3 @@
-#!/usr/bin/env python3
-
 from pathlib import Path
 
 def main():
@@ -14,6 +12,3 @@ def main():
                 return int(lines[0], 2)
     alllines = Path('input', '3').read_text().splitlines()
     print(rating(True) * rating(False))
-
-if '__main__' == __name__:
-    main()

@@ -1,5 +1,3 @@
-#!/usr/bin/env python3
-
 from pathlib import Path
 import re
 
@@ -58,6 +56,3 @@ def main():
             v = list(map(int, re.findall('-?[0-9]+', l)))
             r.apply('on' == command, Box(v[0], v[1]+1, v[2], v[3]+1, v[4], v[5]+1))
     print(sum(b.volume() for b in r.boxes))
-
-if '__main__' == __name__:
-    main()

@@ -1,5 +1,3 @@
-#!/usr/bin/env python3
-
 from adventlib import intcos, intsin, Vector
 from pathlib import Path
 
@@ -25,6 +23,3 @@ def main():
         for x, c in enumerate(line):
             grid[Vector([x, y])] = int(c)
     print(sum(1 + n for n in grid.lowpoints()))
-
-if '__main__' == __name__:
-    main()

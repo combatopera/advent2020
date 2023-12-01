@@ -1,5 +1,3 @@
-#!/usr/bin/env python3
-
 from adventlib import readchunks, Vector
 from pathlib import Path
 
@@ -49,6 +47,3 @@ def main():
     for _ in range(2):
         image.apply(algo)
     print(image.lit())
-
-if '__main__' == __name__:
-    main()

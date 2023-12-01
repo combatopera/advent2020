@@ -1,5 +1,3 @@
-#!/usr/bin/env python3
-
 from pathlib import Path
 import re
 
@@ -25,6 +23,3 @@ def main():
             v = list(map(int, re.findall('-?[0-9]+', l)))
             r.do(command, v[::2], v[1::2])
     print(len(r.on))
-
-if '__main__' == __name__:
-    main()

@@ -1,5 +1,3 @@
-#!/usr/bin/env python3
-
 from adventlib import readchunks
 from collections import Counter
 from itertools import islice
@@ -30,6 +28,3 @@ def main():
     for _ in range(10):
         template = Template(list(template.insert(rules)))
     print(template.answer())
-
-if '__main__' == __name__:
-    main()

@@ -1,5 +1,3 @@
-#!/usr/bin/env python3
-
 from itertools import permutations
 from pathlib import Path
 
@@ -60,6 +58,3 @@ def main():
             patch, = emptypatch.search(sorted(patterns, key = len), figures.keys())
             n += patch.decode(digits)
     print(n)
-
-if '__main__' == __name__:
-    main()

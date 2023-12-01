@@ -1,5 +1,3 @@
-#!/usr/bin/env python3
-
 from pathlib import Path
 from types import SimpleNamespace
 
@@ -56,6 +54,3 @@ def main():
     text = Path('input', '16').read_text().rstrip()
     cursor = Cursor([(i >> b) & 1 for c in text for i in [int(c, 16)] for b in range(3, -1, -1)])
     print(sum(cursor.packet().versions()))
-
-if '__main__' == __name__:
-    main()

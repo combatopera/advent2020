@@ -1,5 +1,3 @@
-#!/usr/bin/env python3
-
 from pathlib import Path
 
 class Pair:
@@ -38,6 +36,3 @@ def main():
                 scores.append(s)
     scores.sort()
     print(scores[len(scores) // 2])
-
-if '__main__' == __name__:
-    main()

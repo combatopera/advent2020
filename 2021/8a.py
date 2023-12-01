@@ -1,5 +1,3 @@
-#!/usr/bin/env python3
-
 from pathlib import Path
 
 def main():
@@ -10,6 +8,3 @@ def main():
             for d in digits:
                 n += len(d) in {2, 4, 3, 7}
     print(n)
-
-if '__main__' == __name__:
-    main()

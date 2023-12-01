@@ -1,5 +1,3 @@
-#!/usr/bin/env python3
-
 from pathlib import Path
 
 class Graph:
@@ -27,6 +25,3 @@ class Graph:
 def main():
     g = Graph([set(line.split('-')) for line in Path('input', '12').read_text().splitlines()])
     print(sum(1 for _ in g.paths()))
-
-if '__main__' == __name__:
-    main()

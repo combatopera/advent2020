@@ -1,5 +1,3 @@
-#!/usr/bin/env python3
-
 from itertools import islice
 from pathlib import Path
 
@@ -12,6 +10,3 @@ def main():
         n += w < w_
         w = w_
     print(n)
-
-if '__main__' == __name__:
-    main()

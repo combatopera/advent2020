@@ -1,5 +1,3 @@
-#!/usr/bin/env python3
-
 from pathlib import Path
 
 class Rejection(Exception): pass
@@ -75,6 +73,3 @@ def main():
             yield w
             z = d.getz(z, w)
     print(''.join(map(str, h())))
-
-if '__main__' == __name__:
-    main()

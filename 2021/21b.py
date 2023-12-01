@@ -1,5 +1,3 @@
-#!/usr/bin/env python3
-
 from collections import Counter, namedtuple
 from pathlib import Path
 
@@ -38,6 +36,3 @@ def main():
                     else:
                         games[g] += n
     print(max(wins))
-
-if '__main__' == __name__:
-    main()

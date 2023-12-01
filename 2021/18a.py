@@ -1,5 +1,3 @@
-#!/usr/bin/env python3
-
 from collections import namedtuple
 from pathlib import Path
 
@@ -91,6 +89,3 @@ def main():
         for line in f:
             n = n.add(Number.xform(eval(line)))
     print(n.magnitude())
-
-if '__main__' == __name__:
-    main()

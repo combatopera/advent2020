@@ -1,5 +1,3 @@
-#!/usr/bin/env python3
-
 from adventlib import Vector
 from pathlib import Path
 
@@ -38,6 +36,3 @@ def main():
     while floor.step():
         n += 1
     print(n)
-
-if '__main__' == __name__:
-    main()

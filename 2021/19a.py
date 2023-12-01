@@ -1,5 +1,3 @@
-#!/usr/bin/env python3
-
 from adventlib import readchunks, Vector
 from pathlib import Path
 
@@ -47,6 +45,3 @@ def main():
                     break
         oriented |= oriented_
     print(len({b for s in scanners for b in s.beacons}))
-
-if '__main__' == __name__:
-    main()

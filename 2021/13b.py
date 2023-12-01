@@ -1,5 +1,3 @@
-#!/usr/bin/env python3
-
 from adventlib import readchunks
 from pathlib import Path
 
@@ -25,6 +23,3 @@ def main():
         paper.fold(0 if 'x' == axis[-1] else 1, int(n))
     for line in paper.lines():
         print(line)
-
-if '__main__' == __name__:
-    main()

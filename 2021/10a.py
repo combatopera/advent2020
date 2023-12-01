@@ -1,5 +1,3 @@
-#!/usr/bin/env python3
-
 from pathlib import Path
 
 class Pair:
@@ -33,6 +31,3 @@ def main():
         for line in f:
             e += _error(line.rstrip())
     print(e)
-
-if '__main__' == __name__:
-    main()

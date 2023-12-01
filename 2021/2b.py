@@ -1,5 +1,3 @@
-#!/usr/bin/env python3
-
 from pathlib import Path
 
 class Pos:
@@ -23,6 +21,3 @@ def main():
             w, k = line.split()
             getattr(p, w)(int(k))
     print(p.h * p.d)
-
-if '__main__' == __name__:
-    main()

@@ -1,5 +1,3 @@
-#!/usr/bin/env python3
-
 from adventlib import Vector
 from pathlib import Path
 
@@ -30,6 +28,3 @@ def main():
         for x, c in enumerate(line):
             grid[Vector([x, y])] = int(c)
     print(sum(grid.step() for _ in range(100)))
-
-if '__main__' == __name__:
-    main()

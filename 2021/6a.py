@@ -1,5 +1,3 @@
-#!/usr/bin/env python3
-
 from collections import Counter
 from pathlib import Path
 
@@ -17,6 +15,3 @@ def main():
                 fish_[8] += n
         fish = fish_
     print(sum(fish.values()))
-
-if '__main__' == __name__:
-    main()

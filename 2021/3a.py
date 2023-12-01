@@ -1,5 +1,3 @@
-#!/usr/bin/env python3
-
 from collections import Counter
 from pathlib import Path
 
@@ -15,6 +13,3 @@ def main():
     g = sum((x > threshold) * (1 << (len(sums) - i - 1)) for i, x in sums.items())
     e = sum((x < threshold) * (1 << (len(sums) - i - 1)) for i, x in sums.items())
     print(g * e)
-
-if '__main__' == __name__:
-    main()

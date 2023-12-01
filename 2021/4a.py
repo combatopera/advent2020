@@ -1,5 +1,3 @@
-#!/usr/bin/env python3
-
 from adventlib import readchunks
 from pathlib import Path
 
@@ -33,6 +31,3 @@ def main():
             if b.fire(n):
                 print(sum(b.unmarked()) * n)
                 return
-
-if '__main__' == __name__:
-    main()

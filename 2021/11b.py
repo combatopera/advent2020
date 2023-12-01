@@ -1,5 +1,3 @@
-#!/usr/bin/env python3
-
 from adventlib import Vector
 from pathlib import Path
 
@@ -35,6 +33,3 @@ def main():
             print(s)
             break
         s += 1
-
-if '__main__' == __name__:
-    main()

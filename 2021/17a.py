@@ -1,5 +1,3 @@
-#!/usr/bin/env python3
-
 from pathlib import Path
 import re
 
@@ -43,6 +41,3 @@ class Target:
 def main():
     t = Target(*map(int, re.findall('-?[0-9]+', Path('input', '17').read_text())))
     print(max(h for u in range(t.x2 + 1) for h in t.heights(u)))
-
-if '__main__' == __name__:
-    main()

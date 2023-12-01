@@ -1,5 +1,3 @@
-#!/usr/bin/env python3
-
 from collections import namedtuple
 from pathlib import Path
 
@@ -83,6 +81,3 @@ class Number(list):
 def main():
     numbers = [Number.xform(eval(l)) for l in Path('input', '18').read_text().splitlines()]
     print(max(m.add(n).magnitude() for m in numbers for n in numbers if m is not n))
-
-if '__main__' == __name__:
-    main()

@@ -1,5 +1,3 @@
-#!/usr/bin/env python3
-
 from pathlib import Path
 
 class Die:
@@ -24,6 +22,3 @@ def main():
             if scores[i] >= 1000:
                 print(scores[1 - i] * d.n)
                 return
-
-if '__main__' == __name__:
-    main()
