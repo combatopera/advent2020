@@ -27,11 +27,14 @@ class SeatReader:
         for l in f:
             yield sum(f * self.xform[l[i]] for i, f in enumerate(self.factors))
 
-def _callerpath(stack):
-    return Path(stack[1].frame.f_globals['__file__'])
+def _callerpath():
+    for x in inspect.stack():
+        p = x.frame.f_globals['__file__']
+        if p != __file__:
+            return Path(p)
 
 def inpath():
-    path = _callerpath(inspect.stack())
+    path = _callerpath()
     return path.parent / 'input' / re.match('[0-9]+', path.name).group()
 
 def answerof(taskname):
@@ -45,7 +48,7 @@ def answerof(taskname):
             else:
                 raise Exception
     capture = Capture()
-    path = _callerpath(inspect.stack()).parent / f"{taskname}.py"
+    path = _callerpath().parent / f"{taskname}.py"
     exec(f"{path.read_text()}main()", dict(print = capture, __file__ = str(path)))
     return capture.answer
 
