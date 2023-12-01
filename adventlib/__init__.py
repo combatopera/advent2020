@@ -1,5 +1,6 @@
 from itertools import islice
-import os, re, subprocess
+from pathlib import Path
+import inspect, re
 
 def readchunks(f):
     def g():
@@ -28,7 +29,17 @@ class SeatReader:
 
 def answerof(taskname):
     'Pretend we saved it.'
-    return int(subprocess.check_output([f".{os.sep}{taskname}.py"]))
+    class Capture:
+        def __call__(self, answer):
+            try:
+                self.answer
+            except AttributeError:
+                self.answer = answer
+            else:
+                raise Exception
+    capture = Capture()
+    exec(f"""{(Path(inspect.stack()[1].frame.f_globals['__file__']).parent / f"{taskname}.py").read_text()}main()""", dict(print = capture))
+    return capture.answer
 
 class BagRule:
 
