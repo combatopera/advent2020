@@ -15,18 +15,6 @@ def readchunks(f):
             yield chunk.copy()
             chunk.clear()
 
-class SeatReader:
-
-    xform = dict(F = 0, B = 1, L = 0, R = 1)
-
-    def __init__(self, width):
-        self.factors = [2 ** i for i in range(width)]
-        self.factors.reverse()
-
-    def read(self, f):
-        for l in f:
-            yield sum(f * self.xform[l[i]] for i, f in enumerate(self.factors))
-
 def _callerpath():
     for x in inspect.stack():
         p = x.frame.f_globals['__file__']
@@ -51,20 +39,6 @@ def answerof(taskname):
     path = _callerpath().parent / f"{taskname}.py"
     exec(f"{path.read_text()}main()", dict(print = capture, __file__ = str(path)))
     return capture.answer
-
-class BagRule:
-
-    outer = re.compile('(.+) bags contain (.+)[.]')
-    inner = re.compile('([1-9]) (.+) bags?')
-
-    @classmethod
-    def readmany(cls, f):
-        for l in f:
-            yield cls(l.rstrip())
-
-    def __init__(self, line):
-        self.lhs, v = self.outer.fullmatch(line).groups()
-        self.rhs = {} if 'no other bags' == v else {c: int(n) for x in v.split(', ') for n, c in [self.inner.fullmatch(x).groups()]}
 
 def differentiate(v):
     return [y - x for x, y in zip(v, islice(v, 1, None))]

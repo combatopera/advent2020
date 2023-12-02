@@ -1,4 +1,5 @@
-from adventlib import inpath, BagRule
+from adventlib import inpath
+from adventlib.t20 import BagRule
 from collections import defaultdict
 from itertools import chain
 
