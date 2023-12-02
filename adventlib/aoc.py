@@ -1,4 +1,4 @@
-'Run the given file.'
+'Run the given files.'
 from pathlib import Path
 import sys
 
