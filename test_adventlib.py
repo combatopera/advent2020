@@ -1,4 +1,4 @@
-from . import readchunks
+from adventlib import readchunks
 from unittest import TestCase
 
 class TestReadChunks(TestCase):
