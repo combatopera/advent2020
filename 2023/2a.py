@@ -1,6 +1,5 @@
 from adventlib import inpath
 from collections import defaultdict
-import re
 
 limits = dict(red = 12, green = 13, blue = 14)
 
