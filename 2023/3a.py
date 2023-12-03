@@ -16,12 +16,9 @@ def main():
             for v in kernel:
                 symbolhalo.add(u + v)
     def g():
-        def check():
-            for i in range(len(m.group())):
-                if Vector([m.start() + i, y]) in symbolhalo:
-                    return True
         for y, l in lines():
             for m in re.finditer('[0-9]+', l):
-                if check():
-                    yield int(m.group())
+                text = m.group()
+                if any(Vector([m.start() + i, y]) in symbolhalo for i in range(len(text))):
+                    yield int(text)
     print(sum(g()))
