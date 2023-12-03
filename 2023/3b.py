@@ -14,14 +14,10 @@ def main():
     numberhalo = defaultdict(list)
     for y, l in lines():
         for m in re.finditer('[0-9]+', l):
-            halo = set()
-            for i in range(len(m.group())):
-                u = Vector([m.start() + i, y])
-                for v in kernel:
-                    halo.add(u + v)
-            value = int(m.group())
-            for u in halo:
-                numberhalo[u].append(value)
+            text = m.group()
+            value = int(text)
+            for w in {u + v for u in (Vector([m.start() + i, y]) for i in range(len(text))) for v in kernel}:
+                numberhalo[w].append(value)
     def g():
         for y, l in lines():
             for m in re.finditer('[^0-9.]', l):
