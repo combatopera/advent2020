@@ -16,8 +16,10 @@ def main():
         for m in re.finditer('[0-9]+', l):
             text = m.group()
             value = int(text)
-            for w in {u + v for u in (Vector([m.start() + i, y]) for i in range(len(text))) for v in kernel}:
-                numberhalo[w].append(value)
+            footprint = {Vector([m.start() + i, y]) for i in range(len(text))}
+            for w in {u + v for u in footprint for v in kernel}:
+                if w not in footprint:
+                    numberhalo[w].append(value)
     def g():
         for y, l in lines():
             for m in re.finditer('[^0-9.]', l):
