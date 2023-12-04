@@ -12,7 +12,6 @@ def main():
             _, l = l.split(': ')
             l, r = l.split(' | ')
             win = set(number.findall(l))
-            n = sum(1 for x in number.findall(r) if x in win)
-            for j in range(n):
+            for j in range(sum(1 for x in number.findall(r) if x in win)):
                 copies[i + 1 + j] += copies[i]
     print(sum(copies.values()))
