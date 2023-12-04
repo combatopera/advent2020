@@ -9,9 +9,8 @@ def main():
             for l in f:
                 _, l = l.split(': ')
                 l, r = l.split(' | ')
-                win = set(map(int, number.findall(l)))
-                got = list(map(int, number.findall(r)))
-                n = sum(1 for x in got if x in win)
+                win = set(number.findall(l))
+                n = sum(1 for x in number.findall(r) if x in win)
                 if n:
                     yield 1 << (n - 1)
     print(sum(g()))
