@@ -10,16 +10,15 @@ class Range:
         self.stop = stop
 
     def moveto(self, mr):
-        off = mr.y - mr.start
-        self.stop += off
-        self.start += off
+        self.stop += mr.off
+        self.start += mr.off
         return self
 
 class MapRange(Range):
 
     def __init__(self, y, x, l):
         super().__init__(x, x + l)
-        self.y = y
+        self.off = y - x
 
 class Map:
 
