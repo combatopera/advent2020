@@ -15,9 +15,6 @@ class Range:
         self.start += off
         return self
 
-    def __repr__(self):
-        return f"[{self.start},{self.stop})"
-
 class MapRange(Range):
 
     def __init__(self, y, x, l):
