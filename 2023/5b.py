@@ -33,21 +33,16 @@ class Map:
         for mr in self.ranges:
             nextranges = []
             for r in ranges:
-                print(r, mr)
                 if r.start >= mr.start and r.stop <= mr.stop:
-                    print(r, 'inside', mr)
                     yield Range(r.start, r.stop).moveto(mr)
                 elif r.start < mr.start and r.stop > mr.stop:
-                    print(r, 'covering', mr)
                     yield Range(mr.start, mr.stop).moveto(mr)
                     nextranges.append(Range(r.start, mr.start))
                     nextranges.append(Range(mr.stop, r.stop))
                 elif r.start < mr.stop and r.stop > mr.stop:
-                    print(r, 'right', mr)
                     yield Range(r.start, mr.stop).moveto(mr)
                     nextranges.append(Range(mr.stop, r.stop))
                 elif r.start < mr.start and r.stop > mr.start:
-                    print(r, 'left', mr)
                     yield Range(mr.start, r.stop).moveto(mr)
                     nextranges.append(Range(r.start, mr.start))
                 else:
@@ -63,6 +58,5 @@ def main():
     ranges = [Range(x, x + l) for x, l in zip(v[::2], v[1::2])]
     maps = [Map(chunk) for chunk in mapchunks]
     for m in maps:
-        print(ranges)
         ranges = list(m.xform(ranges))
     print(min(r.start for r in ranges))
