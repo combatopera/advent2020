@@ -9,42 +9,42 @@ class Range:
         self.start = start
         self.stop = stop
 
-    def moveto(self, mr):
-        self.stop += mr.off
-        self.start += mr.off
-        return self
-
 class MapRange(Range):
 
     def __init__(self, y, x, l):
         super().__init__(x, x + l)
         self.off = y - x
 
+    def _shift(self, start, stop):
+        return Range(self.off + start, self.off + stop)
+
+    def xform(self, unxformed, r):
+        if r.start >= self.start and r.stop <= self.stop:
+            yield self._shift(r.start, r.stop)
+        elif r.start < self.start and r.stop > self.stop:
+            yield self._shift(self.start, self.stop)
+            unxformed.append(Range(r.start, self.start))
+            unxformed.append(Range(self.stop, r.stop))
+        elif r.start < self.stop and r.stop > self.stop:
+            yield self._shift(r.start, self.stop)
+            unxformed.append(Range(self.stop, r.stop))
+        elif r.start < self.start and r.stop > self.start:
+            yield self._shift(self.start, r.stop)
+            unxformed.append(Range(r.start, self.start))
+        else:
+            unxformed.append(r)
+
 class Map:
 
     def __init__(self, chunk):
         self.ranges = [MapRange(*map(int, number.findall(l))) for l in chunk[1:]]
 
-    def xform(self, ranges):
+    def xform(self, unxformed):
         for mr in self.ranges:
-            nextranges = []
+            ranges, unxformed = unxformed, []
             for r in ranges:
-                if r.start >= mr.start and r.stop <= mr.stop:
-                    yield Range(r.start, r.stop).moveto(mr)
-                elif r.start < mr.start and r.stop > mr.stop:
-                    yield Range(mr.start, mr.stop).moveto(mr)
-                    nextranges.append(Range(r.start, mr.start))
-                    nextranges.append(Range(mr.stop, r.stop))
-                elif r.start < mr.stop and r.stop > mr.stop:
-                    yield Range(r.start, mr.stop).moveto(mr)
-                    nextranges.append(Range(mr.stop, r.stop))
-                elif r.start < mr.start and r.stop > mr.start:
-                    yield Range(mr.start, r.stop).moveto(mr)
-                    nextranges.append(Range(r.start, mr.start))
-                else:
-                    nextranges.append(r)
-            ranges = nextranges
-        for r in ranges:
+                yield from mr.xform(unxformed, r)
+        for r in unxformed:
             yield r
 
 def main():
