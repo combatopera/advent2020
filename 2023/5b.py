@@ -56,7 +56,6 @@ def main():
         (seedline,), *mapchunks = readchunks(f)
     v = list(map(int, number.findall(seedline)))
     ranges = [Range(x, x + l) for x, l in zip(v[::2], v[1::2])]
-    maps = [Map(chunk) for chunk in mapchunks]
-    for m in maps:
-        ranges = list(m.xform(ranges))
+    for chunk in mapchunks:
+        ranges = list(Map(chunk).xform(ranges))
     print(min(r.start for r in ranges))
