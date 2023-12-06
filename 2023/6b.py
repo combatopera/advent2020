@@ -17,4 +17,4 @@ def main():
     speed ** 2 - time * speed + distance < 0
     '''
     lo, hi = roots(1, -time, distance)
-    print(ceil(hi - 1) - floor(lo + 1) + 1)
+    print(ceil(hi) - floor(lo) - 1)
