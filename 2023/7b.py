@@ -7,7 +7,11 @@ class Hand:
 
     def __init__(self, text):
         def g():
-            for j in set(text) - {'J'}:
+            options = set(text) - {'J'}
+            if not options:
+                yield 0
+                return
+            for j in options:
                 d = Counter(text.replace('J', j))
                 n = len(d)
                 if 1 == n:
