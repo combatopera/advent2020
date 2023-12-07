@@ -21,7 +21,7 @@ class Hand:
                 else:
                     r = 6
                 yield r
-        self.key = (max(g()), *(order[c] for c in text))
+        self.key = (min(g()), *(order[c] for c in text))
 
 def main():
     v = []
