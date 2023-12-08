@@ -1,7 +1,6 @@
 from adventlib import inpath, readchunks
-from functools import reduce
 from numpy import lcm
-import operator, re
+import re
 
 caps = re.compile('[0-9A-Z]{3}')
 
