@@ -10,10 +10,10 @@ def main():
         for key in chart:
             if key[-1] != 'A':
                 continue
-            steps = 0
+            times = 0
             while key[-1] != 'Z':
                 for c in top:
                     key = chart[key][c]
-                steps += len(top)
-            yield steps
-    print(lcm.reduce(list(g())))
+                times += 1
+            yield times
+    print(lcm.reduce([n * len(top) for n in g()]))
