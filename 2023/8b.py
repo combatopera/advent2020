@@ -15,4 +15,4 @@ def main():
                         key = chart[key][c]
                     times += 1
                 yield times
-    print(lcm.reduce([n * len(top) for n in g()]))
+    print(len(top) * lcm.reduce(list(g())))
