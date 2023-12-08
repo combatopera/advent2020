@@ -1,6 +1,6 @@
 from adventlib import inpath, readchunks
-from numpy import lcm
-import re
+from functools import reduce
+import operator, re
 
 def main():
     with inpath().open() as f:
@@ -15,4 +15,4 @@ def main():
                         key = chart[key][c]
                     times += 1
                 yield times
-    print(len(top) * lcm.reduce(list(g())))
+    print(reduce(operator.mul, g()) * len(top))
