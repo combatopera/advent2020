@@ -2,12 +2,10 @@ from adventlib import inpath, readchunks
 from numpy import lcm
 import re
 
-caps = re.compile('[0-9A-Z]{3}')
-
 def main():
     with inpath().open() as f:
         (top,), rest = readchunks(f)
-    chart = {k: dict(L = l, R = r) for line in rest for k, l, r in [caps.findall(line)]}
+    chart = {k: dict(L = l, R = r) for line in rest for k, l, r in [re.findall('[A-Z]{3}', line)]}
     def g():
         for key in chart:
             if key[-1] != 'A':
