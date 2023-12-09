@@ -1,14 +1,12 @@
 from adventlib import inpath, differentiate
+from functools import reduce
 import re
 
 def extrapolate(v):
     derivatives = [v]
     while any(derivatives[-1]):
         derivatives.append(differentiate(derivatives[-1]))
-    first = 0
-    for d in reversed(derivatives):
-        first = d[0] - first
-    return first
+    return reduce(lambda first, d: d[0] - first, reversed(derivatives), 0)
 
 def main():
     def g():
