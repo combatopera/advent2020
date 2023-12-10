@@ -49,9 +49,8 @@ class Grid:
         for y in range(self.h):
             for x in range(1, self.w):
                 left = x - 1, y
-                leftisin = left in inside
                 between = self.reference[left] if left in self.loop else '.'
-                if leftisin ^ (between in barriers):
+                if (left in inside) ^ (between in barriers):
                     inside.add((x, y))
         return inside - self.loop
 
