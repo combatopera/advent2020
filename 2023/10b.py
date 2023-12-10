@@ -34,11 +34,11 @@ class Grid:
                 return u
 
     def _getloop(self):
-        t, u = None, self.start
+        prev, t = None, self.start
         while True:
-            yield u
-            t, u = u, self._anynext(t, u)
-            if self.start == u:
+            yield t
+            prev, t = t, self._anynext(prev, t)
+            if self.start == t:
                 break
 
     def inside(self):
