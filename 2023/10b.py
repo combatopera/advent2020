@@ -8,7 +8,7 @@ shapes = {k: set(map(Vector, v)) for k, v in {
     '7': [(0, 1), (-1, 0)],
     'F': [(0, 1), (1, 0)],
 }.items()}
-barriers = {c for c, shape in shapes.items() if (0, -1) in shape}
+barriers = {c for c, shape in shapes.items() if (0, -1) in shape} # When going along the top of a cell.
 
 class Grid:
 
