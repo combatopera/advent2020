@@ -39,6 +39,6 @@ class Grid:
         return n
 
 def main():
-    n = Grid(inpath().read_text().splitlines()).looplen()
-    assert 0 == n & 1
-    print(n // 2)
+    n, r = divmod(Grid(inpath().read_text().splitlines()).looplen(), 2)
+    assert not r
+    print(n)
