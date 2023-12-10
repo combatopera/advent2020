@@ -1,6 +1,6 @@
 from adventlib import inpath, Vector
 
-shapes = {k: list(map(Vector, v)) for k, v in {
+shapes = {k: set(map(Vector, v)) for k, v in {
     '|': [(0, -1), (0, 1)],
     '-': [(-1, 0), (1, 0)],
     'L': [(0, -1), (1, 0)],
@@ -26,6 +26,8 @@ class Grid:
         self.w = x + 1
         self.h = y + 1
         self.tiletofriends[self.start] = [t for t, friends in self.tiletofriends.items() if self.start in friends]
+        startshape = {t - self.start for t in self.tiletofriends[self.start]}
+        self.reference[self.start], = (c for c, shape in shapes.items() if shape == startshape)
         self.loop = set(self._getloop())
 
     def _anynext(self, exclude, t):
@@ -52,16 +54,8 @@ class Grid:
                     thisisin = leftisin
                 elif between in '|LJ':
                     thisisin = not leftisin
-                elif 'S' == between:
-                    up = x, y - 1
-                    upisin = up in inside
-                    between = self.reference[up] if up in self.loop else '.'
-                    if between in '|LF.':
-                        thisisin = upisin
-                    elif between in '-J7':
-                        thisisin = not upisin
-                    else:
-                        raise Exception
+                else:
+                    raise Exception
                 if thisisin:
                     inside.add((x, y))
         return inside - self.loop
