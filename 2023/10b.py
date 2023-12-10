@@ -51,11 +51,7 @@ class Grid:
                 left = x - 1, y
                 leftisin = left in inside
                 between = self.reference[left] if left in self.loop else '.'
-                if between in barriers:
-                    thisisin = not leftisin
-                else:
-                    thisisin = leftisin
-                if thisisin:
+                if leftisin ^ (between in barriers):
                     inside.add((x, y))
         return inside - self.loop
 
