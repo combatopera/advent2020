@@ -47,11 +47,11 @@ class Grid:
     def inside(self):
         inside = set()
         for y in range(self.h):
+            t = 0, y
             for x in range(1, self.w):
-                left = x - 1, y
-                between = self.reference[left] if left in self.loop else '.'
-                if (left in inside) ^ (between in barriers):
-                    inside.add((x, y))
+                left, t = t, (x, y)
+                if (left in inside) ^ ((self.reference[left] if left in self.loop else '.') in barriers):
+                    inside.add(t)
         return inside - self.loop
 
 def main():
