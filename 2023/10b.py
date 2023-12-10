@@ -44,15 +44,18 @@ class Grid:
             if self.start == t:
                 break
 
+    def _effectivechar(self, t):
+        return self.reference[t] if t in self.loop else '.'
+
     def inside(self):
         inside = set()
         for y in range(self.h):
-            t = 0, y
+            point = 0, y # Edge of grid is not inside.
             for x in range(1, self.w):
-                left, t = t, (x, y)
-                if (left in inside) ^ ((self.reference[left] if left in self.loop else '.') in barriers):
-                    inside.add(t)
-        return inside - self.loop
+                left, point = point, (x, y)
+                if (left in inside) ^ (self._effectivechar(left) in barriers):
+                    inside.add(point)
+        return inside - self.loop # Loop cells are neither inside nor outside.
 
 def main():
     print(len(Grid(inpath().read_text().splitlines()).inside()))
