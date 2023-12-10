@@ -22,21 +22,20 @@ class Loop:
                     self.start = x, y
         self.tiletofriends[self.start] = [t for t, friends in self.tiletofriends.items() if self.start in friends]
 
-    def next(self, t, u):
-        for v in self.tiletofriends[u]:
-            if t != v:
-                return v
+    def _anynext(self, exclude, t):
+        for u in self.tiletofriends[t]:
+            if exclude != u:
+                return u
 
     def len(self):
         t, u = None, self.start
         n = 0
         while True:
-            t, u = u, self.next(t, u)
+            t, u = u, self._anynext(t, u)
             n += 1
             if self.start == u:
                 break
         return n
 
 def main():
-    loop = Loop(inpath().read_text().splitlines())
-    print(loop.len() // 2)
+    print(Loop(inpath().read_text().splitlines()).len() // 2)
