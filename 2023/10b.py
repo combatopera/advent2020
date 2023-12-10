@@ -8,6 +8,7 @@ shapes = {k: set(map(Vector, v)) for k, v in {
     '7': [(0, 1), (-1, 0)],
     'F': [(0, 1), (1, 0)],
 }.items()}
+barriers = {c for c, shape in shapes.items() if (0, -1) in shape}
 
 class Grid:
 
@@ -50,12 +51,10 @@ class Grid:
                 left = x - 1, y
                 leftisin = left in inside
                 between = self.reference[left] if left in self.loop else '.'
-                if between in '-7F.':
-                    thisisin = leftisin
-                elif between in '|LJ':
+                if between in barriers:
                     thisisin = not leftisin
                 else:
-                    raise Exception
+                    thisisin = leftisin
                 if thisisin:
                     inside.add((x, y))
         return inside - self.loop
