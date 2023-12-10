@@ -1,4 +1,13 @@
-from adventlib import inpath
+from adventlib import inpath, Vector
+
+shapes = {k: list(map(Vector, v)) for k, v in {
+    '|': [(0, -1), (0, 1)],
+    '-': [(-1, 0), (1, 0)],
+    'L': [(0, -1), (1, 0)],
+    'J': [(0, -1), (-1, 0)],
+    '7': [(0, 1), (-1, 0)],
+    'F': [(0, 1), (1, 0)],
+}.items()}
 
 class Grid:
 
@@ -6,20 +15,12 @@ class Grid:
         self.tiletofriends = {}
         for y, l in enumerate(lines):
             for x, c in enumerate(l):
-                if '|' == c:
-                    self.tiletofriends[x, y] = [(x, y - 1), (x, y + 1)]
-                elif '-' == c:
-                    self.tiletofriends[x, y] = [(x - 1, y), (x + 1, y)]
-                elif 'L' == c:
-                    self.tiletofriends[x, y] = [(x, y - 1), (x + 1, y)]
-                elif 'J' == c:
-                    self.tiletofriends[x, y] = [(x, y - 1), (x - 1, y)]
-                elif '7' == c:
-                    self.tiletofriends[x, y] = [(x, y + 1), (x - 1, y)]
-                elif 'F' == c:
-                    self.tiletofriends[x, y] = [(x, y + 1), (x + 1, y)]
+                t = Vector([x, y])
+                shape = shapes.get(c)
+                if shape is not None:
+                    self.tiletofriends[t] = [t + d for d in shape]
                 elif 'S' == c:
-                    self.start = x, y
+                    self.start = t
         self.tiletofriends[self.start] = [t for t, friends in self.tiletofriends.items() if self.start in friends]
 
     def _anynext(self, exclude, t):
