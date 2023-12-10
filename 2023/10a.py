@@ -1,6 +1,6 @@
 from adventlib import inpath
 
-class Loop:
+class Grid:
 
     def __init__(self, lines):
         self.tiletofriends = {}
@@ -27,15 +27,17 @@ class Loop:
             if exclude != u:
                 return u
 
-    def len(self):
-        t, u = None, self.start
+    def looplen(self):
+        prev, t = None, self.start
         n = 0
         while True:
-            t, u = u, self._anynext(t, u)
+            prev, t = t, self._anynext(prev, t)
             n += 1
-            if self.start == u:
+            if self.start == t:
                 break
         return n
 
 def main():
-    print(Loop(inpath().read_text().splitlines()).len() // 2)
+    n = Grid(inpath().read_text().splitlines()).looplen()
+    assert 0 == n & 1
+    print(n // 2)

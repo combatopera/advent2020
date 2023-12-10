@@ -1,6 +1,6 @@
 from adventlib import inpath
 
-class Loop:
+class Grid:
 
     def __init__(self, lines):
         self.reference = {}
@@ -66,4 +66,4 @@ class Loop:
         return inside - self.loop
 
 def main():
-    print(len(Loop(inpath().read_text().splitlines()).inside()))
+    print(len(Grid(inpath().read_text().splitlines()).inside()))
