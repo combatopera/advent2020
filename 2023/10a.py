@@ -1,6 +1,6 @@
 from adventlib import inpath, Vector
 
-shapes = {k: list(map(Vector, v)) for k, v in {
+shapes = {k: set(map(Vector, v)) for k, v in {
     '|': [(0, -1), (0, 1)],
     '-': [(-1, 0), (1, 0)],
     'L': [(0, -1), (1, 0)],
