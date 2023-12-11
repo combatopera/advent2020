@@ -1,4 +1,4 @@
-from adventlib import inpath, Vector
+from adventlib import inpath
 from itertools import islice
 
 def main():
@@ -6,7 +6,7 @@ def main():
     for y, l in enumerate(inpath().read_text().splitlines()):
         for x, c in enumerate(l):
             if '#' == c:
-                galaxies.append(Vector([x, y]))
+                galaxies.append([x, y])
     h = y + 1
     w = x + 1
     fatrows = set(range(h))
