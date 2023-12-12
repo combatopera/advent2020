@@ -24,7 +24,5 @@ def main():
         with inpath().open() as f:
             for l in f:
                 u, v = l.split()
-                record = Record(u)
-                check = list(map(int, v.split(',')))
-                yield record.options(check)
+                yield Record(u).options(list(map(int, v.split(','))))
     print(sum(g()))
