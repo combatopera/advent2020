@@ -1,9 +1,11 @@
 from adventlib import inpath
+from functools import lru_cache
 from itertools import islice
 
 def charat(text, i):
     return text[i] if i >= 0 and i < len(text) else '.'
 
+@lru_cache(None)
 def fit(v, i, text, j):
     if i == len(v):
         return all('#' != text[k] for k in range(j, len(text)))
@@ -22,8 +24,7 @@ def main():
             for l in f:
                 record, v = l.split()
                 record = '?'.join(record for _ in range(mul))
-                check = list(map(int, v.split(','))) * mul
-                n = fit(check, 0, record, 0)
-                yield n
+                check = tuple(map(int, v.split(','))) * mul
+                yield fit(check, 0, record, 0)
     mul = 5
     print(sum(g()))
