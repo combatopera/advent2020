@@ -10,13 +10,14 @@ class Record:
         self.text = text
 
     def options(self, check):
+        n = 0
         hashes = sum(check) - self.hashes
         for indices in combinations(self.holes, hashes):
             v = list(self.text)
             for i in indices:
                 v[i] = '#'
-            if list(map(len, re.findall('#+', ''.join(v)))) == check:
-                yield
+            n += list(map(len, re.findall('#+', ''.join(v)))) == check
+        return n
 
 def main():
     def g():
@@ -25,6 +26,5 @@ def main():
                 u, v = l.split()
                 record = Record(u)
                 check = list(map(int, v.split(',')))
-                n = sum(1 for _ in record.options(check))
-                yield n
+                yield record.options(check)
     print(sum(g()))
