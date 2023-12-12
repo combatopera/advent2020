@@ -6,7 +6,7 @@ def charat(text, i):
 
 def fit(v, i, text, j):
     if i == len(v):
-        return 1
+        return all('#' != text[k] for k in range(j, len(text)))
     w = v[i]
     maxj = len(text) - (sum(islice(v, i, None)) + len(v) - i - 1)
     n = 0
@@ -23,6 +23,7 @@ def main():
                 record, v = l.split()
                 record = '?'.join(record for _ in range(mul))
                 check = list(map(int, v.split(','))) * mul
-                yield fit(check, 0, record, 0)
+                n = fit(check, 0, record, 0)
+                yield n
     mul = 5
     print(sum(g()))
