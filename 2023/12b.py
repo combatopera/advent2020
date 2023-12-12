@@ -6,14 +6,13 @@ def charat(text, i):
 
 def fit(v, i, text, j):
     if i == len(v):
-        yield ()
+        yield
     else:
         w = v[i]
         maxj = len(text) - (sum(islice(v, i, None)) + len(v) - i - 1)
         while j <= maxj and '#' != charat(text, j - 1):
             if '#' != charat(text, j + w) and all('.' != text[k] for k in range(j, j + w)):
-                for more in fit(v, i + 1, text, j + w + 1):
-                    yield [j, *more]
+                yield from fit(v, i + 1, text, j + w + 1)
             j += 1
 
 def main():
