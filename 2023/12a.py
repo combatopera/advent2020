@@ -11,8 +11,7 @@ class Record:
 
     def options(self, check):
         n = 0
-        hashes = sum(check) - self.hashes
-        for indices in combinations(self.holes, hashes):
+        for indices in combinations(self.holes, sum(check) - self.hashes):
             v = list(self.text)
             for i in indices:
                 v[i] = '#'
