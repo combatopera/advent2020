@@ -1,5 +1,4 @@
 from adventlib import inpath, readchunks
-from itertools import islice
 
 class Pattern:
 
