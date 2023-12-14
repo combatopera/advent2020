@@ -67,5 +67,4 @@ def main():
         except ValueError:
             history.append(p.Rocks(p.rocks))
     n = len(history)
-    k = (1000000000 - n) % (n - i)
-    print(history[-k].load())
+    print(history[i + (1000000000 - 1 - n) % (n - i)].load())
