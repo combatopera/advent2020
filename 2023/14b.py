@@ -5,16 +5,6 @@ dirs = [Vector(t) for t in [(0, -1), (-1, 0), (0, 1), (1, 0)]]
 
 class Platform:
 
-    @innerclass
-    class Rocks(dict):
-
-        def load(self):
-            def g():
-                for (x, y), c in self.items():
-                    if 'O' == c:
-                        yield self.h - y
-            return sum(g())
-
     def __init__(self, rows):
         self.rocks = self.Rocks()
         for y, row in enumerate(rows):
@@ -55,6 +45,16 @@ class Platform:
         for dir, v in self._scan():
             if 'O' == self.rocks.get(v):
                 self._tilt(dir, v)
+
+    @innerclass
+    class Rocks(dict):
+
+        def load(self):
+            def g():
+                for (x, y), c in self.items():
+                    if 'O' == c:
+                        yield self.h - y
+            return sum(g())
 
 def main():
     p = Platform(inpath().read_text().splitlines())
