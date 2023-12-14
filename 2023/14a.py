@@ -24,7 +24,8 @@ class Platform:
             u = v
         self.rocks[u] = 'O'
 
-    def tilt(self, dir):
+    def tilt(self):
+        dir = Vector([0, -1])
         for y in range(self.h):
             for x in range(self.w):
                 v = Vector([x, y])
@@ -40,5 +41,5 @@ class Platform:
 
 def main():
     p = Platform(inpath().read_text().splitlines())
-    p.tilt(Vector([0, -1]))
+    p.tilt()
     print(p.load())
