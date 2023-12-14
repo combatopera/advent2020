@@ -1,4 +1,4 @@
-from adventlib import inpath
+from adventlib import inpath, Vector
 
 class Platform:
 
@@ -10,18 +10,26 @@ class Platform:
                     self.rocks[x, y] = c
         self.h = y + 1
         self.w = x + 1
+        for x in range(self.w):
+            self.rocks[x, -1] = self.rocks[x, self.h] = 'X'
+        for y in range(self.h):
+            self.rocks[-1, y] = self.rocks[self.w, y] = 'X'
 
-    def _tilt(self, x, y):
-        self.rocks.pop((x, y))
-        while y and (x, y - 1) not in self.rocks:
-            y -= 1
-        self.rocks[x, y] = 'O'
+    def _tilt(self, dir, u):
+        self.rocks.pop(u)
+        while True:
+            v = u + dir
+            if v in self.rocks:
+                break
+            u = v
+        self.rocks[u] = 'O'
 
-    def tilt(self):
+    def tilt(self, dir):
         for y in range(self.h):
             for x in range(self.w):
-                if 'O' == self.rocks.get((x, y)):
-                    self._tilt(x, y)
+                v = Vector([x, y])
+                if 'O' == self.rocks.get(v):
+                    self._tilt(dir, v)
 
     def load(self):
         def g():
@@ -32,5 +40,5 @@ class Platform:
 
 def main():
     p = Platform(inpath().read_text().splitlines())
-    p.tilt()
+    p.tilt(Vector([0, -1]))
     print(p.load())
