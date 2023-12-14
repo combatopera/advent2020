@@ -1,11 +1,22 @@
 from adventlib import inpath, Vector
+from diapyr.util import innerclass
 
 dirs = [Vector(t) for t in [(0, -1), (-1, 0), (0, 1), (1, 0)]]
 
 class Platform:
 
+    @innerclass
+    class Rocks(dict):
+
+        def load(self):
+            def g():
+                for (x, y), c in self.items():
+                    if 'O' == c:
+                        yield self.h - y
+            return sum(g())
+
     def __init__(self, rows):
-        self.rocks = {}
+        self.rocks = self.Rocks()
         for y, row in enumerate(rows):
             for x, c in enumerate(row):
                 if '.' != c:
@@ -45,13 +56,6 @@ class Platform:
             if 'O' == self.rocks.get(v):
                 self._tilt(dir, v)
 
-    def load(self, rocks):
-        def g():
-            for (x, y), c in rocks.items():
-                if 'O' == c:
-                    yield self.h - y
-        return sum(g())
-
 def main():
     p = Platform(inpath().read_text().splitlines())
     history = []
@@ -61,7 +65,7 @@ def main():
             i = history.index(p.rocks)
             break
         except ValueError:
-            history.append(p.rocks.copy())
+            history.append(p.Rocks(p.rocks))
     n = len(history)
     k = (1000000000 - n) % (n - i)
-    print(p.load(history[-k]))
+    print(history[-k].load())
