@@ -11,8 +11,17 @@ class Platform:
         self.h = y + 1
         self.w = x + 1
 
+    def _tilt(self, x, y):
+        self.rocks.pop((x, y))
+        while y and (x, y - 1) not in self.rocks:
+            y -= 1
+        self.rocks[x, y] = 'O'
+
     def tilt(self):
-        pass
+        for y in range(self.h):
+            for x in range(self.w):
+                if 'O' == self.rocks.get((x, y)):
+                    self._tilt(x, y)
 
     def load(self):
         def g():
