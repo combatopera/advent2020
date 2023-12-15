@@ -7,5 +7,4 @@ def algo(s):
     return n
 
 def main():
-    v = ''.join(inpath().read_text().splitlines()).split(',')
-    print(sum(map(algo, v)))
+    print(sum(map(algo, inpath().read_text().rstrip().split(','))))
