@@ -1,5 +1,6 @@
 from adventlib import inpath, intcos, intsin, Vector
 from collections import namedtuple
+from heapq import heappop, heappush
 
 eswn = [Vector([intcos(k), intsin(k)]) for k in range(4)]
 inf = float('inf')
@@ -14,7 +15,7 @@ class City:
                 self.blocks[x, y] = int(c)
         self.target = x, y
 
-    def paths(self, s, p, d):
+    def _paths(self, s, p, d):
         if s < 3:
             q = p + eswn[d]
             if q in self.blocks:
@@ -28,19 +29,20 @@ class City:
         if q in self.blocks:
             yield Task(1, q, r)
 
+    def _g(self, history, cost, task):
+        for t in self._paths(*task):
+            newcost = cost + self.blocks[t.p]
+            if newcost < history.get(t, inf):
+                history[t] = newcost
+                if self.target != t.p:
+                    yield newcost, t
+
     def walk(self):
         history = {}
-        tasks = [[Task(0, Vector([0, 0]), 0), 0]]
+        tasks = [[0, Task(0, Vector([0, 0]), 0)]]
         while tasks:
-            newtasks = []
-            for task, cost in tasks:
-                for t in self.paths(*task):
-                    newcost = cost + self.blocks[t.p]
-                    if newcost < history.get(t, inf):
-                        history[t] = newcost
-                        if self.target != t.p:
-                            newtasks.append([t, newcost])
-            tasks = newtasks
+            for t in self._g(history, *heappop(tasks)):
+                heappush(tasks, t)
         for t, cost in history.items():
             if self.target == t.p:
                 yield cost
