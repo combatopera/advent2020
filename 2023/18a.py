@@ -17,31 +17,32 @@ class Lagoon:
                 self.trench.add(self.digger)
 
     def capacity(self):
-        def explore(p, d):
-            q = p + d
-            if q not in self.trench and q not in void:
-                void.add(q)
-                for d in dirs.values():
-                    explore(q, d)
+        def explore(p):
+            tasks = [p]
+            while tasks:
+                p = tasks.pop()
+                if p not in self.trench and p not in void:
+                    void.add(p)
+                    tasks.extend(p + d for d in dirs.values())
         minx = min(p[0] for p in self.trench)
-        endx = max(p[0] for p in self.trench) + 1
+        maxx = max(p[0] for p in self.trench)
         miny = min(p[1] for p in self.trench)
-        endy = max(p[1] for p in self.trench) + 1
+        maxy = max(p[1] for p in self.trench)
         void = set()
-        for x in range(minx, endx):
-            void.add((x, -1))
-            void.add((x, endy))
-        for y in range(miny, endy):
-            void.add((-1, y))
-            void.add((endx, y))
-        n = len(void)
-        for x in range(minx, endx):
-            explore(Vector([x, -1]), Vector([0, 1]))
-            explore(Vector([x, endy]), Vector([0, -1]))
-        for y in range(miny, endy):
-            explore(Vector([-1, y]), Vector([1, 0]))
-            explore(Vector([endx, y]), Vector([-1, 0]))
-        return (endx - minx) * (endy - miny) - (len(void) - n)
+        for x in range(minx, maxx + 1):
+            void.add((x, miny - 1))
+            void.add((x, maxy + 1))
+        for y in range(miny, maxy + 1):
+            void.add((minx - 1, y))
+            void.add((maxx + 1, y))
+        boundary = len(void)
+        for x in range(minx, maxx + 1):
+            explore(Vector([x, miny]))
+            explore(Vector([x, maxy]))
+        for y in range(miny, maxy + 1):
+            explore(Vector([minx, y]))
+            explore(Vector([maxx, y]))
+        return (maxx - minx + 1) * (maxy - miny + 1) - (len(void) - boundary)
 
 def main():
     l = Lagoon()
