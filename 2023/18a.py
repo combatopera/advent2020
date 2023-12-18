@@ -21,28 +21,28 @@ class Lagoon:
             tasks = [p]
             while tasks:
                 p = tasks.pop()
-                if p not in self.trench and p not in void:
+                if not (p in void or p in boundary or p in self.trench):
                     void.add(p)
                     tasks.extend(p + d for d in dirs.values())
         minx = min(p[0] for p in self.trench)
         maxx = max(p[0] for p in self.trench)
         miny = min(p[1] for p in self.trench)
         maxy = max(p[1] for p in self.trench)
-        void = set()
+        boundary = set()
         for x in range(minx, maxx + 1):
-            void.add((x, miny - 1))
-            void.add((x, maxy + 1))
+            boundary.add((x, miny - 1))
+            boundary.add((x, maxy + 1))
         for y in range(miny, maxy + 1):
-            void.add((minx - 1, y))
-            void.add((maxx + 1, y))
-        boundary = len(void)
+            boundary.add((minx - 1, y))
+            boundary.add((maxx + 1, y))
+        void = set()
         for x in range(minx, maxx + 1):
             explore(Vector([x, miny]))
             explore(Vector([x, maxy]))
         for y in range(miny, maxy + 1):
             explore(Vector([minx, y]))
             explore(Vector([maxx, y]))
-        return (maxx - minx + 1) * (maxy - miny + 1) - (len(void) - boundary)
+        return (maxx - minx + 1) * (maxy - miny + 1) - len(void)
 
 def main():
     l = Lagoon()
