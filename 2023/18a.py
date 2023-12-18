@@ -1,4 +1,5 @@
 from adventlib import inpath, Vector
+from collections import deque
 
 dirs = dict(U = Vector([0, -1]), D = Vector([0, 1]), L = Vector([-1, 0]), R = Vector([1, 0]))
 
@@ -18,9 +19,9 @@ class Lagoon:
 
     def capacity(self):
         def explore(p):
-            tasks = [p]
+            tasks = deque([p])
             while tasks:
-                p = tasks.pop()
+                p = tasks.popleft()
                 if not (p in void or p in boundary or p in self.trench):
                     void.add(p)
                     tasks.extend(p + d for d in dirs.values())
