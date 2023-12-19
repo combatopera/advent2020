@@ -20,8 +20,7 @@ class Program:
                 self.val = int(pred[m.start() + 1:])
 
         def apply(self, part):
-            if self.op is None or self.op(part.d[self.attr], self.val):
-                return self.dest
+            return self.op is None or self.op(part.d[self.attr], self.val)
 
     def __init__(self, workflows):
         self.workflows = {}
@@ -29,18 +28,17 @@ class Program:
             k, rules = w[:-1].split('{')
             self.workflows[k] = [self.Rule(r) for r in rules.split(',')]
 
+    def _accept(self, part, name, index):
+        rule = self.workflows[name][index]
+        if not rule.apply(part):
+            return self._accept(part, name, index + 1)
+        if 'A' == rule.dest:
+            return True
+        if 'R' != rule.dest:
+            return self._accept(part, rule.dest, 0)
+
     def accept(self, part):
-        w = self.workflows['in']
-        while True:
-            for r in w:
-                dest = r.apply(part)
-                if dest is not None:
-                    break
-            if 'A' == dest:
-                return True
-            if 'R' == dest:
-                break
-            w = self.workflows[dest]
+        return self._accept(part, 'in', 0)
 
 class Part:
 
