@@ -38,6 +38,8 @@ class Button:
 
     class Conjunction(Module):
 
+        total = 0
+
         def __init__(self, *args):
             super().__init__(*args)
             self.state = {}
@@ -46,8 +48,9 @@ class Button:
             self.state[source] = 0
 
         def send(self, source, pulse):
+            self.total = self.total - self.state[source] + pulse
             self.state[source] = pulse
-            self.broadcast(any(not v for v in self.state.values()))
+            self.broadcast(self.total != len(self.state))
 
     class Sink(Module):
 
