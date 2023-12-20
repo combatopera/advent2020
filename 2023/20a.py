@@ -7,7 +7,8 @@ class Button:
     @innerclass
     class Module:
 
-        def __init__(self, dest):
+        def __init__(self, name, dest):
+            self.name = name
             self.dest = dest
 
         def broadcast(self, pulse):
@@ -64,7 +65,7 @@ class Button:
                 try:
                     m = self.modules[d]
                 except KeyError:
-                    self.modules[d] = m = self.Sink([])
+                    self.modules[d] = m = self.Sink(d, [])
                 m.connect(s)
 
     def _drain(self):
@@ -97,7 +98,7 @@ def main():
         else:
             cls = lookup[l[0]]
             name = l[1:]
-        b.add(name, cls(r.split(', ')))
+        b.add(name, cls(name, r.split(', ')))
     b.connect()
     for _ in range(1000):
         b.press()
