@@ -1,4 +1,5 @@
 from adventlib import inpath
+from collections import deque
 from diapyr.util import innerclass
 import operator
 
@@ -62,7 +63,7 @@ class Button:
     def __init__(self):
         self.modules = {}
         self.pulses = {p: 0 for p in range(2)}
-        self.q = []
+        self.q = deque()
         self.draining = False
 
     def add(self, name, m):
@@ -83,7 +84,7 @@ class Button:
         self.draining = True
         try:
             while self.q:
-                source, name, pulse = self.q.pop(0)
+                source, name, pulse = self.q.popleft()
                 self.modules[name].send(source, pulse)
         finally:
             self.draining = False
