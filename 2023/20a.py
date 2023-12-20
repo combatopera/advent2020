@@ -45,7 +45,7 @@ class Button:
             self.state[source] = 0
 
         def send(self, source, pulse):
-            self.state[source] = pulse
+            self.state[source.name] = pulse
             self.broadcast(any(not v for v in self.state.values()))
 
     class Sink(Module):
@@ -66,13 +66,13 @@ class Button:
         self.modules[name] = m
 
     def connect(self):
-        for s in list(self.modules.values()):
+        for n, s in list(self.modules.items()):
             for d in s.dest:
                 try:
                     m = self.modules[d]
                 except KeyError:
                     self.modules[d] = m = self.Sink(d, [])
-                m.conn(s)
+                m.conn(n)
 
     def _drain(self):
         if self.draining:
