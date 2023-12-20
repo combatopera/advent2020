@@ -7,17 +7,18 @@ class Button:
     @innerclass
     class Module:
 
-        def __init__(self, dest):
+        def __init__(self, name, dest):
+            self.name = name
             self.dest = dest
 
         def broadcast(self, pulse):
             for name in self.dest:
-                self.post(self, name, pulse)
-
-        def connect(self, source):
-            pass
+                self.post(self.name, name, pulse)
 
     class Broadcaster(Module):
+
+        def conn(self, source):
+            pass
 
         def send(self, source, pulse):
             self.broadcast(pulse)
@@ -25,6 +26,9 @@ class Button:
     class FlipFlop(Module):
 
         state = 0
+
+        def conn(self, source):
+            pass
 
         def send(self, source, pulse):
             if not pulse:
@@ -37,7 +41,7 @@ class Button:
             super().__init__(*args)
             self.state = {}
 
-        def connect(self, source):
+        def conn(self, source):
             self.state[source] = 0
 
         def send(self, source, pulse):
@@ -47,6 +51,9 @@ class Button:
     class Sink(Module):
 
         state = 0
+
+        def conn(self, source):
+            pass
 
         def send(self, source, pulse):
             if not pulse:
@@ -62,13 +69,13 @@ class Button:
         self.modules[name] = m
 
     def connect(self):
-        for s in list(self.modules.values()):
+        for n, s in list(self.modules.items()):
             for d in s.dest:
                 try:
                     m = self.modules[d]
                 except KeyError:
-                    self.modules[d] = m = self.Sink([])
-                m.connect(s)
+                    self.modules[d] = m = self.Sink(d, [])
+                m.conn(n)
 
     def _drain(self):
         if self.draining:
@@ -100,7 +107,7 @@ def main():
         else:
             cls = lookup[l[0]]
             name = l[1:]
-        b.add(name, cls(r.split(', ')))
+        b.add(name, cls(name, r.split(', ')))
     b.connect()
     n = 0
     while not b.modules['rx'].state:
