@@ -101,6 +101,7 @@ def main():
     b = Button()
     lookup = {'%': b.FlipFlop, '&': b.Conjunction}
     for line in inpath().read_text().splitlines():
+        if not line: continue
         l, r = line.split(' -> ')
         if 'broadcaster' == l:
             cls = b.Broadcaster
