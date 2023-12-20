@@ -99,6 +99,6 @@ def main():
             name = l[1:]
         b.add(name, cls(r.split(', ')))
     b.connect()
-    for _ in range(4):
+    for _ in range(1000):
         b.press()
-        print(b.pulses)
+    print(operator.mul(*b.pulses.values()))
