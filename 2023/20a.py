@@ -14,10 +14,10 @@ class Button:
             for name in self.dest:
                 self.post(self, name, pulse)
 
-    class Broadcaster(Module):
-
         def connect(self, source):
             pass
+
+    class Broadcaster(Module):
 
         def send(self, source, pulse):
             self.broadcast(pulse)
@@ -25,9 +25,6 @@ class Button:
     class FlipFlop(Module):
 
         state = 0
-
-        def connect(self, source):
-            pass
 
         def send(self, source, pulse):
             if not pulse:
@@ -47,6 +44,11 @@ class Button:
             self.state[source] = pulse
             self.broadcast(any(not v for v in self.state.values()))
 
+    class Sink(Module):
+
+        def send(self, source, pulse):
+            pass
+
     def __init__(self):
         self.modules = {}
         self.pulses = {p: 0 for p in range(2)}
@@ -57,9 +59,13 @@ class Button:
         self.modules[name] = m
 
     def connect(self):
-        for m in self.modules.values():
-            for d in m.dest:
-                self.modules[d].connect(m)
+        for s in list(self.modules.values()):
+            for d in s.dest:
+                try:
+                    m = self.modules[d]
+                except KeyError:
+                    self.modules[d] = m = self.Sink([])
+                m.connect(s)
 
     def _drain(self):
         if self.draining:
@@ -93,5 +99,6 @@ def main():
             name = l[1:]
         b.add(name, cls(r.split(', ')))
     b.connect()
-    b.press()
-    print(b.pulses)
+    for _ in range(4):
+        b.press()
+        print(b.pulses)
