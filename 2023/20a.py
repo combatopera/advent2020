@@ -13,7 +13,7 @@ class Button:
 
         def broadcast(self, pulse):
             for name in self.dest:
-                self.post(self, name, pulse)
+                self.post(self.name, name, pulse)
 
     class Broadcaster(Module):
 
@@ -45,7 +45,7 @@ class Button:
             self.state[source] = 0
 
         def send(self, source, pulse):
-            self.state[source.name] = pulse
+            self.state[source] = pulse
             self.broadcast(any(not v for v in self.state.values()))
 
     class Sink(Module):
