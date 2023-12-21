@@ -37,10 +37,8 @@ def main():
     n = 0
     steps = 64
     r = range(steps, -1, -2)
-    for i in range(steps):
+    for i in range(steps + 1):
         if i in r:
             n += len(front)
         oldfront, front = front, farm.newfront(oldfront, front)
-    if steps in r:
-        n += len(front)
     print(n)
