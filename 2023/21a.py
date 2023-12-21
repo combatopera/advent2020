@@ -34,9 +34,13 @@ def main():
     farm = Farm(inpath().read_text().splitlines())
     oldfront = set()
     front = {farm.start}
-    frontsizes = [len(front)]
+    n = 0
     steps = 64
-    for _ in range(steps):
+    r = range(steps, -1, -2)
+    for i in range(steps):
+        if i in r:
+            n += len(front)
         oldfront, front = front, farm.newfront(oldfront, front)
-        frontsizes.append(len(front))
-    print(sum(frontsizes[k] for k in range(steps, -1, -2)))
+    if steps in r:
+        n += len(front)
+    print(n)
