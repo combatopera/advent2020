@@ -25,34 +25,33 @@ class Farm:
 
 class Predictor:
 
-    def __init__(self, steptolen, diffs):
-        self.steptolen = steptolen
+    def __init__(self, frontlens, diffs):
+        self.frontlens = frontlens
         self.period = len(diffs)
         self.diffs = diffs
 
     def frontlen(self, step):
-        k = max(0, (step - len(self.steptolen) + self.period) // self.period)
+        k = max(0, (step - len(self.frontlens) + self.period) // self.period)
         step -= self.period * k
-        return self.steptolen[step] + k * self.diffs[step % self.period]
+        return self.frontlens[step] + k * self.diffs[step % self.period]
 
 def main():
     farm = Farm(inpath().read_text().splitlines())
     period, = set(farm.size)
-    twoperiod = 2 * period
     oldfront = set()
     front = {farm.start}
-    step = 0
-    steptolen = []
+    frontlens = []
     diffs = [0 for _ in range(period)]
-    predictor = Predictor(steptolen, diffs)
-    prediction = [None for _ in range(twoperiod)]
+    predictor = Predictor(frontlens, diffs)
+    prediction = [None for _ in range(2 * period)]
+    step = 0
     while True:
-        steptolen.append(len(front))
+        frontlens.append(len(front))
         if step - period >= 0:
-            diffs[step % period] = steptolen[step] - steptolen[step - period]
+            diffs[step % period] = frontlens[step] - frontlens[step - period]
             prediction.pop(0)
             prediction.append(predictor.frontlen(step + period))
-            if steptolen[-period:] == prediction[:period]:
+            if frontlens[-period:] == prediction[:period]:
                 break
         step += 1
         oldfront, front = front, farm.newfront(oldfront, front)
