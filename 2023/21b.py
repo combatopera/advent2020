@@ -56,5 +56,4 @@ def main():
                 break
         step += 1
         oldfront, front = front, farm.newfront(oldfront, front)
-    for steps in 6, 10, 50, 100, 500, 1000, 5000:
-        print(sum(predictor.frontlen(step) for step in range(steps, -1, -2)))
+    print(sum(predictor.frontlen(step) for step in range(26501365, -1, -2)))
