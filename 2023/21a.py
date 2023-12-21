@@ -34,11 +34,15 @@ def main():
     farm = Farm(inpath().read_text().splitlines())
     oldfront = set()
     front = {farm.start}
-    n = 0
+    total = 0
     steps = 64
-    r = range(steps, -1, -2)
-    for i in range(steps + 1):
-        if i in r:
-            n += len(front)
+    sieve = range(steps, -1, -2)
+    step = 0
+    while True:
+        if step in sieve:
+            total += len(front)
+        if step == steps:
+            break
+        step += 1
         oldfront, front = front, farm.newfront(oldfront, front)
-    print(n)
+    print(total)
