@@ -23,15 +23,38 @@ class Farm:
                         yield u
         return set(g())
 
+class Predictor:
+
+    def __init__(self, steptolen, diffs):
+        self.steptolen = steptolen
+        self.period = len(diffs)
+        self.diffs = diffs
+
+    def frontlen(self, step):
+        k = max(0, (step - len(self.steptolen) + self.period) // self.period)
+        step -= self.period * k
+        return self.steptolen[step] + k * self.diffs[step % self.period]
+
 def main():
     farm = Farm(inpath().read_text().splitlines())
+    period, = set(farm.size)
+    twoperiod = 2 * period
     oldfront = set()
     front = {farm.start}
-    n = 0
-    steps = 26501365
-    r = range(steps, -1, -2)
-    for i in range(steps + 1):
-        if i in r:
-            n += len(front)
+    step = 0
+    steptolen = []
+    diffs = [0 for _ in range(period)]
+    predictor = Predictor(steptolen, diffs)
+    prediction = [None for _ in range(twoperiod)]
+    while True:
+        steptolen.append(len(front))
+        if step - period >= 0:
+            diffs[step % period] = steptolen[step] - steptolen[step - period]
+            prediction.pop(0)
+            prediction.append(predictor.frontlen(step + period))
+            if steptolen[-period:] == prediction[:period]:
+                break
+        step += 1
         oldfront, front = front, farm.newfront(oldfront, front)
-    print(n)
+    for steps in 6, 10, 50, 100, 500, 1000, 5000:
+        print(sum(predictor.frontlen(step) for step in range(steps, -1, -2)))
