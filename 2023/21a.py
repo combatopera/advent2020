@@ -21,18 +21,22 @@ class Farm:
             self.rocks.add((-1, y))
             self.rocks.add((self.w, y))
 
-    def step(self, tiles):
+    def newfront(self, oldfront, front):
         def g():
-            for t in tiles:
+            for t in front:
                 for d in dirs:
                     u = t + d
-                    if u not in self.rocks:
+                    if not (u in self.rocks or u in oldfront):
                         yield u
         return set(g())
 
 def main():
     farm = Farm(inpath().read_text().splitlines())
-    tiles = [farm.start]
-    for _ in range(64):
-        tiles = farm.step(tiles)
-    print(len(tiles))
+    oldfront = set()
+    front = {farm.start}
+    frontsizes = [len(front)]
+    steps = 64
+    for _ in range(steps):
+        oldfront, front = front, farm.newfront(oldfront, front)
+        frontsizes.append(len(front))
+    print(sum(frontsizes[k] for k in range(steps, -1, -2)))
