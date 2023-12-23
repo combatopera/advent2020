@@ -20,8 +20,6 @@ class Brick:
         return cls(*args)
 
     def __init__(self, p, q):
-        self.supportedby = []
-        self.supports = []
         self.p = p
         self.q = q
 
@@ -57,12 +55,7 @@ def main():
     bricks = [Brick.read(l) for l in inpath().read_text().splitlines()]
     drop(bricks)
     for b in bricks:
-        cap = b.cap()
-        for other in bricks:
-            if other.intersects(cap):
-                b.supports.append(other)
+        b.supports = {other for cap in [b.cap()] for other in bricks if other.intersects(cap)}
     for b in bricks:
-        for other in bricks:
-            if b in other.supports:
-                b.supportedby.append(other)
-    print(sum(1 for b in bricks if all([b] != other.supportedby for other in b.supports)))
+        b.supportedby = {other for other in bricks if b in other.supports}
+    print(sum(1 for b in bricks if all({b} != other.supportedby for other in b.supports)))
