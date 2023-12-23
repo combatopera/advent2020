@@ -1,4 +1,5 @@
 from adventlib import inpath, Vector
+from itertools import chain
 
 def intersects(p1, q1, p2, q2):
     return q1 >= p2 and p1 <= q2
@@ -24,6 +25,13 @@ class Brick:
         self.p = p
         self.q = q
 
+    def drop(self, dz):
+        self.p = self.p[0], self.p[1], self.p[2] - dz
+        self.q = self.q[0], self.q[1], self.q[2] - dz
+
+    def samecol(self, that):
+        return all(intersects(self.p[i], self.q[i], that.p[i], that.q[i]) for i in range(2))
+
     def intersects(self, that):
         return all(intersects(self.p[i], self.q[i], that.p[i], that.q[i]) for i in range(3))
 
@@ -31,8 +39,23 @@ class Brick:
         z = self.q[2] + 1
         return self._of(Vector([self.p[0], self.p[1], z]), Vector([self.q[0], self.q[1], z]))
 
+def drop(bricks):
+    while True:
+        bestdz = 0
+        for b in bricks:
+            floor = max(chain([0], (other.q[2] for other in bricks if other.q[2] < b.p[2] and b.samecol(other))))
+            dz = b.p[2] - floor - 1
+            if dz > bestdz:
+                bestdz = dz
+                bestbrick = b
+        if not bestdz:
+            break
+        print(bestbrick, bestdz)
+        bestbrick.drop(bestdz)
+
 def main():
     bricks = [Brick.read(l) for l in inpath().read_text().splitlines()]
+    drop(bricks)
     for b in bricks:
         cap = b.cap()
         for other in bricks:
