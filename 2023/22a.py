@@ -40,7 +40,7 @@ def drop(bricks):
     while True:
         bestdz = 0
         for b in bricks:
-            floor = b.below[-1].q[2] if b.below else 0
+            floor = max((other.q[2] for other in b.below), default = 0)
             dz = b.p[2] - floor - 1
             if dz > bestdz:
                 bestdz = dz
@@ -53,7 +53,7 @@ def drop(bricks):
 def main():
     bricks = [Brick.read(l) for l in inpath().read_text().splitlines()]
     for b in bricks:
-        b.below = sorted((other for other in bricks if other.samecol(b) and other.q[2] < b.p[2]), key = lambda o: o.q[2])
+        b.below = {other for other in bricks if other.q[2] < b.p[2] and other.samecol(b)}
     drop(bricks)
     for b in bricks:
         b.supports = {other for cap in [b.cap()] for other in bricks if other.intersects(cap)}
