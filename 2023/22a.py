@@ -1,4 +1,4 @@
-from adventlib import inpath, Vector
+from adventlib import inpath
 from itertools import chain
 
 def intersects(p1, q1, p2, q2):
@@ -9,8 +9,8 @@ class Brick:
     @classmethod
     def read(cls, l):
         p, q = l.split('~')
-        p = Vector(map(int, p.split(',')))
-        q = Vector(map(int, q.split(',')))
+        p = list(map(int, p.split(',')))
+        q = list(map(int, q.split(',')))
         for i in range(3):
             assert p[i] <= q[i]
         return cls(p, q)
@@ -26,8 +26,8 @@ class Brick:
         self.q = q
 
     def drop(self, dz):
-        self.p = self.p[0], self.p[1], self.p[2] - dz
-        self.q = self.q[0], self.q[1], self.q[2] - dz
+        self.p[2] -= dz
+        self.q[2] -= dz
 
     def samecol(self, that):
         return all(intersects(self.p[i], self.q[i], that.p[i], that.q[i]) for i in range(2))
@@ -37,7 +37,7 @@ class Brick:
 
     def cap(self):
         z = self.q[2] + 1
-        return self._of(Vector([self.p[0], self.p[1], z]), Vector([self.q[0], self.q[1], z]))
+        return self._of([self.p[0], self.p[1], z], [self.q[0], self.q[1], z])
 
 def drop(bricks):
     while True:
