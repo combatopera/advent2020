@@ -1,5 +1,4 @@
 from adventlib import inpath
-from itertools import chain
 
 def intersects(p1, q1, p2, q2):
     return q1 >= p2 and p1 <= q2
@@ -41,7 +40,7 @@ def drop(bricks):
     while True:
         bestdz = 0
         for b in bricks:
-            floor = max(chain([0], (other.q[2] for other in b.column if other.q[2] < b.p[2])))
+            floor = max((other.q[2] for other in b.column if other.q[2] < b.p[2]), default = 0)
             dz = b.p[2] - floor - 1
             if dz > bestdz:
                 bestdz = dz
