@@ -5,6 +5,8 @@ def intersects(p1, q1, p2, q2):
 
 class Brick:
 
+    lowest = False
+
     @classmethod
     def read(cls, l):
         p, q = l.split('~')
@@ -37,18 +39,21 @@ class Brick:
         return self._of([self.p[0], self.p[1], z], [self.q[0], self.q[1], z])
 
 def drop(bricks):
-    while True:
-        bestdz = 0
-        for b in bricks:
+    def dropone():
+        for i, b in enumerate(v):
+            if b.lowest:
+                continue
             floor = max((other.q[2] for other in b.below), default = 0)
             dz = b.p[2] - floor - 1
-            if dz > bestdz:
-                bestdz = dz
-                bestbrick = b
-        if not bestdz:
-            break
-        print(bestbrick, bestdz)
-        bestbrick.drop(bestdz)
+            if dz <= 0:
+                continue
+            b.drop(dz)
+            if all(other.lowest for other in b.below):
+                b.lowest = True
+            return True
+    v = sorted(bricks, key = lambda b: len(b.below))
+    while dropone():
+        pass
 
 def main():
     bricks = [Brick.read(l) for l in inpath().read_text().splitlines()]
