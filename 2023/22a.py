@@ -41,7 +41,7 @@ def drop(bricks):
     while True:
         bestdz = 0
         for b in bricks:
-            floor = max(chain([0], (other.q[2] for other in bricks if other.q[2] < b.p[2] and b.samecol(other))))
+            floor = max(chain([0], (other.q[2] for other in b.column if other.q[2] < b.p[2])))
             dz = b.p[2] - floor - 1
             if dz > bestdz:
                 bestdz = dz
@@ -53,6 +53,8 @@ def drop(bricks):
 
 def main():
     bricks = [Brick.read(l) for l in inpath().read_text().splitlines()]
+    for b in bricks:
+        b.column = {other for other in bricks if other.samecol(b)}
     drop(bricks)
     for b in bricks:
         b.supports = {other for cap in [b.cap()] for other in bricks if other.intersects(cap)}
