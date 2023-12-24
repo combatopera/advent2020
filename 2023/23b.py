@@ -5,11 +5,11 @@ dirs = (1, 0), (0, 1), (-1, 0), (0, -1)
 class Maze:
 
     def __init__(self, lines):
-        self.ground = {}
+        self.ground = set()
         for y, l in enumerate(lines):
             for x, c in enumerate(l):
                 if '#' != c:
-                    self.ground[x, y] = c
+                    self.ground.add((x, y))
         self.target = x - 1, y
 
     def walk(self, path, p):
