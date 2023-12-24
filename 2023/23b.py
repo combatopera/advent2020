@@ -12,7 +12,7 @@ class Maze:
                     self.ground.add((x, y))
         self.target = x - 1, y
 
-    def walk(self, path, p):
+    def walk(self, ground, path, p):
         while True:
             if p == self.target:
                 yield len(path) # Counting start instead of target.
@@ -21,13 +21,15 @@ class Maze:
             next = []
             for d in dirs:
                 q = p + d
-                if q not in path and q in self.ground:
+                if q not in path and q in ground:
                     next.append(q)
             if 1 != len(next):
                 for q in next:
-                    yield from self.walk(path.copy(), q)
+                    for n in self.walk(ground - path, set(), q):
+                        yield len(path) + n
                 break
             p, = next
 
 def main():
-    print(max(Maze(inpath().read_text().splitlines()).walk(set(), Vector([1, 0]))))
+    m = Maze(inpath().read_text().splitlines())
+    print(max(m.walk(m.ground, set(), Vector([1, 0]))))
