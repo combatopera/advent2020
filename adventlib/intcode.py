@@ -14,7 +14,7 @@ class Computer:
         return 4
 
     def opcode3(self):
-        self.data[self.data[self.pc + 1]] = int(input('Integer: '))
+        self.data[self.data[self.pc + 1]] = self.inputs.pop(0)
         return 2
 
     def opcode4(self):
@@ -26,7 +26,8 @@ class Computer:
         mode = self.modes // (10 ** (off - 1)) % 10
         return val if mode else self.data[val]
 
-    def run(self):
+    def run(self, *inputs):
+        self.inputs = list(inputs)
         while True:
             k = self.data[self.pc]
             if 99 == k:
