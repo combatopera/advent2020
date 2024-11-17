@@ -2,8 +2,9 @@ class Computer:
 
     pc = 0
 
-    def __init__(self, data):
+    def __init__(self, data, inputs = None):
         self.data = data
+        self.inputs = inputs
 
     def opcode1(self):
         self.data[self.data[self.pc + 3]] = self._fetch(1) + self._fetch(2)
@@ -26,8 +27,7 @@ class Computer:
         mode = self.modes // (10 ** (off - 1)) % 10
         return val if mode else self.data[val]
 
-    def run(self, *inputs):
-        self.inputs = list(inputs)
+    def run(self):
         while True:
             k = self.data[self.pc]
             if 99 == k:
