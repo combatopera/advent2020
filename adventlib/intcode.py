@@ -7,15 +7,15 @@ class Computer:
         self.inputs = inputs
 
     def opcode1(self):
-        self.data[self.data[self.pc + 3]] = self._fetch(1) + self._fetch(2)
+        self._store(3, self._fetch(1) + self._fetch(2))
         return 4
 
     def opcode2(self):
-        self.data[self.data[self.pc + 3]] = self._fetch(1) * self._fetch(2)
+        self._store(3, self._fetch(1) * self._fetch(2))
         return 4
 
     def opcode3(self):
-        self.data[self.data[self.pc + 1]] = self.inputs.pop(0)
+        self._store(1, self.inputs.pop(0))
         return 2
 
     def opcode4(self):
@@ -26,6 +26,9 @@ class Computer:
         val = self.data[self.pc + off]
         mode = self.modes // (10 ** (off - 1)) % 10
         return val if mode else self.data[val]
+
+    def _store(self, off, value):
+        self.data[self.data[self.pc + off]] = value
 
     def run(self):
         while True:
