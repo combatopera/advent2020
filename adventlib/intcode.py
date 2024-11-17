@@ -44,8 +44,11 @@ class Computer:
         self.relbase += self._fetch(1)
         self.pc += 2
 
+    def _mode(self, off):
+        return self.modes // (10 ** (off - 1)) % 10
+
     def _fetch(self, off):
-        return getattr(self, f"fetch{self.modes // (10 ** (off - 1)) % 10}")(self.data[self.pc + off])
+        return getattr(self, f"fetch{self._mode(off)}")(self.data[self.pc + off])
 
     def fetch0(self, val):
         return self.data[val]
@@ -57,7 +60,13 @@ class Computer:
         return self.data[self.relbase + val]
 
     def _store(self, off, value):
-        self.data[self.data[self.pc + off]] = value
+        getattr(self, f"store{self._mode(off)}")(self.data[self.pc + off], value)
+
+    def store0(self, loc, val):
+        self.data[loc] = val
+
+    def store2(self, loc, val):
+        self.data[self.relbase + loc] = val
 
     def __iter__(self):
         while True:
