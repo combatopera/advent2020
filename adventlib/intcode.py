@@ -23,21 +23,17 @@ class Computer:
         return 2
 
     def opcode5(self):
-        if self._fetch(1):
-            return self._fetch(2) - self.pc
-        return 3
+        return self._fetch(2) - self.pc if self._fetch(1) else 3
 
     def opcode6(self):
-        if not self._fetch(1):
-            return self._fetch(2) - self.pc
-        return 3
+        return 3 if self._fetch(1) else self._fetch(2) - self.pc
 
     def opcode7(self):
-        self._store(3, int(self._fetch(1) < self._fetch(2)))
+        self._store(3, self._fetch(1) < self._fetch(2))
         return 4
 
     def opcode8(self):
-        self._store(3, int(self._fetch(1) == self._fetch(2)))
+        self._store(3, self._fetch(1) == self._fetch(2))
         return 4
 
     def _fetch(self, off):
