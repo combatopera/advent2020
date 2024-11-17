@@ -1,5 +1,4 @@
 from adventlib import inpath
-from collections import defaultdict
 
 def main():
     tree = {}
