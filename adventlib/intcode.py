@@ -22,6 +22,24 @@ class Computer:
         print(self._fetch(1))
         return 2
 
+    def opcode5(self):
+        if self._fetch(1):
+            return self._fetch(2) - self.pc
+        return 3
+
+    def opcode6(self):
+        if not self._fetch(1):
+            return self._fetch(2) - self.pc
+        return 3
+
+    def opcode7(self):
+        self._store(3, int(self._fetch(1) < self._fetch(2)))
+        return 4
+
+    def opcode8(self):
+        self._store(3, int(self._fetch(1) == self._fetch(2)))
+        return 4
+
     def _fetch(self, off):
         val = self.data[self.pc + off]
         mode = self.modes // (10 ** (off - 1)) % 10
