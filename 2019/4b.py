@@ -19,16 +19,16 @@ class Value(list):
 
     def intornone(self):
         mark = 0
-        n = x = self[mark]
+        n = group = self[mark]
         repeat = False
         for i in range(1, len(self)):
-            y = self[i]
-            if y == x:
-                if i == mark + 1 and (i == len(self) -1 or self[i + 1] != y):
+            x = self[i]
+            if x == group:
+                if i == mark + 1 and (i == len(self) -1 or self[i + 1] != group):
                     repeat = True
             else:
                 mark = i
-                x = y
+                group = x
             n = n * 10 + x
         if repeat:
             return n

@@ -18,13 +18,14 @@ class Value(list):
             self[i] = self[i - 1]
 
     def intornone(self):
-        n = x = self[0]
+        n = group = self[0]
         repeat = False
         for i in range(1, len(self)):
-            y = self[i]
-            if y == x:
+            x = self[i]
+            if x == group:
                 repeat = True
-            x = y
+            else:
+                group = x
             n = n * 10 + x
         if repeat:
             return n
