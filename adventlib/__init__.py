@@ -1,6 +1,8 @@
 from itertools import islice
 from pathlib import Path
-import inspect, re
+from subprocess import DEVNULL
+from tempfile import NamedTemporaryFile
+import atexit, inspect, re
 
 def readchunks(f):
     def g():
@@ -22,8 +24,12 @@ def _callerpath():
             return Path(p)
 
 def inpath():
-    path = _callerpath()
-    return path.parent / 'input' / re.match('[0-9]+', path.name).group()
+    from lagoon import gpg
+    caller = _callerpath()
+    f = NamedTemporaryFile()
+    atexit.register(f.close)
+    gpg.__decrypt(caller.parent / 'input' / f"{re.match('[0-9]+', caller.name).group()}.gpg", stdout = f, stderr = DEVNULL)
+    return Path(f.name)
 
 def answerof(taskname):
     'Pretend we saved it.'
