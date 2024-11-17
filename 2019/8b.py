@@ -15,4 +15,4 @@ def main():
             if image[p] == 2:
                 image[p] = c
     for y in range(h):
-        print(''.join('#' if image[x, y] else ' ' for x in range(w)))
+        print(''.join('W' if image[x, y] else ' ' for x in range(w)))
