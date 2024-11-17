@@ -8,6 +8,7 @@ def main():
             amps = [Computer(program.copy(), [phase]) for phase in setting]
             iters = [iter(a) for a in amps]
             signal = 0
+            esignal = None
             while True:
                 for a, i in zip(amps, iters):
                     a.inputs.append(signal)
