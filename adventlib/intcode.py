@@ -5,13 +5,17 @@ class Computer:
     def __init__(self, program):
         self.program = program
 
+    def opcode1(self):
+        self.program[self.program[self.cursor + 3]] = self.program[self.program[self.cursor + 1]] + self.program[self.program[self.cursor + 2]]
+        return 4
+
+    def opcode2(self):
+        self.program[self.program[self.cursor + 3]] = self.program[self.program[self.cursor + 1]] * self.program[self.program[self.cursor + 2]]
+        return 4
+
     def run(self):
         while True:
-            k = self.program[self.cursor]
-            if 99 == k:
+            opcode = self.program[self.cursor]
+            if 99 == opcode:
                 break
-            if 1 == k:
-                self.program[self.program[self.cursor + 3]] = self.program[self.program[self.cursor + 1]] + self.program[self.program[self.cursor + 2]]
-            elif 2 == k:
-                self.program[self.program[self.cursor + 3]] = self.program[self.program[self.cursor + 1]] * self.program[self.program[self.cursor + 2]]
-            self.cursor += 4
+            self.cursor += getattr(self, f"opcode{opcode}")()
