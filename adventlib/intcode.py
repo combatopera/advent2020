@@ -18,7 +18,7 @@ class Computer:
         return 2
 
     def opcode4(self):
-        print(self.program[self.cursor + 1])
+        print(self.program[self.program[self.cursor + 1]])
         return 2
 
     def run(self):
