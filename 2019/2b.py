@@ -8,7 +8,8 @@ def main():
             p = program.copy()
             p[1] = noun
             p[2] = verb
-            Computer(p).run()
-            if 19690720 == p[0]:
+            c = Computer(p)
+            c.run()
+            if 19690720 == c.data[0]:
                 print(100 * noun + verb)
                 return
