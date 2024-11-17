@@ -1,6 +1,6 @@
 class Computer:
 
-    pc = 0
+    relbase = pc = 0
 
     def __init__(self, data, inputs = None):
         self.data = data
@@ -36,10 +36,21 @@ class Computer:
         self._store(3, self._fetch(1) == self._fetch(2))
         self.pc += 4
 
+    def opcode9(self):
+        self.relbase += self._fetch(1)
+        self.pc += 2
+
     def _fetch(self, off):
-        val = self.data[self.pc + off]
-        mode = self.modes // (10 ** (off - 1)) % 10
-        return val if mode else self.data[val]
+        return getattr(self, f"fetch{self.modes // (10 ** (off - 1)) % 10}")(self.data[self.pc + off])
+
+    def fetch0(self, val):
+        return self.data[val]
+
+    def fetch1(self, val):
+        return val
+
+    def fetch2(self, val):
+        return self.data[self.relbase + val]
 
     def _store(self, off, value):
         self.data[self.data[self.pc + off]] = value
