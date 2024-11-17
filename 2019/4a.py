@@ -1,5 +1,4 @@
 from adventlib import inpath
-from itertools import islice
 
 class Value(list):
 
@@ -21,7 +20,8 @@ class Value(list):
     def intornone(self):
         n = x = self[0]
         repeat = False
-        for y in islice(self, 1, None):
+        for i in range(1, len(self)):
+            y = self[i]
             if y == x:
                 repeat = True
             x = y

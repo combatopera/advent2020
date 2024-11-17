@@ -1,5 +1,4 @@
 from adventlib import inpath
-from itertools import islice
 
 class Value(list):
 
