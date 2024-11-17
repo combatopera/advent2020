@@ -1,9 +1,13 @@
+from collections import defaultdict
+
 class Computer:
 
     relbase = pc = 0
 
     def __init__(self, data, inputs = None):
-        self.data = data
+        self.data = defaultdict(int)
+        for i, x in enumerate(data):
+            self.data[i] = x
         self.inputs = inputs
 
     def opcode1(self):
