@@ -5,10 +5,10 @@ from itertools import permutations
 def main():
     def signals():
         for setting in permutations(range(5)):
-            amps = [Computer(program.copy(), [phase, None]) for phase in setting]
+            amps = [Computer(program.copy(), [phase]) for phase in setting]
             signal = 0
             for a in amps:
-                a.inputs[1] = signal
+                a.inputs.append(signal)
                 signal, = a
             yield signal
     program = [int(s) for s in inpath().read_text().split(',')]
