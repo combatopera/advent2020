@@ -12,8 +12,17 @@ class Stone:
         self.p = p
         self.v = v
 
-    def param(self, a):
-        return self.p + a * self.v
+    def intersect(self, that):
+        try:
+            m = inv(np.array([[self.v[0], -that.v[0]], [self.v[1], -that.v[1]]]))
+        except LinAlgError:
+            return
+        a, b = m.dot(that.p - self.p)
+        if a >= 0 and b >= 0:
+            return a
+
+    def param(self, t):
+        return self.p + t * self.v
 
 def main():
     stones = []
@@ -25,12 +34,8 @@ def main():
     n = 0
     for i, s in enumerate(stones):
         for t in islice(stones, i + 1, None):
-            try:
-                m = inv(np.array([[s.v[0], -t.v[0]], [s.v[1], -t.v[1]]]))
-            except LinAlgError:
-                continue
-            a, b = m.dot(t.p - s.p)
-            if a >= 0 and b >= 0:
+            a = s.intersect(t)
+            if a is not None:
                 p = s.param(a)
                 if p[0] >= lo and p[0] <= hi and p[1] >= lo and p[1] <= hi:
                     n += 1
