@@ -19,8 +19,8 @@ def main():
     stones = []
     for l in inpath().read_text().splitlines():
         p, v = l.split('@')
-        p = np.fromiter(map(int, p.split(',')), float)[:2]
-        v = np.fromiter(map(int, v.split(',')), float)[:2]
+        p = np.fromiter(islice(map(int, p.split(',')), 2), float)
+        v = np.fromiter(islice(map(int, v.split(',')), 2), float)
         stones.append(Stone(p, v))
     n = 0
     for i, s in enumerate(stones):
@@ -30,7 +30,7 @@ def main():
             except LinAlgError:
                 continue
             a, b = m.dot(t.p - s.p)
-            if a >=0 and b >= 0:
+            if a >= 0 and b >= 0:
                 p = s.param(a)
                 if p[0] >= lo and p[0] <= hi and p[1] >= lo and p[1] <= hi:
                     n += 1
