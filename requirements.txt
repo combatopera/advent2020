@@ -1,3 +1,4 @@
 diapyr
 lagoon
 networkx
+numpy
