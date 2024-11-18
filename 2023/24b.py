@@ -45,7 +45,10 @@ def main():
         a.p[2] * a.v[0] - a.p[0] * a.v[2] - e.p[2] * e.v[0] + e.p[0] * e.v[2],
     ])
     px, pz, vx, vz = solve(matrix, const)
+    # Can't simply sum px, py, pz as they are not precise enough:
     ta = round((a.p[0] - px) / (vx - a.v[0]))
+    assert ta == round((a.p[1] - py) / (vy - a.v[1]))
+    assert ta == round((a.p[2] - pz) / (vz - a.v[2]))
     v = np.fromiter(map(round, [vx, vy, vz]), int)
     p = a.param(ta) - ta * v
     print(sum(p))
