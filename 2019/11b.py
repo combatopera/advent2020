@@ -1,0 +1,27 @@
+from adventlib import inpath, Vector
+from adventlib.intcode import Computer
+from collections import defaultdict
+
+dirs = [0, -1], [1, 0], [0, 1], [-1, 0]
+
+def main():
+    grid = defaultdict(int)
+    position = Vector([0, 0])
+    grid[position] = 1
+    dirindex = 0
+    c = Computer([int(s) for s in inpath().read_text().split(',')], [])
+    i = iter(c)
+    while True:
+        c.inputs.append(grid[position])
+        try:
+            grid[position] = next(i)
+        except StopIteration:
+            break
+        dirindex = (dirindex + next(i) * 2 - 1) % 4
+        position += dirs[dirindex]
+    minx = min(p[0] for p in grid)
+    maxx = max(p[0] for p in grid)
+    miny = min(p[1] for p in grid)
+    maxy = max(p[1] for p in grid)
+    for y in range(miny, maxy + 1):
+        print(''.join('#' if grid[x, y] else ' ' for x in range(minx, maxx + 1)))
