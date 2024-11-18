@@ -26,6 +26,8 @@ class Maze:
                 p = node + d
                 if p in self.ground and p not in lava:
                     break
+            else:
+                continue
             worm = {node, p}
             while True:
                 v = [q for d in dirs for q in [p + d] if q in self.ground and q not in worm]
