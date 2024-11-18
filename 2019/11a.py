@@ -2,7 +2,7 @@ from adventlib import inpath, Vector
 from adventlib.intcode import Computer
 from collections import defaultdict
 
-dirs = [0, 1], [1, 0], [0, -1], [-1, 0]
+dirs = [0, -1], [1, 0], [0, 1], [-1, 0]
 
 def main():
     grid = defaultdict(int)
