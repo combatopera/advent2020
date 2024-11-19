@@ -12,9 +12,9 @@ class Square:
 
 class Path:
 
-    def __init__(self):
-        self.v = []
-        self.lookup = set()
+    def __init__(self, p):
+        self.v = [p]
+        self.lookup = {p}
 
     def add(self, p):
         self.v.append(p)
@@ -39,7 +39,7 @@ def main():
         return path.pop()
     droid = Vector([0, 0])
     chart = {droid: Square(floor)}
-    path = Path()
+    path = Path(droid)
     pipe = []
     i = iter(Computer(map(int, inpath().read_text().split(',')), pipe))
     while True:
@@ -53,4 +53,4 @@ def main():
             path.add(step)
         if kind == oxygen:
             break
-    print(len(path.v))
+    print(len(path.v) - 1)
