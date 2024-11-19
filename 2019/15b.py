@@ -15,9 +15,9 @@ class Square:
 
 class Path:
 
-    def __init__(self):
-        self.v = []
-        self.lookup = set()
+    def __init__(self, p):
+        self.v = [p]
+        self.lookup = {p}
 
     def add(self, p):
         self.v.append(p)
@@ -38,14 +38,14 @@ def main():
             if not chart[p].complete:
                 return p
         chart[droid].complete = True
-        path.pop()
-        if path.v:
+        if 1 != len(path.v):
+            path.pop()
             return path.pop()
-    droid = Vector([0, 0])
-    chart = {droid: Square(floor)}
-    path = Path()
     pipe = []
     i = iter(Computer(map(int, inpath().read_text().split(',')), pipe))
+    droid = Vector([0, 0])
+    path = Path(droid)
+    chart = {droid: Square(floor)}
     while True:
         step = select()
         pipe.append(dirs[step - droid])
@@ -57,10 +57,10 @@ def main():
             path.add(step)
         if kind == oxygen:
             break
-    path = Path()
-    n = 0
-    for s in chart.values():
-        s.reset()
+    for square in chart.values():
+        square.reset()
+    path = Path(droid)
+    maxpath = 1
     while True:
         step = select()
         if step is None:
@@ -72,5 +72,5 @@ def main():
         if kind != wall:
             droid = step
             path.add(step)
-            n = max(n, len(path.v))
-    print(n)
+            maxpath = max(maxpath, len(path.v))
+    print(maxpath - 1)

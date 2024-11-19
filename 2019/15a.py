@@ -37,11 +37,11 @@ def main():
         chart[droid].complete = True
         path.pop()
         return path.pop()
-    droid = Vector([0, 0])
-    chart = {droid: Square(floor)}
-    path = Path(droid)
     pipe = []
     i = iter(Computer(map(int, inpath().read_text().split(',')), pipe))
+    droid = Vector([0, 0])
+    path = Path(droid)
+    chart = {droid: Square(floor)}
     while True:
         step = select()
         pipe.append(dirs[step - droid])
