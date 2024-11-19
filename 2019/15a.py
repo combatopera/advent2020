@@ -6,14 +6,9 @@ wall, floor, oxygen = range(3)
 
 class Square:
 
-    icons = {wall: '#', floor: ' ', oxygen: '$'}
-
     def __init__(self, kind):
         self.complete = kind == wall
         self.kind = kind
-
-    def __str__(self):
-        return self.icons[self.kind]
 
 def main():
     def select():
@@ -36,17 +31,11 @@ def main():
         step = select()
         pipe.append(dirs[step - droid])
         kind = next(i)
-        if kind == oxygen:
-            print(len(path))
-            break
         if step not in chart:
             chart[step] = Square(kind)
         if kind != wall:
             droid = step
             path.append(step)
-        minx = min(p[0] for p in chart)
-        maxx = max(p[0] for p in chart)
-        miny = min(p[1] for p in chart)
-        maxy = max(p[1] for p in chart)
-        for y in range(miny, maxy + 1):
-            print(''.join('@' if (x, y) == droid else '*' if (x, y) == (0, 0) else str(chart[x, y]) if (x, y) in chart else '/' for x in range(minx, maxx + 1)))
+        if kind == oxygen:
+            break
+    print(len(path) - 1)
