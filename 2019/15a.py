@@ -10,9 +10,24 @@ class Square:
         self.complete = kind == wall
         self.kind = kind
 
+class Path:
+
+    def __init__(self):
+        self.v = []
+        self.lookup = set()
+
+    def add(self, p):
+        self.v.append(p)
+        self.lookup.add(p)
+
+    def pop(self):
+        p = self.v.pop()
+        self.lookup.remove(p)
+        return p
+
 def main():
     def select():
-        steps = [p for d in dirs for p in [droid + d] if p not in path]
+        steps = [p for d in dirs for p in [droid + d] if p not in path.lookup]
         for p in steps:
             if p not in chart:
                 return p
@@ -24,7 +39,8 @@ def main():
         return path.pop()
     droid = Vector([0, 0])
     chart = {droid: Square(floor)}
-    path = [droid]
+    path = Path()
+    path.add(droid)
     pipe = []
     i = iter(Computer(map(int, inpath().read_text().split(',')), pipe))
     while True:
@@ -35,7 +51,7 @@ def main():
             chart[step] = Square(kind)
         if kind != wall:
             droid = step
-            path.append(step)
+            path.add(step)
         if kind == oxygen:
             break
-    print(len(path) - 1)
+    print(len(path.v) - 1)
