@@ -25,9 +25,9 @@ def main():
         return sum(((m.p[axis], m.v[axis]) for m in moons), ())
     moons = [Moon(Vector(map(int, re.findall('[0-9-]+', l)))) for l in inpath().read_text().splitlines()]
     n = 0
-    history = {a: {report(a): n} for a in range(3)}
-    period = {}
-    while len(period) < 3:
+    initial = {a: report(a) for a in range(3)}
+    periods = {}
+    while len(periods) < 3:
         for i, m1 in enumerate(moons):
             for m2 in islice(moons, i + 1, None):
                 m1.attract(m2)
@@ -35,11 +35,6 @@ def main():
             m.accel()
         n += 1
         for a in range(3):
-            if a not in period:
-                r = report(a)
-                try:
-                    assert not history[a][r]
-                    period[a] = n
-                except KeyError:
-                    history[a][r] = n
-    print(lcm(*period.values()))
+            if a not in periods and report(a) == initial[a]:
+                periods[a] = n
+    print(lcm(*periods.values()))
