@@ -40,7 +40,6 @@ def main():
     droid = Vector([0, 0])
     chart = {droid: Square(floor)}
     path = Path()
-    path.add(droid)
     pipe = []
     i = iter(Computer(map(int, inpath().read_text().split(',')), pipe))
     while True:
@@ -54,4 +53,4 @@ def main():
             path.add(step)
         if kind == oxygen:
             break
-    print(len(path.v) - 1)
+    print(len(path.v))
