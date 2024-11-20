@@ -1,18 +1,23 @@
 from adventlib import inpath
-from itertools import islice
 
-base = 0, 1, 0, -1
+def _positive(i, n):
+    i += 1
+    k = i - 1
+    while k < n:
+        yield range(k, min(k + i, n))
+        k += i * 4
 
-def _pattern(i):
-    while True:
-        for x in base:
-            for _ in range(1 + i):
-                yield x
+def _negative(i, n):
+    i += 1
+    k = 3 * i - 1
+    while k < n:
+        yield range(k, min(k + i, n))
+        k += i * 4
 
 def main():
     def fft():
         for i in range(n):
-            yield abs(sum(x * k for x, k in zip(signal, islice(_pattern(i), 1, None)))) % 10
+            yield abs(sum(signal[k] for r in _positive(i, n) for k in r) - sum(signal[k] for r in _negative(i, n) for k in r)) % 10
     signal = list(map(int, inpath().read_text().rstrip()))
     n = len(signal)
     for _ in range(100):
