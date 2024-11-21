@@ -50,7 +50,7 @@ def main():
     for sub in 'ABC':
         steps = defaultdict(list)
         for i, step in enumerate(route):
-            if isinstance(step, tuple):
+            if not isinstance(step, str):
                 steps[step].append(i)
         step, indices = min(steps.items(), key = lambda t: len(t[1]))
         i = j = 0
