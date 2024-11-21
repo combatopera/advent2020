@@ -7,7 +7,7 @@ plus = (-1, 0), (0, -1), (0, 0), (0, 1), (1, 0)
 dirs = (0, -1), (1, 0), (0, 1), (-1, 0)
 
 def _enc(routine):
-    v = [ord(c) for c in f"{','.join(routine)}\n"]
+    v = list(map(ord, f"{','.join(routine)}\n"))
     assert len(v) <= 21
     return v
 
