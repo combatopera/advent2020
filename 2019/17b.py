@@ -68,13 +68,9 @@ def main():
         subs[sub] = sum(route[steps[step][0] + i:steps[step][0] + j + 1], ())
         for k in reversed(steps[step]):
             route[k + i:k + j + 1] = [sub]
-    print(route, _enc(route))
-    for sub in subs.values():
-        print(sub, _enc(sub))
     input = [*_enc(route), *chain(*map(_enc, subs.values())), *_enc('n')]
-    print(''.join(map(chr, input)))
-
     program = list(map(int, inpath().read_text().split(',')))
     program[0] = 2
     for dust in Computer(program, input):
-        print(dust)
+        pass
+    print(dust)
