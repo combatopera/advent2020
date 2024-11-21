@@ -14,7 +14,8 @@ def _enc(sub):
 def main():
     grid = {}
     x = y = 0
-    for k in Computer(map(int, inpath().read_text().split(','))):
+    program = list(map(int, inpath().read_text().split(',')))
+    for k in Computer(program):
         if 10 == k:
             if x:
                 w = x
@@ -66,9 +67,6 @@ def main():
         subs[sub] = sum(route[steps[step][0] + i:steps[step][0] + j + 1], ())
         for k in reversed(steps[step]):
             route[k + i:k + j + 1] = [sub]
-    input = [*_enc(route), *chain(*map(_enc, subs.values())), *_enc('n')]
-    program = list(map(int, inpath().read_text().split(',')))
-    program[0] = 2
-    for dust in Computer(program, input):
+    for dust in Computer([2] + program[1:], [*_enc(route), *chain(*map(_enc, subs.values())), *_enc('n')]):
         pass
     print(dust)
