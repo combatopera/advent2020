@@ -6,8 +6,8 @@ from itertools import chain
 plus = (-1, 0), (0, -1), (0, 0), (0, 1), (1, 0)
 dirs = (0, -1), (1, 0), (0, 1), (-1, 0)
 
-def _enc(sub):
-    v = [ord(c) for c in f"{','.join(sub)}\n"]
+def _enc(routine):
+    v = [ord(c) for c in f"{','.join(routine)}\n"]
     assert len(v) <= 21
     return v
 
@@ -46,27 +46,27 @@ def main():
             n += 1
             robot += dirs[direction]
         route.append((turn, str(n)))
-    subs = {}
+    subs = []
     for sub in 'ABC':
         steps = defaultdict(list)
         for i, step in enumerate(route):
             if isinstance(step, tuple):
                 steps[step].append(i)
-        step = min(steps.items(), key = lambda t: len(t[1]))[0]
+        step, indices = min(steps.items(), key = lambda t: len(t[1]))
         i = j = 0
         try:
-            while 1 == len({route[k + i - 1] for k in steps[step]}):
+            while 1 == len({route[k + i - 1] for k in indices}):
                 i -= 1
         except IndexError:
             pass
         try:
-            while 1 == len({route[k + j + 1] for k in steps[step]}):
+            while 1 == len({route[k + j + 1] for k in indices}):
                 j += 1
         except IndexError:
             pass
-        subs[sub] = sum(route[steps[step][0] + i:steps[step][0] + j + 1], ())
-        for k in reversed(steps[step]):
+        subs.append(list(chain(*route[indices[0] + i:indices[0] + j + 1])))
+        for k in reversed(indices):
             route[k + i:k + j + 1] = [sub]
-    for dust in Computer([2] + program[1:], [*_enc(route), *chain(*map(_enc, subs.values())), *_enc('n')]):
+    for dust in Computer([2] + program[1:], [*_enc(route), *chain(*map(_enc, subs)), *_enc('n')]):
         pass
     print(dust)
