@@ -17,10 +17,8 @@ def main():
     program = list(map(int, inpath().read_text().split(',')))
     for k in Computer(program):
         if 10 == k:
-            if x:
-                w = x
-                x = 0
-                y += 1
+            x = 0
+            y += 1
         else:
             grid[x, y] = c = chr(k)
             try:
@@ -30,7 +28,6 @@ def main():
             else:
                 robot = Vector([x, y])
             x += 1
-    h = y
     route = []
     while True:
         if '#' == grid.get(robot + dirs[(direction - 1) % 4]):
