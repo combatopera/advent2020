@@ -30,8 +30,6 @@ def main():
                 robot = Vector([x, y])
             x += 1
     h = y
-    #for y in range(h):
-    #    print(''.join(grid[x, y] for x in range(w)))
     route = []
     while True:
         if '#' == grid.get(robot + dirs[(direction - 1) % 4]):
