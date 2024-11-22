@@ -59,7 +59,7 @@ class Grid:
         self.alldoors = set(c for s in [set(ascii_uppercase)] for c in self.chars.values() if c in s)
 
     def graph(self):
-        G = nx.Graph()
+        G = nx.DiGraph()
         nodes = [self.source, *(Node(c, frozenset([c])) for c in self.allkeys)]
         seen = set()
         while nodes:
