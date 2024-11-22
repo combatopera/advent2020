@@ -2,7 +2,7 @@ from itertools import islice
 from pathlib import Path
 from subprocess import DEVNULL
 from tempfile import NamedTemporaryFile
-import atexit, inspect, re
+import atexit, inspect, re, sys
 
 def readchunks(f):
     def g():
@@ -26,9 +26,13 @@ def _callerpath():
 def inpath():
     from lagoon import gpg
     caller = _callerpath()
+    plainpath = caller.parent / 'input' / re.match('[0-9]+', caller.name).group()
+    if plainpath.exists():
+        print(f"Using plain path: {plainpath}", file = sys.stderr)
+        return plainpath
     f = NamedTemporaryFile()
     atexit.register(f.close)
-    gpg.__decrypt(caller.parent / 'input' / f"{re.match('[0-9]+', caller.name).group()}.gpg", stdout = f, stderr = DEVNULL)
+    gpg.__decrypt(f"{plainpath}.gpg", stdout = f, stderr = DEVNULL)
     return Path(f.name)
 
 def answerof(taskname):
