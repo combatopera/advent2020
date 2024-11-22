@@ -4,7 +4,13 @@ from itertools import chain
 from string import ascii_lowercase, ascii_uppercase
 import networkx as nx
 
-moves = (1, 0), (0, 1), (-1, 0), (0, -1)
+class Move:
+
+    def __init__(self, off, weight = 1):
+        self.off = off
+        self.weight = weight
+
+moves = list(map(Move, [(1, 0), (0, 1), (-1, 0), (0, -1)]))
 
 class Path:
 
@@ -15,9 +21,9 @@ class Path:
 
     def explore(self, grid):
         for m in moves:
-            q = self.tip + m
+            q = self.tip + m.off
             if q not in self.lava and grid.chars[q] != '#':
-                yield Path(self.lava, q, self.weight + 1)
+                yield Path(self.lava, q, self.weight + m.weight)
 
 class Node(namedtuple('BaseNode', 'c keys')):
 
