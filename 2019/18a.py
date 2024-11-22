@@ -6,11 +6,11 @@ import networkx as nx
 
 class Move:
 
-    def __init__(self, off, weight = 1):
+    def __init__(self, off, weight):
         self.off = off
         self.weight = weight
 
-moves = list(map(Move, [(1, 0), (0, 1), (-1, 0), (0, -1)]))
+moves = [Move(off, 1) for off in [(1, 0), (0, 1), (-1, 0), (0, -1)]]
 middle = Vector([40, 40])
 circle = {middle + (x, y) for x in range(-1, 2) for y in range(-1, 2) if x or y}
 teleports = {
