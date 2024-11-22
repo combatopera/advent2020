@@ -23,7 +23,7 @@ class Path:
 
 class Node(namedtuple('BaseNode', 'c keys')):
 
-    def links(self, grid):
+    def edges(self, grid):
         doors = grid.alldoors - {c.upper() for c in self.keys}
         paths = [Path(set(), grid.points[self.c])]
         while paths:
@@ -34,7 +34,7 @@ class Node(namedtuple('BaseNode', 'c keys')):
                     if c in doors:
                         pass
                     elif c in grid.allkeys:
-                        yield q.weight(), self._make([c, frozenset(chain(self.keys, [c]))])
+                        yield self, q.weight(), self._make([c, frozenset(chain(self.keys, [c]))])
                     else:
                         nextpaths.append(q)
             paths = nextpaths
@@ -67,9 +67,9 @@ class Grid:
             for node in nodes:
                 if node not in seen and node.keys != self.allkeys:
                     seen.add(node)
-                    for weight, link in node.links(self):
+                    for src, weight, link in node.edges(self):
                         #print(node, weight, link)
-                        G.add_edge(node, link, weight = weight)
+                        G.add_edge(src, link, weight = weight)
                         nextnodes.append(link)
             nodes = nextnodes
         return G
