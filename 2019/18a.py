@@ -46,7 +46,7 @@ class Node(namedtuple('BaseNode', 'c keys')):
                     c = grid.chars[q.tip]
                     if c in doors:
                         pass
-                    elif c in grid.allkeys:
+                    elif c in grid.allkeys and c not in self.keys:
                         yield self, self._make([c, frozenset(chain(self.keys, [c]))]), q.weight
                     else:
                         nextpaths.append(q)
