@@ -61,18 +61,22 @@ class Grid:
     def graph(self):
         G = nx.DiGraph()
         nodes = [self.source]
-        seen = set()
+        explored = set()
+        sinks = []
         while nodes:
             nextnodes = []
             for node in nodes:
-                if node not in seen and node.keys != self.allkeys:
-                    seen.add(node)
-                    for source, target, weight in node.edges(self):
-                        print(source, target, weight)
-                        G.add_edge(source, target, weight = weight)
-                        nextnodes.append(target)
+                if node not in explored:
+                    explored.add(node)
+                    if node.keys == self.allkeys:
+                        sinks.append(node)
+                    else:
+                        for source, target, weight in node.edges(self):
+                            print(source, target, weight)
+                            G.add_edge(source, target, weight = weight)
+                            nextnodes.append(target)
             nodes = nextnodes
-        return G
+        return G, sinks
 
 def _minpathlen(G, source, target):
     return nx.shortest_path_length(G, source, target, weight = 'weight')
@@ -80,5 +84,5 @@ def _minpathlen(G, source, target):
 def main():
     for block in inpath().read_text().split('\n\n'):
         grid = Grid(block.splitlines())
-        G = grid.graph()
-        print(min(_minpathlen(G, grid.source, target) for target in G.nodes if target.keys == grid.allkeys))
+        G, sinks = grid.graph()
+        print(min(_minpathlen(G, grid.source, target) for target in sinks))
