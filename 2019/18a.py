@@ -8,24 +8,22 @@ moves = (1, 0), (0, 1), (-1, 0), (0, -1)
 
 class Path:
 
-    def __init__(self, history, tip):
+    def __init__(self, history, tip, weight):
         self.lava = {*history, tip}
         self.tip = tip
-
-    def weight(self):
-        return len(self.lava) - 1
+        self.weight = weight
 
     def explore(self, grid):
         for m in moves:
             q = self.tip + m
             if q not in self.lava and grid.chars[q] != '#':
-                yield Path(self.lava, q)
+                yield Path(self.lava, q, self.weight + 1)
 
 class Node(namedtuple('BaseNode', 'c keys')):
 
     def edges(self, grid):
         doors = grid.alldoors - {c.upper() for c in self.keys}
-        paths = [Path(set(), grid.points[self.c])]
+        paths = [Path(set(), grid.points[self.c], 0)]
         while paths:
             nextpaths = []
             for path in paths:
@@ -34,7 +32,7 @@ class Node(namedtuple('BaseNode', 'c keys')):
                     if c in doors:
                         pass
                     elif c in grid.allkeys:
-                        yield self, self._make([c, frozenset(chain(self.keys, [c]))]), q.weight()
+                        yield self, self._make([c, frozenset(chain(self.keys, [c]))]), q.weight
                     else:
                         nextpaths.append(q)
             paths = nextpaths
@@ -72,7 +70,7 @@ class Grid:
                         sinks.append(node)
                     else:
                         for source, target, weight in node.edges(self):
-                            print(source, target, weight)
+                            #print(source, target, weight)
                             G.add_edge(source, target, weight = weight)
                             nextnodes.append(target)
             nodes = nextnodes
