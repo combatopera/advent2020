@@ -27,6 +27,8 @@ class Node(namedtuple('BaseNode', 'c keys')):
 
 class Grid:
 
+    source = Node('@', frozenset())
+
     def __init__(self, lines):
         self.chars = {}
         self.points = {}
@@ -40,7 +42,7 @@ class Grid:
 
     def graph(self):
         G = nx.Graph()
-        nodes = [Node(c, frozenset(self.allkeys & {c})) for chars in [self.allkeys | {'@'}] for (x, y), c in self.chars.items() if c in chars]
+        nodes = [self.source, *(Node(c, frozenset([c])) for c in self.allkeys)]
         seen = set()
         while nodes:
             nextnodes = []
@@ -56,5 +58,4 @@ class Grid:
 def main():
     grid = Grid(inpath().read_text().splitlines())
     G = grid.graph()
-    source = Node('@', frozenset())
-    print(min(nx.shortest_path_length(G, source, target, weight = 'weight') for target in G.nodes if target.keys == grid.allkeys))
+    print(min(nx.shortest_path_length(G, grid.source, target, weight = 'weight') for target in G.nodes if target.keys == grid.allkeys))
