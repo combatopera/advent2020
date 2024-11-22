@@ -37,17 +37,20 @@ class Path:
 class Node(namedtuple('BaseNode', 'c keys')):
 
     def edges(self, grid):
+        return self._edges(grid, Path(set(), grid.points[self.c], 0))
+
+    def _edges(self, grid, seed):
         doors = grid.alldoors - {c.upper() for c in self.keys}
-        paths = [Path(set(), grid.points[self.c], 0)]
+        paths = [seed]
         while paths:
             nextpaths = []
             for path in paths:
                 for q in path.explore(grid):
                     c = grid.chars[q.tip]
                     if c in doors:
-                        pass
+                        yield from self._replace(keys = frozenset(chain(self.keys, [c.lower()])))._edges(grid, q)
                     elif c in grid.allkeys and c not in self.keys:
-                        yield self._make([c, frozenset(chain(self.keys, [c]))]), q.weight
+                        yield self, self._make([c, frozenset(chain(self.keys, [c]))]), q.weight
                     else:
                         nextpaths.append(q)
             paths = nextpaths
@@ -83,9 +86,9 @@ class Grid:
                     if node.keys == self.allkeys:
                         sinks.append(node)
                     else:
-                        for target, weight in node.edges(self):
-                            print(node, target, weight)
-                            G.add_edge(node, target, weight = weight)
+                        for source, target, weight in node.edges(self):
+                            print(source, target, weight)
+                            G.add_edge(source, target, weight = weight)
                             nextnodes.append(target)
                     explored.add(node)
             nodes = nextnodes
