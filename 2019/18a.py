@@ -10,12 +10,12 @@ class Node(namedtuple('BaseNode', 'c keys')):
 
     def links(self, grid):
         self_p = grid.points[self.c]
-        augdoors = grid.alldoors - {c.upper() for c in self.keys} | {'#'}
-        firsts = [q for m in moves for q in [self_p + m] if grid.chars[q] not in augdoors]
+        walls = grid.alldoors - {c.upper() for c in self.keys} | {'#'}
+        firsts = [q for m in moves for q in [self_p + m] if grid.chars[q] not in walls]
         for p in firsts:
             lava = {self_p, p}
             while True:
-                nexts = [q for m in moves for q in [p + m] if q not in lava and grid.chars[q] not in augdoors]
+                nexts = [q for m in moves for q in [p + m] if q not in lava and grid.chars[q] not in walls]
                 if not nexts:
                     break
                 p, = nexts
