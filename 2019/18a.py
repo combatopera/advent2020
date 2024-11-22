@@ -11,6 +11,15 @@ class Move:
         self.weight = weight
 
 moves = list(map(Move, [(1, 0), (0, 1), (-1, 0), (0, -1)]))
+middle = Vector([40, 40])
+circle = {middle + (x, y) for x in range(-1, 2) for y in range(-1, 2) if x or y}
+teleports = {
+    middle: [Move(off, 3) for off in [(-1, -2), (1, -2), (-1, 2), (1, 2)]],
+    middle + (-1, -2): [Move((1, -2), 4), Move((-1, 2), 4), Move((1, 2), 6)],
+    middle + (1, -2): [Move((-1, -2), 4), Move((1, 2), 4), Move((-1, 2), 6)],
+    middle + (-1, 2): [Move((-1, -2), 4), Move((1, 2), 4), Move((1, -2), 6)],
+    middle + (1, 2): [Move((1, -2), 4), Move((-1, 2), 4), Move((-1, -2), 6)],
+}
 
 class Path:
 
@@ -20,9 +29,9 @@ class Path:
         self.weight = weight
 
     def explore(self, grid):
-        for m in moves:
+        for m in chain(moves, teleports.get(self.tip, ())):
             q = self.tip + m.off
-            if q not in self.lava and grid.chars[q] != '#':
+            if q not in circle and q not in self.lava and grid.chars[q] != '#':
                 yield Path(self.lava, q, self.weight + m.weight)
 
 class Node(namedtuple('BaseNode', 'c keys')):
@@ -76,7 +85,7 @@ class Grid:
                         sinks.append(node)
                     else:
                         for source, target, weight in node.edges(self):
-                            #print(source, target, weight)
+                            print(source, target, weight)
                             G.add_edge(source, target, weight = weight)
                             nextnodes.append(target)
             nodes = nextnodes
