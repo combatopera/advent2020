@@ -60,7 +60,7 @@ class Grid:
 
     def graph(self):
         G = nx.DiGraph()
-        nodes = [self.source, *(Node(c, frozenset([c])) for c in self.allkeys)]
+        nodes = [self.source]
         seen = set()
         while nodes:
             nextnodes = []
