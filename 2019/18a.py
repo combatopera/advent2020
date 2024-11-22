@@ -6,24 +6,36 @@ import networkx as nx
 
 moves = (1, 0), (0, 1), (-1, 0), (0, -1)
 
+class Path:
+
+    def __init__(self, history, tip):
+        self.lava = {*history, tip}
+        self.tip = tip
+
+    def weight(self):
+        return len(self.lava) - 1
+
+    def explore(self, grid, walls):
+        for m in moves:
+            q = self.tip + m
+            if q not in self.lava and grid.chars[q] not in walls:
+                yield Path(self.lava, q)
+
 class Node(namedtuple('BaseNode', 'c keys')):
 
     def links(self, grid):
-        self_p = grid.points[self.c]
-        walls = grid.alldoors - {c.upper() for c in self.keys} | {'#'}
-        firsts = [q for m in moves for q in [self_p + m] if grid.chars[q] not in walls]
-        for p in firsts:
-            lava = {self_p, p}
-            while True:
-                nexts = [q for m in moves for q in [p + m] if q not in lava and grid.chars[q] not in walls]
-                if not nexts:
-                    break
-                p, = nexts
-                lava.add(p)
-                c = grid.chars[p]
-                if c in grid.allkeys:
-                    yield len(lava) - 1, self._make([c, frozenset(chain(self.keys, [c]))])
-                    break
+        walls = {'#', *grid.alldoors} - {c.upper() for c in self.keys}
+        paths = [Path(set(), grid.points[self.c])]
+        while paths:
+            nextpaths = []
+            for path in paths:
+                for q in path.explore(grid, walls):
+                    c = grid.chars[q.tip]
+                    if c in grid.allkeys:
+                        yield q.weight(), self._make([c, frozenset(chain(self.keys, [c]))])
+                    else:
+                        nextpaths.append(q)
+            paths = nextpaths
 
 class Grid:
 
@@ -51,6 +63,7 @@ class Grid:
                 if node not in seen and node.keys != self.allkeys:
                     seen.add(node)
                     for weight, link in node.links(self):
+                        print(node, weight, link)
                         G.add_edge(node, link, weight = weight)
                         nextnodes.append(link)
             nodes = nextnodes
