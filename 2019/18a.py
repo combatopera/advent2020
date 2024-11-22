@@ -15,23 +15,25 @@ class Path:
     def weight(self):
         return len(self.lava) - 1
 
-    def explore(self, grid, walls):
+    def explore(self, grid):
         for m in moves:
             q = self.tip + m
-            if q not in self.lava and grid.chars[q] not in walls:
+            if q not in self.lava and grid.chars[q] != '#':
                 yield Path(self.lava, q)
 
 class Node(namedtuple('BaseNode', 'c keys')):
 
     def links(self, grid):
-        walls = {'#', *grid.alldoors} - {c.upper() for c in self.keys}
+        doors = grid.alldoors - {c.upper() for c in self.keys}
         paths = [Path(set(), grid.points[self.c])]
         while paths:
             nextpaths = []
             for path in paths:
-                for q in path.explore(grid, walls):
+                for q in path.explore(grid):
                     c = grid.chars[q.tip]
-                    if c in grid.allkeys:
+                    if c in doors:
+                        pass
+                    elif c in grid.allkeys:
                         yield q.weight(), self._make([c, frozenset(chain(self.keys, [c]))])
                     else:
                         nextpaths.append(q)
@@ -66,7 +68,7 @@ class Grid:
                 if node not in seen and node.keys != self.allkeys:
                     seen.add(node)
                     for weight, link in node.links(self):
-                        print(node, weight, link)
+                        #print(node, weight, link)
                         G.add_edge(node, link, weight = weight)
                         nextnodes.append(link)
             nodes = nextnodes
