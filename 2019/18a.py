@@ -39,26 +39,25 @@ class Grid:
         self.alldoors = set(c for s in [set(ascii_uppercase)] for c in self.d.values() if c in s)
         self.allkeys = set(c for s in [set(ascii_lowercase)] for c in self.d.values() if c in s)
 
-    def nodes(self):
-        ofinterest = self.allkeys | {'@'}
-        for (x, y), c in self.d.items():
-            if c in ofinterest:
-                yield Node(c, frozenset(self.allkeys & {c}))
+    def graph(self):
+        G = nx.Graph()
+        nodes = [Node(c, frozenset(self.allkeys & {c})) for chars in [self.allkeys | {'@'}] for (x, y), c in self.d.items() if c in chars]
+        seen = set()
+        while nodes:
+            nextnodes = []
+            for node in nodes:
+                if node not in seen and node.keys != self.allkeys:
+                    seen.add(node)
+                    for weight, link in node.links(self):
+                        G.add_edge(node, link, weight = weight)
+                        nextnodes.append(link)
+            nodes = nextnodes
+        return G
 
 def main():
-    G = nx.Graph()
     grid = Grid()
-    nodes = list(grid.nodes())
-    seen = set()
-    while nodes:
-        nextnodes = []
-        for node in nodes:
-            if node not in seen and node.keys != grid.allkeys:
-                seen.add(node)
-                for weight, link in node.links(grid):
-                    G.add_edge(node, link, weight = weight)
-                    nextnodes.append(link)
-        nodes = nextnodes
+    G = grid.graph()
+    source = Node('@', frozenset())
     for target in G.nodes:
         if target.keys == grid.allkeys:
-            print(target, nx.shortest_path_length(G, Node('@', frozenset()), target, weight = 'weight'))
+            print(target, nx.shortest_path_length(G, source, target, weight = 'weight'))
