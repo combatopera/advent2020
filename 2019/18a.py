@@ -47,7 +47,7 @@ class Node(namedtuple('BaseNode', 'c keys')):
                     if c in doors:
                         pass
                     elif c in grid.allkeys and c not in self.keys:
-                        yield self, self._make([c, frozenset(chain(self.keys, [c]))]), q.weight
+                        yield self._make([c, frozenset(chain(self.keys, [c]))]), q.weight
                     else:
                         nextpaths.append(q)
             paths = nextpaths
@@ -80,14 +80,14 @@ class Grid:
             nextnodes = []
             for node in nodes:
                 if node not in explored:
-                    explored.add(node)
                     if node.keys == self.allkeys:
                         sinks.append(node)
                     else:
-                        for source, target, weight in node.edges(self):
-                            print(source, target, weight)
-                            G.add_edge(source, target, weight = weight)
+                        for target, weight in node.edges(self):
+                            print(node, target, weight)
+                            G.add_edge(node, target, weight = weight)
                             nextnodes.append(target)
+                    explored.add(node)
             nodes = nextnodes
         return G, sinks
 
