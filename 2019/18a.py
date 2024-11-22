@@ -10,38 +10,38 @@ moves = (1, 0), (0, 1), (-1, 0), (0, -1)
 class Node(namedtuple('BaseNode', 'c keys')):
 
     def links(self, grid):
-        self_p = grid.lookup[self.c]
+        self_p = grid.points[self.c]
         augdoors = grid.alldoors - {c.upper() for c in self.keys} | {'#'}
-        firsts = [q for m in moves for q in [self_p + m] if grid.d[q] not in augdoors]
+        firsts = [q for m in moves for q in [self_p + m] if grid.chars[q] not in augdoors]
         for p in firsts:
             lava = {self_p, p}
             while True:
-                nexts = [q for m in moves for q in [p + m] if q not in lava and grid.d[q] not in augdoors]
+                nexts = [q for m in moves for q in [p + m] if q not in lava and grid.chars[q] not in augdoors]
                 if not nexts:
                     break
                 p, = nexts
                 lava.add(p)
-                c = grid.d[p]
+                c = grid.chars[p]
                 if c in grid.allkeys:
                     yield len(lava) - 1, self._make([c, frozenset(chain(self.keys, [c]))])
                     break
 
 class Grid:
 
-    def __init__(self):
-        self.d = {}
-        self.lookup = {}
-        for y, line in enumerate(inpath().read_text().splitlines()):
+    def __init__(self, lines):
+        self.chars = {}
+        self.points = {}
+        for y, line in enumerate(lines):
             for x, c in enumerate(line):
-                self.d[x, y] = c
+                self.chars[x, y] = c
                 if '@' == c or c in ascii_lowercase:
-                    self.lookup[c] = Vector([x, y])
-        self.alldoors = set(c for s in [set(ascii_uppercase)] for c in self.d.values() if c in s)
-        self.allkeys = set(c for s in [set(ascii_lowercase)] for c in self.d.values() if c in s)
+                    self.points[c] = Vector([x, y])
+        self.alldoors = set(c for s in [set(ascii_uppercase)] for c in self.chars.values() if c in s)
+        self.allkeys = set(c for s in [set(ascii_lowercase)] for c in self.chars.values() if c in s)
 
     def graph(self):
         G = nx.Graph()
-        nodes = [Node(c, frozenset(self.allkeys & {c})) for chars in [self.allkeys | {'@'}] for (x, y), c in self.d.items() if c in chars]
+        nodes = [Node(c, frozenset(self.allkeys & {c})) for chars in [self.allkeys | {'@'}] for (x, y), c in self.chars.items() if c in chars]
         seen = set()
         while nodes:
             nextnodes = []
@@ -55,7 +55,7 @@ class Grid:
         return G
 
 def main():
-    grid = Grid()
+    grid = Grid(inpath().read_text().splitlines())
     G = grid.graph()
     source = Node('@', frozenset())
     for target in G.nodes:
