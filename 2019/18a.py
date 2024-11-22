@@ -74,8 +74,11 @@ class Grid:
             nodes = nextnodes
         return G
 
+def _minpathlen(G, source, target):
+    return nx.shortest_path_length(G, source, target, weight = 'weight')
+
 def main():
     for block in inpath().read_text().split('\n\n'):
         grid = Grid(block.splitlines())
         G = grid.graph()
-        print(min(nx.shortest_path_length(G, grid.source, target, weight = 'weight') for target in G.nodes if target.keys == grid.allkeys))
+        print(min(_minpathlen(G, grid.source, target) for target in G.nodes if target.keys == grid.allkeys))
