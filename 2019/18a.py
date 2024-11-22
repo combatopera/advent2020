@@ -32,13 +32,14 @@ class Grid:
     def __init__(self, lines):
         self.chars = {}
         self.points = {}
+        ofinterest = set(chain(ascii_lowercase, ['@']))
         for y, line in enumerate(lines):
             for x, c in enumerate(line):
                 self.chars[x, y] = c
-                if '@' == c or c in ascii_lowercase:
+                if c in ofinterest:
                     self.points[c] = Vector([x, y])
+        self.allkeys = self.points.keys() - {'@'}
         self.alldoors = set(c for s in [set(ascii_uppercase)] for c in self.chars.values() if c in s)
-        self.allkeys = set(c for s in [set(ascii_lowercase)] for c in self.chars.values() if c in s)
 
     def graph(self):
         G = nx.Graph()
