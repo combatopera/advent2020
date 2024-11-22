@@ -37,6 +37,9 @@ class Node(namedtuple('BaseNode', 'c keys')):
                         nextpaths.append(q)
             paths = nextpaths
 
+    def __str__(self):
+        return f"{self.c}({''.join(sorted(self.keys))})"
+
 class Grid:
 
     source = Node('@', frozenset())
@@ -70,6 +73,7 @@ class Grid:
         return G
 
 def main():
-    grid = Grid(inpath().read_text().splitlines())
-    G = grid.graph()
-    print(min(nx.shortest_path_length(G, grid.source, target, weight = 'weight') for target in G.nodes if target.keys == grid.allkeys))
+    for block in inpath().read_text().split('\n\n'):
+        grid = Grid(block.splitlines())
+        G = grid.graph()
+        print(min(nx.shortest_path_length(G, grid.source, target, weight = 'weight') for target in G.nodes if target.keys == grid.allkeys))
