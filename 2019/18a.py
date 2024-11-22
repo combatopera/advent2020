@@ -1,6 +1,5 @@
 from adventlib import inpath, Vector
 from collections import namedtuple
-from diapyr.util import innerclass
 from itertools import chain
 from string import ascii_lowercase, ascii_uppercase
 import networkx as nx
@@ -58,6 +57,4 @@ def main():
     grid = Grid(inpath().read_text().splitlines())
     G = grid.graph()
     source = Node('@', frozenset())
-    for target in G.nodes:
-        if target.keys == grid.allkeys:
-            print(target, nx.shortest_path_length(G, source, target, weight = 'weight'))
+    print(min(nx.shortest_path_length(G, source, target, weight = 'weight') for target in G.nodes if target.keys == grid.allkeys))
