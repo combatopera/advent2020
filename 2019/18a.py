@@ -5,7 +5,7 @@ from string import ascii_lowercase, ascii_uppercase
 import networkx as nx
 
 acceptdoors = set(ascii_uppercase)
-acceptnodes = {'@', *ascii_lowercase}
+acceptrealnodes = {'@', *ascii_lowercase}
 doormasks = {c: 1 << (ord(c) - ord('A')) for c in ascii_uppercase}
 keymasks = {c: 1 << (ord(c) - ord('a')) for c in ascii_lowercase}
 moves = [(x, y) for r in [range(-1, 2)] for x in r for y in r if abs(x) ^ abs(y)]
@@ -61,7 +61,7 @@ def _mainimpl(block):
     @bfs(Edge.seed('@', origin))
     def proc(e):
         for f in e.popsteps(grid):
-            if f.end in acceptnodes or f.end in intersections:
+            if f.end in acceptrealnodes or f.end in intersections:
                 G.add_edge(f.start, f.end, requires = f.requires, weight = f.weight)
                 yield Edge.seed(f.end, f.tip)
             else:
