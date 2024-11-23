@@ -1,6 +1,7 @@
 from adventlib import bfs, inpath, Vector
+from functools import reduce
 from string import ascii_lowercase, ascii_uppercase
-import networkx as nx
+import networkx as nx, operator
 
 doormasks = {c: 1 << (ord(c) - ord('A')) for c in ascii_uppercase}
 keymasks = {c: 1 << (ord(c) - ord('a')) for c in ascii_lowercase}
@@ -22,8 +23,7 @@ def _mainimpl(block):
                 grid[p] = c
                 if '@' == c:
                     origin = p
-    intersections = set(_markintersections(grid))
-    acceptnodes = {'@', *ascii_lowercase, *intersections}
+    acceptnodes = {'@', *ascii_lowercase, *_markintersections(grid)}
     G = nx.Graph()
     @bfs((origin, origin + m) for m in moves)
     def proc(e):
@@ -49,7 +49,7 @@ def _mainimpl(block):
                 break
             prev = p
             p = v[0]
-    maxkeys = (1 << (len(G) - 1 - len(intersections))) - 1
+    maxkeys = reduce(operator.or_, (keymasks.get(n, 0) for n in G))
     H = nx.DiGraph()
     sinks = []
     @bfs([('@', 0)])
