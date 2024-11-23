@@ -23,12 +23,10 @@ def _mainimpl(block):
                 name = ','.join(map(str, p))
                 grid[p] = name
                 yield name
-    #print(grid)
     intersections = set(intersections())
     G = nx.Graph()
     @bfs((origin, origin + m) for m in moves)
     def proc(e):
-        #print(e)
         prev, p = e
         if p not in grid:
             return
@@ -40,7 +38,6 @@ def _mainimpl(block):
             requires |= doormasks.get(name, 0)
             weight += 1
             if name in acceptrealnodes or name in intersections:
-                #print(start, name, requires, weight)
                 G.add_edge(start, name, requires = requires, weight = weight)
                 for m in moves:
                     q = p + m
@@ -52,11 +49,7 @@ def _mainimpl(block):
                 break
             prev = p
             p = v[0]
-    #print(G)
-    #for t in nx.get_edge_attributes(G, 'requires').items(): print(t)
-    #for t in nx.get_edge_attributes(G, 'weight').items(): print(t)
     maxkeys = (1 << (len(G) - 1 - len(intersections))) - 1
-    #print(maxkeys)
     H = nx.DiGraph()
     sinks = []
     @bfs([('@', 0)])
@@ -70,9 +63,6 @@ def _mainimpl(block):
                     yield dest
                 else:
                     sinks.append(dest)
-    #print(H)
-    #print(nx.get_edge_attributes(H, 'weight'))
-    #print(sinks)
     print(min(nx.shortest_path_length(H, ('@', 0), sink, weight = 'weight') for sink in sinks))
 
 def main():
