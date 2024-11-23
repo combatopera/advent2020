@@ -1,7 +1,17 @@
 from adventlib import inpath, Vector
+from functools import partial
 import networkx as nx
 
 moves = [(x, y) for r in [range(-1, 2)] for x in r for y in r if abs(x) ^ abs(y)]
+
+def bfs(*objs):
+    def deco(objs, proc):
+        while objs:
+            nextobjs = []
+            for obj in objs:
+                nextobjs.extend(proc(obj))
+            objs = nextobjs
+    return partial(deco, objs)
 
 class Edge:
 
@@ -34,17 +44,14 @@ def _mainimpl(block):
             if '#' != c:
                 grid[Vector([x, y])] = c
     G = nx.Graph()
-    edges = [Edge.popone(grid)]
-    while edges:
-        nextedges = []
-        for e in edges:
-            for f in e.popsteps(grid):
-                if '.' != f.end:
-                    G.add_edge(f.start, f.end, weight = f.weight)
-                    nextedges.append(Edge(f.end, f.end, 0, f.tip))
-                else:
-                    nextedges.append(f)
-        edges = nextedges
+    @bfs(Edge.popone(grid))
+    def proc(e):
+        for f in e.popsteps(grid):
+            if '.' != f.end:
+                G.add_edge(f.start, f.end, weight = f.weight)
+                yield Edge(f.end, f.end, 0, f.tip)
+            else:
+                yield f
     print(G)
 
 def main():
