@@ -19,12 +19,6 @@ def bfs(*objs):
 class Edge:
 
     @classmethod
-    def popone(cls, grid):
-        p = next(p for p in grid if grid[p] in acceptnodes)
-        c = grid.pop(p)
-        return cls(c, c, '', 0, p)
-
-    @classmethod
     def _of(cls, *args):
         return cls(*args)
 
@@ -47,10 +41,13 @@ def _mainimpl(block):
     grid = {}
     for y, line in enumerate(block.splitlines()):
         for x, c in enumerate(line):
-            if '#' != c:
-                grid[Vector([x, y])] = c
+            p = Vector([x, y])
+            if '@' == c:
+                origin = p
+            elif '#' != c:
+                grid[p] = c
     G = nx.Graph()
-    @bfs(Edge.popone(grid))
+    @bfs(Edge('@', '@', '', 0, origin))
     def proc(e):
         for f in e.popsteps(grid):
             if f.end in acceptnodes:
