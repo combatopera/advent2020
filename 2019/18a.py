@@ -27,10 +27,10 @@ class Edge:
     def _of(cls, *args):
         return cls(*args)
 
-    def __init__(self, start, end, doors, weight, tip):
+    def __init__(self, start, end, requires, weight, tip):
         self.start = start
         self.end = end
-        self.doors = doors
+        self.requires = requires
         self.weight = weight
         self.tip = tip
 
@@ -39,7 +39,7 @@ class Edge:
             q = self.tip + m
             if q in grid:
                 c = grid.pop(q)
-                yield self._of(self.start, c, self.doors | doormasks.get(c, 0), self.weight + 1, q)
+                yield self._of(self.start, c, self.requires | doormasks.get(c, 0), self.weight + 1, q)
 
 def _mainimpl(block):
     grid = {}
@@ -55,12 +55,12 @@ def _mainimpl(block):
     def proc(e):
         for f in e.popsteps(grid):
             if f.end in acceptnodes:
-                G.add_edge(f.start, f.end, doors = f.doors, weight = f.weight)
+                G.add_edge(f.start, f.end, requires = f.requires, weight = f.weight)
                 yield Edge.seed(f.end, f.tip)
             else:
                 yield f
     print(G)
-    print(nx.get_edge_attributes(G, 'doors'))
+    print(nx.get_edge_attributes(G, 'requires'))
     print(nx.get_edge_attributes(G, 'weight'))
     return
     H = nx.DiGraph()
