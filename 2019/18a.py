@@ -9,12 +9,21 @@ doormasks = {c: 1 << (ord(c) - ord('A')) for c in ascii_uppercase}
 keymasks = {c: 1 << (ord(c) - ord('a')) for c in ascii_lowercase}
 moves = [(x, y) for r in [range(-1, 2)] for x in r for y in r if abs(x) ^ abs(y)]
 
-def bfs(*objs):
+def bfs(*objs, cullkey = None):
     def deco(objs, proc):
+        if cullkey is None:
+            unseen = lambda o: True
+        else:
+            seen = set()
+            def unseen(o):
+                if o not in seen:
+                    seen.add(o)
+                    return True
         while objs:
             nextobjs = []
             for obj in objs:
-                nextobjs.extend(proc(obj))
+                if unseen(obj):
+                    nextobjs.extend(proc(obj))
             objs = nextobjs
     return partial(deco, objs)
 
@@ -66,14 +75,17 @@ def _mainimpl(block):
     maxkeys = (1 << (len(G) - 1)) - 1
     print(maxkeys)
     H = nx.DiGraph()
-    @bfs(('@', 0))
+    @bfs(('@', 0), cullkey = lambda x: x)
     def proc(n):
         c, keys = n
         for e in G.edges(c, True):
             if keys | e[2]['requires'] == keys:
-                print(n, (e[1], keys | keymasks.get(e[1], 0)), e[2]['weight'])
-        return
-        yield
+                dest = e[1], keys | keymasks.get(e[1], 0)
+                H.add_edge(n, dest, weight = e[2]['weight'])
+                if dest[1] != maxkeys:
+                    yield dest
+    print(H)
+    print(nx.get_edge_attributes(H, 'weight'))
 
 def main():
     for block in inpath().read_text().split('\n\n'):
