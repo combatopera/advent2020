@@ -1,5 +1,4 @@
-from adventlib import inpath, Vector
-from functools import partial
+from adventlib import bfs, inpath, Vector
 from string import ascii_lowercase, ascii_uppercase
 import networkx as nx
 
@@ -8,18 +7,6 @@ acceptrealnodes = {'@', *ascii_lowercase}
 doormasks = {c: 1 << (ord(c) - ord('A')) for c in ascii_uppercase}
 keymasks = {c: 1 << (ord(c) - ord('a')) for c in ascii_lowercase}
 moves = [(x, y) for r in [range(-1, 2)] for x in r for y in r if abs(x) ^ abs(y)]
-
-def bfs(objs):
-    def deco(objs, proc):
-        seen = set()
-        while objs:
-            nextobjs = []
-            for obj in objs:
-                if obj not in seen:
-                    seen.add(obj)
-                    nextobjs.extend(proc(obj))
-            objs = nextobjs
-    return partial(deco, objs)
 
 def _mainimpl(block):
     grid = {}
