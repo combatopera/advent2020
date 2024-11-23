@@ -27,23 +27,26 @@ class Edge:
             if q in grid:
                 yield self._of(self.start, grid.pop(q), self.weight + 1, q)
 
+def _mainimpl(block):
+    grid = {}
+    for y, line in enumerate(block.splitlines()):
+        for x, c in enumerate(line):
+            if '#' != c:
+                grid[Vector([x, y])] = c
+    G = nx.Graph()
+    edges = [Edge.popone(grid)]
+    while edges:
+        nextedges = []
+        for e in edges:
+            for f in e.popsteps(grid):
+                if '.' != f.end:
+                    G.add_edge(f.start, f.end, weight = f.weight)
+                    nextedges.append(Edge(f.end, f.end, 0, f.tip))
+                else:
+                    nextedges.append(f)
+        edges = nextedges
+    print(G)
+
 def main():
     for block in inpath().read_text().split('\n\n'):
-        G = nx.Graph()
-        grid = {}
-        for y, line in enumerate(block.splitlines()):
-            for x, c in enumerate(line):
-                if '#' != c:
-                    grid[Vector([x, y])] = c
-        edges = [Edge.popone(grid)]
-        while edges:
-            nextedges = []
-            for e in edges:
-                for f in e.popsteps(grid):
-                    if '.' != f.end:
-                        G.add_edge(f.start, f.end, weight = f.weight)
-                        nextedges.append(Edge(f.end, f.end, 0, f.tip))
-                    else:
-                        nextedges.append(f)
-            edges = nextedges
-        print(G)
+        _mainimpl(block)
