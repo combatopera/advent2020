@@ -1,4 +1,5 @@
 from adventlib import inpath, Vector
+from collections import namedtuple
 from functools import partial
 from string import ascii_lowercase, ascii_uppercase
 import networkx as nx
@@ -27,29 +28,18 @@ def bfs(*objs, cullkey = None):
             objs = nextobjs
     return partial(deco, objs)
 
-class Edge:
+class Edge(namedtuple('BaseEdge', 'start end requires weight tip')):
 
     @classmethod
     def seed(cls, c, p):
         return cls(c, c, 0, 0, p)
-
-    @classmethod
-    def _of(cls, *args):
-        return cls(*args)
-
-    def __init__(self, start, end, requires, weight, tip):
-        self.start = start
-        self.end = end
-        self.requires = requires
-        self.weight = weight
-        self.tip = tip
 
     def popsteps(self, grid):
         for m in moves:
             q = self.tip + m
             if q in grid:
                 c = grid.pop(q)
-                yield self._of(self.start, c, self.requires | doormasks.get(c, 0), self.weight + 1, q)
+                yield self._make([self.start, c, self.requires | doormasks.get(c, 0), self.weight + 1, q])
 
 def _mainimpl(block):
     grid = {}
@@ -84,7 +74,7 @@ def _mainimpl(block):
     H = nx.DiGraph()
     sinks = []
     @bfs(('@', 0), cullkey = lambda x: x)
-    def proc(n):
+    def proc2(n):
         c, keys = n
         for e in G.edges(c, True):
             if keys | e[2]['requires'] == keys:
