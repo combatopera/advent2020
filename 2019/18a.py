@@ -62,6 +62,8 @@ def _mainimpl(block):
     print(G)
     print(nx.get_edge_attributes(G, 'requires'))
     print(nx.get_edge_attributes(G, 'weight'))
+    maxkeys = (1 << (len(G) - 1)) - 1
+    print(maxkeys)
     return
     H = nx.DiGraph()
     @bfs(('@', 0))
