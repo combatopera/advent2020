@@ -6,6 +6,7 @@ import networkx as nx
 acceptdoors = set(ascii_uppercase)
 acceptnodes = {'@', *ascii_lowercase}
 doormasks = {c: 1 << (ord(c) - ord('A')) for c in ascii_uppercase}
+keymasks = {c: 1 << (ord(c) - ord('a')) for c in ascii_lowercase}
 moves = [(x, y) for r in [range(-1, 2)] for x in r for y in r if abs(x) ^ abs(y)]
 
 def bfs(*objs):
@@ -64,13 +65,13 @@ def _mainimpl(block):
     print(nx.get_edge_attributes(G, 'weight'))
     maxkeys = (1 << (len(G) - 1)) - 1
     print(maxkeys)
-    return
     H = nx.DiGraph()
     @bfs(('@', 0))
     def proc(n):
         c, keys = n
         for e in G.edges(c, True):
-            print((c, keys | e[2]['requires']), e[1], e[2]['weight'])
+            if keys | e[2]['requires'] == keys:
+                print(n, (e[1], keys | keymasks.get(e[1], 0)), e[2]['weight'])
         return
         yield
 
