@@ -1,104 +1,49 @@
 from adventlib import inpath, Vector
-from collections import namedtuple
-from itertools import chain
-from string import ascii_lowercase, ascii_uppercase
 import networkx as nx
 
-class Move:
+moves = [(x, y) for r in [range(-1, 2)] for x in r for y in r if abs(x) ^ abs(y)]
 
-    def __init__(self, off, weight):
-        self.off = off
+class Edge:
+
+    @classmethod
+    def popone(cls, grid):
+        p = next(p for p in grid if '.' != grid[p])
+        c = grid.pop(p)
+        return cls(c, c, 0, p)
+
+    @classmethod
+    def _of(cls, *args):
+        return cls(*args)
+
+    def __init__(self, start, end, weight, tip):
+        self.start = start
+        self.end = end
         self.weight = weight
-
-moves = [Move(off, 1) for off in [(1, 0), (0, 1), (-1, 0), (0, -1)]]
-middle = Vector([40, 40])
-circle = {middle + (x, y) for x in range(-1, 2) for y in range(-1, 2) if x or y}
-teleports = {
-    middle: [Move(off, 3) for off in [(-1, -2), (1, -2), (-1, 2), (1, 2)]],
-    middle + (-1, -2): [Move((1, -2), 4), Move((-1, 2), 4), Move((1, 2), 6)],
-    middle + (1, -2): [Move((-1, -2), 4), Move((1, 2), 4), Move((-1, 2), 6)],
-    middle + (-1, 2): [Move((-1, -2), 4), Move((1, 2), 4), Move((1, -2), 6)],
-    middle + (1, 2): [Move((1, -2), 4), Move((-1, 2), 4), Move((-1, -2), 6)],
-}
-
-class Path:
-
-    def __init__(self, history, tip, weight):
-        self.lava = {*history, tip}
         self.tip = tip
-        self.weight = weight
 
-    def explore(self, grid):
-        for m in chain(moves, teleports.get(self.tip, ())):
-            q = self.tip + m.off
-            if q not in circle and q not in self.lava and grid.chars[q] != '#':
-                yield Path(self.lava, q, self.weight + m.weight)
-
-class Node(namedtuple('BaseNode', 'c keys')):
-
-    def edges(self, grid):
-        return self._edges(grid, Path(set(), grid.points[self.c], 0))
-
-    def _edges(self, grid, seed):
-        doors = grid.alldoors - {c.upper() for c in self.keys}
-        paths = [seed]
-        while paths:
-            nextpaths = []
-            for path in paths:
-                for q in path.explore(grid):
-                    c = grid.chars[q.tip]
-                    if c in doors:
-                        yield from self._replace(keys = frozenset(chain(self.keys, [c.lower()])))._edges(grid, q)
-                    elif c in grid.allkeys and c not in self.keys:
-                        yield self, self._make([c, frozenset(chain(self.keys, [c]))]), q.weight
-                    else:
-                        nextpaths.append(q)
-            paths = nextpaths
-
-    def __str__(self):
-        return f"{self.c}({''.join(sorted(self.keys))})"
-
-class Grid:
-
-    source = Node('@', frozenset())
-
-    def __init__(self, lines):
-        self.chars = {}
-        self.points = {}
-        ofinterest = set(chain(ascii_lowercase, ['@']))
-        for y, line in enumerate(lines):
-            for x, c in enumerate(line):
-                self.chars[x, y] = c
-                if c in ofinterest:
-                    self.points[c] = Vector([x, y])
-        self.allkeys = self.points.keys() - {'@'}
-        self.alldoors = set(c for s in [set(ascii_uppercase)] for c in self.chars.values() if c in s)
-
-    def graph(self):
-        G = nx.DiGraph()
-        nodes = [self.source]
-        explored = set()
-        sinks = []
-        while nodes:
-            nextnodes = []
-            for node in nodes:
-                if node not in explored:
-                    if node.keys == self.allkeys:
-                        sinks.append(node)
-                    else:
-                        for source, target, weight in node.edges(self):
-                            print(source, target, weight)
-                            G.add_edge(source, target, weight = weight)
-                            nextnodes.append(target)
-                    explored.add(node)
-            nodes = nextnodes
-        return G, sinks
-
-def _minpathlen(G, source, target):
-    return nx.shortest_path_length(G, source, target, weight = 'weight')
+    def popsteps(self, grid):
+        for m in moves:
+            q = self.tip + m
+            if q in grid:
+                yield self._of(self.start, grid.pop(q), self.weight + 1, q)
 
 def main():
     for block in inpath().read_text().split('\n\n'):
-        grid = Grid(block.splitlines())
-        G, sinks = grid.graph()
-        print(min(_minpathlen(G, grid.source, target) for target in sinks))
+        G = nx.Graph()
+        grid = {}
+        for y, line in enumerate(block.splitlines()):
+            for x, c in enumerate(line):
+                if '#' != c:
+                    grid[Vector([x, y])] = c
+        edges = [Edge.popone(grid)]
+        while edges:
+            nextedges = []
+            for e in edges:
+                for f in e.popsteps(grid):
+                    if '.' != f.end:
+                        G.add_edge(f.start, f.end, weight = f.weight)
+                        nextedges.append(Edge(f.end, f.end, 0, f.tip))
+                    else:
+                        nextedges.append(f)
+            edges = nextedges
+        print(G)
