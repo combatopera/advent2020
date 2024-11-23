@@ -60,19 +60,26 @@ def _mainimpl(block):
                 origin = p
             elif '#' != c:
                 grid[p] = c
+    def intersections():
+        for p, c in grid.items():
+            if '.' == c and sum(1 for m in moves if p + m in grid) > 2:
+                name = ','.join(map(str, p))
+                grid[p] = name
+                yield name
+    intersections = set(intersections())
     G = nx.Graph()
     @bfs(Edge.seed('@', origin))
     def proc(e):
         for f in e.popsteps(grid):
-            if f.end in acceptnodes:
+            if f.end in acceptnodes or f.end in intersections:
                 G.add_edge(f.start, f.end, requires = f.requires, weight = f.weight)
                 yield Edge.seed(f.end, f.tip)
             else:
                 yield f
     #print(G)
-    #print(nx.get_edge_attributes(G, 'requires'))
-    #print(nx.get_edge_attributes(G, 'weight'))
-    maxkeys = (1 << (len(G) - 1)) - 1
+    #for t in nx.get_edge_attributes(G, 'requires').items(): print(t)
+    #for t in nx.get_edge_attributes(G, 'weight').items(): print(t)
+    maxkeys = (1 << (len(G) - 1 - len(intersections))) - 1
     #print(maxkeys)
     H = nx.DiGraph()
     sinks = []
@@ -89,7 +96,7 @@ def _mainimpl(block):
                     sinks.append(dest)
     #print(H)
     #print(nx.get_edge_attributes(H, 'weight'))
-    print(sinks)
+    #print(sinks)
     print(min(nx.shortest_path_length(H, ('@', 0), sink, weight = 'weight') for sink in sinks))
 
 def main():
