@@ -19,6 +19,10 @@ def bfs(*objs):
 class Edge:
 
     @classmethod
+    def seed(cls, c, p):
+        return cls(c, c, '', 0, p)
+
+    @classmethod
     def _of(cls, *args):
         return cls(*args)
 
@@ -47,12 +51,12 @@ def _mainimpl(block):
             elif '#' != c:
                 grid[p] = c
     G = nx.Graph()
-    @bfs(Edge('@', '@', '', 0, origin))
+    @bfs(Edge.seed('@', origin))
     def proc(e):
         for f in e.popsteps(grid):
             if f.end in acceptnodes:
                 G.add_edge(f.start, f.end, requires = f.requires, weight = f.weight)
-                yield Edge(f.end, f.end, '', 0, f.tip)
+                yield Edge.seed(f.end, f.tip)
             else:
                 yield f
     print(G)
