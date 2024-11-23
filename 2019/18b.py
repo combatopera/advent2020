@@ -14,6 +14,23 @@ def _markintersections(grid):
             grid[p] = name
             yield name
 
+def _optimise(G):
+    while True:
+        for n in G:
+            if ',' in n:
+                edges = G.edges(n, data = True)
+                if len(edges) < 3:
+                    break
+        else:
+            break
+        if 1 == len(edges):
+            G.remove_node(n)
+        else:
+            assert 2 == len(edges)
+            e, f = edges
+            G.remove_node(n)
+            G.add_edge(e[1], f[1], requires = e[2]['requires'] | f[2]['requires'], weight = e[2]['weight'] + f[2]['weight'])
+
 def _graph(block):
     grid = {}
     for y, line in enumerate(block.splitlines()):
@@ -50,6 +67,7 @@ def _graph(block):
                 break
             prev = p
             p = v[0]
+    _optimise(G)
     return G
 
 def _mainimpl(block):
