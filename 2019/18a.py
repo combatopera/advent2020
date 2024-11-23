@@ -69,12 +69,13 @@ def _mainimpl(block):
                 yield Edge.seed(f.end, f.tip)
             else:
                 yield f
-    print(G)
-    print(nx.get_edge_attributes(G, 'requires'))
-    print(nx.get_edge_attributes(G, 'weight'))
+    #print(G)
+    #print(nx.get_edge_attributes(G, 'requires'))
+    #print(nx.get_edge_attributes(G, 'weight'))
     maxkeys = (1 << (len(G) - 1)) - 1
-    print(maxkeys)
+    #print(maxkeys)
     H = nx.DiGraph()
+    sinks = []
     @bfs(('@', 0), cullkey = lambda x: x)
     def proc(n):
         c, keys = n
@@ -84,8 +85,12 @@ def _mainimpl(block):
                 H.add_edge(n, dest, weight = e[2]['weight'])
                 if dest[1] != maxkeys:
                     yield dest
-    print(H)
-    print(nx.get_edge_attributes(H, 'weight'))
+                else:
+                    sinks.append(dest)
+    #print(H)
+    #print(nx.get_edge_attributes(H, 'weight'))
+    print(sinks)
+    print(min(nx.shortest_path_length(H, ('@', 0), sink, weight = 'weight') for sink in sinks))
 
 def main():
     for block in inpath().read_text().split('\n\n'):
