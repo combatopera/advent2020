@@ -1,0 +1,89 @@
+from adventlib import bfs, inpath, Vector
+from functools import reduce
+from string import ascii_lowercase, ascii_uppercase
+import networkx as nx, operator
+
+doormasks = {c: 1 << (ord(c) - ord('A')) for c in ascii_uppercase}
+keymasks = {c: 1 << (ord(c) - ord('a')) for c in ascii_lowercase}
+moves = [(x, y) for r in [range(-1, 2)] for x in r for y in r if abs(x) ^ abs(y)]
+
+def _markintersections(grid):
+    for p, c in grid.items():
+        if '.' == c and sum(1 for m in moves if p + m in grid) > 2:
+            name = ','.join(map(str, p))
+            grid[p] = name
+            yield name
+
+def _graph(block):
+    grid = {}
+    for y, line in enumerate(block.splitlines()):
+        for x, c in enumerate(line):
+            p = Vector([x, y])
+            if '#' != c:
+                grid[p] = c
+                if '@' == c:
+                    origin = p
+    intersections = set(_markintersections(grid))
+    acceptnodes = {'@', *ascii_lowercase, *intersections}
+    G = nx.Graph()
+    @bfs((origin, origin + m) for m in moves)
+    def proc(e):
+        prev, p = e
+        if p not in grid:
+            return
+        start = grid[prev]
+        requires = 0
+        weight = 0
+        while True:
+            name = grid[p]
+            requires |= doormasks.get(name, 0)
+            weight += 1
+            if name in acceptnodes:
+                G.add_edge(start, name, requires = requires, weight = weight)
+                for m in moves:
+                    q = p + m
+                    if q != prev:
+                        yield p, q
+                break
+            v = [q for m in moves for q in [p + m] if q in grid and q != prev]
+            if not v:
+                break
+            prev = p
+            p = v[0]
+    return G
+
+def _mainimpl(block):
+    lines = block.splitlines()
+    y = len(lines) // 2
+    x = len(lines[y]) // 2
+    lines[y - 1] = lines[y - 1][:x - 1] + '@#@' + lines[y - 1][x + 2:]
+    lines[y] = lines[y][:x - 1] + '###' + lines[y][x + 2:]
+    lines[y + 1] = lines[y + 1][:x - 1] + '@#@' + lines[y + 1][x + 2:]
+    graphs = list(map(_graph, [
+        '\n'.join(l[:x + 1] for l in lines[:y + 1]),
+        '\n'.join(l[x:] for l in lines[:y + 1]),
+        '\n'.join(l[:x + 1] for l in lines[y:]),
+        '\n'.join(l[x:] for l in lines[y:]),
+    ]))
+    maxkeys = reduce(operator.or_, (keymasks.get(n, 0) for G in graphs for n in G))
+    H = nx.DiGraph()
+    sinks = []
+    @bfs([('@', '@', '@', '@', 0)])
+    def diproc(n):
+        *chars, keys = n
+        for i, G in enumerate(graphs):
+            for e in G.edges(chars[i], True):
+                if keys | e[2]['requires'] == keys:
+                    dest = [*chars, keys | keymasks.get(e[1], 0)]
+                    dest[i] = e[1]
+                    dest = tuple(dest)
+                    H.add_edge(n, dest, weight = e[2]['weight'])
+                    if dest[-1] != maxkeys:
+                        yield dest
+                    else:
+                        sinks.append(dest)
+    print(min(nx.shortest_path_length(H, ('@', '@', '@', '@', 0), sink, weight = 'weight') for sink in sinks))
+
+def main():
+    for block in inpath().read_text().split('\n\n'):
+        _mainimpl(block)
