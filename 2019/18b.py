@@ -1,5 +1,6 @@
 from adventlib import bfs, inpath, Vector
 from functools import reduce
+from itertools import accumulate
 from string import ascii_lowercase, ascii_uppercase
 import networkx as nx, operator
 
@@ -9,12 +10,12 @@ moves = [(x, y) for r in [range(-1, 2)] for x in r for y in r if abs(x) ^ abs(y)
 
 def _markintersections(grid):
     for p, c in grid.items():
-        if '.' == c and sum(1 for m in moves if p + m in grid) > 2:
+        if '.' == c and any(n > 2 for n in accumulate(1 for m in moves if p + m in grid)):
             name = ','.join(map(str, p))
             grid[p] = name
             yield name
 
-def _optimise(G):
+def _cullintersections(G):
     while True:
         for n in G:
             if ',' in n:
@@ -26,7 +27,6 @@ def _optimise(G):
         if 1 == len(edges):
             G.remove_node(n)
         else:
-            assert 2 == len(edges)
             e, f = edges
             G.remove_node(n)
             G.add_edge(e[1], f[1], requires = e[2]['requires'] | f[2]['requires'], weight = e[2]['weight'] + f[2]['weight'])
@@ -40,8 +40,7 @@ def _graph(block):
                 grid[p] = c
                 if '@' == c:
                     origin = p
-    intersections = set(_markintersections(grid))
-    acceptnodes = {'@', *ascii_lowercase, *intersections}
+    acceptnodes = {'@', *ascii_lowercase, *_markintersections(grid)}
     G = nx.Graph()
     @bfs((origin, origin + m) for m in moves)
     def proc(e):
@@ -66,8 +65,8 @@ def _graph(block):
             if not v:
                 break
             prev = p
-            p = v[0]
-    _optimise(G)
+            p, = v
+    _cullintersections(G)
     return G
 
 def _mainimpl(block):
