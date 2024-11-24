@@ -1,5 +1,6 @@
 from adventlib import bfs, inpath, Vector
 from functools import reduce
+from itertools import accumulate
 from string import ascii_lowercase, ascii_uppercase
 import networkx as nx, operator
 
@@ -9,7 +10,7 @@ moves = [(x, y) for r in [range(-1, 2)] for x in r for y in r if abs(x) ^ abs(y)
 
 def _markintersections(grid):
     for p, c in grid.items():
-        if '.' == c and sum(1 for m in moves if p + m in grid) > 2:
+        if '.' == c and any(n > 2 for n in accumulate(1 for m in moves if p + m in grid)):
             name = ','.join(map(str, p))
             grid[p] = name
             yield name
