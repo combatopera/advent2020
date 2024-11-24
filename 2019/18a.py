@@ -48,7 +48,7 @@ def _mainimpl(block):
             if not v:
                 break
             prev = p
-            p = v[0]
+            p, = v
     maxkeys = reduce(operator.or_, (keymasks.get(n, 0) for n in G))
     H = nx.DiGraph()
     sinks = []
