@@ -107,9 +107,10 @@ def _mainimpl(block):
         '\n'.join(l[:x + 1] for l in lines[y:]),
         '\n'.join(l[x:] for l in lines[y:]),
     ]))
-    pairs = list(_findpairs(graphs))
-    n, keys = _pairreport(0, pairs[0])
-    print(n + _pairreport(keys, pairs[1])[0])
+    pair1, pair2 = _findpairs(graphs)
+    assert set(graphs) == {*pair1, *pair2}
+    n, keys = _pairreport(0, pair1)
+    print(n + _pairreport(keys, pair2)[0])
 
 def main():
     for block in inpath().read_text().split('\n\n'):
