@@ -15,6 +15,22 @@ def _markintersections(grid):
             grid[p] = name
             yield name
 
+def _cullintersections(G):
+    while True:
+        for n in G:
+            if ',' in n:
+                edges = G.edges(n, data = True)
+                if len(edges) < 3:
+                    break
+        else:
+            break
+        if 1 == len(edges):
+            G.remove_node(n)
+        else:
+            e, f = edges
+            G.remove_node(n)
+            G.add_edge(e[1], f[1], requires = e[2]['requires'] | f[2]['requires'], weight = e[2]['weight'] + f[2]['weight'])
+
 def _mainimpl(block):
     grid = {}
     for y, line in enumerate(block.splitlines()):
@@ -50,6 +66,7 @@ def _mainimpl(block):
                 break
             prev = p
             p, = v
+    _cullintersections(G)
     maxkeys = reduce(operator.or_, (keymasks.get(n, 0) for n in G))
     H = nx.DiGraph()
     sinks = []
