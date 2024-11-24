@@ -31,7 +31,7 @@ def _cullintersections(G):
             G.remove_node(n)
             G.add_edge(e[1], f[1], requires = e[2]['requires'] | f[2]['requires'], weight = e[2]['weight'] + f[2]['weight'])
 
-def _mainimpl(block):
+def _graph(block):
     grid = {}
     for y, line in enumerate(block.splitlines()):
         for x, c in enumerate(line):
@@ -67,6 +67,10 @@ def _mainimpl(block):
             prev = p
             p, = v
     _cullintersections(G)
+    return G
+
+def _mainimpl(block)
+    G = _graph(block)
     maxkeys = reduce(operator.or_, (keymasks.get(n, 0) for n in G))
     H = nx.DiGraph()
     sinks = []
