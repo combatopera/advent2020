@@ -82,13 +82,14 @@ def _mainimpl(block):
         '\n'.join(l[:x + 1] for l in lines[y:]),
         '\n'.join(l[x:] for l in lines[y:]),
     ]))
-    maxkeys = reduce(operator.or_, (keymasks.get(n, 0) for G in graphs for n in G))
+    pair = graphs[1], graphs[2]
+    maxkeys = reduce(operator.or_, (keymasks.get(n, 0) for G in pair for n in G))
     H = nx.DiGraph()
     sinks = []
-    @bfs([('@', '@', '@', '@', 0)])
+    @bfs([('@', '@', 0)])
     def diproc(n):
         *chars, keys = n
-        for i, G in enumerate(graphs):
+        for i, G in enumerate(pair):
             for e in G.edges(chars[i], True):
                 if keys | e[2]['requires'] == keys:
                     dest = [*chars, keys | keymasks.get(e[1], 0)]
@@ -99,7 +100,27 @@ def _mainimpl(block):
                         yield dest
                     else:
                         sinks.append(dest)
-    print(min(nx.shortest_path_length(H, ('@', '@', '@', '@', 0), sink, weight = 'weight') for sink in sinks))
+    print(min(nx.shortest_path_length(H, ('@', '@', 0), sink, weight = 'weight') for sink in sinks))
+    seedkeys = maxkeys
+    pair = graphs[0], graphs[3]
+    maxkeys = seedkeys | reduce(operator.or_, (keymasks.get(n, 0) for G in pair for n in G))
+    H = nx.DiGraph()
+    sinks = []
+    @bfs([('@', '@', seedkeys)])
+    def diproc(n):
+        *chars, keys = n
+        for i, G in enumerate(pair):
+            for e in G.edges(chars[i], True):
+                if keys | e[2]['requires'] == keys:
+                    dest = [*chars, keys | keymasks.get(e[1], 0)]
+                    dest[i] = e[1]
+                    dest = tuple(dest)
+                    H.add_edge(n, dest, weight = e[2]['weight'])
+                    if dest[-1] != maxkeys:
+                        yield dest
+                    else:
+                        sinks.append(dest)
+    print(min(nx.shortest_path_length(H, ('@', '@', seedkeys), sink, weight = 'weight') for sink in sinks))
 
 def main():
     for block in inpath().read_text().split('\n\n'):
