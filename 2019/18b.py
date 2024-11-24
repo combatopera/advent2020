@@ -1,6 +1,6 @@
 from adventlib import bfs, inpath, Vector
 from functools import reduce
-from itertools import accumulate
+from itertools import accumulate, chain
 from string import ascii_lowercase, ascii_uppercase
 import networkx as nx, operator
 
@@ -79,9 +79,7 @@ def _pairreport(seedkeys, *pair):
         for i, G in enumerate(pair):
             for e in G.edges(chars[i], True):
                 if keys | e[2]['requires'] == keys:
-                    dest = [*chars, keys | keymasks.get(e[1], 0)]
-                    dest[i] = e[1]
-                    dest = tuple(dest)
+                    dest = tuple(chain((e[1] if i == j else chars[j] for j in range(2)), [keys | keymasks.get(e[1], 0)]))
                     H.add_edge(n, dest, weight = e[2]['weight'])
                     if dest[-1] != maxkeys:
                         yield dest
