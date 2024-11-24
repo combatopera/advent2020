@@ -69,7 +69,7 @@ def _graph(block):
     _cullintersections(G)
     return G
 
-def _mainimpl(block)
+def _mainimpl(block):
     G = _graph(block)
     maxkeys = reduce(operator.or_, (keymasks.get(n, 0) for n in G))
     H = nx.DiGraph()
