@@ -81,7 +81,7 @@ def _mainimpl(block):
             if keys | e[2]['requires'] == keys:
                 dest = e[1], keys | keymasks.get(e[1], 0)
                 H.add_edge(n, dest, weight = e[2]['weight'])
-                if dest[1] != maxkeys:
+                if dest[-1] != maxkeys:
                     yield dest
                 else:
                     sinks.append(dest)
