@@ -1,9 +1,7 @@
 from adventlib import bfs, inpath, Vector
-from collections import defaultdict
-from functools import reduce
 from itertools import accumulate
-from string import ascii_lowercase, ascii_uppercase
-import networkx as nx, operator
+from string import ascii_uppercase
+import networkx as nx
 
 moves = [(x, y) for r in [range(-1, 2)] for x in r for y in r if abs(x) ^ abs(y)]
 
