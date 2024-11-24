@@ -69,7 +69,7 @@ def _graph(block):
     _cullintersections(G)
     return G
 
-def _pairreport(seedkeys, *pair):
+def _pairreport(seedkeys, pair):
     maxkeys = seedkeys | reduce(operator.or_, (keymasks.get(n, 0) for G in pair for n in G))
     H = nx.DiGraph()
     sinks = []
@@ -87,6 +87,13 @@ def _pairreport(seedkeys, *pair):
                         sinks.append(dest)
     return min(nx.shortest_path_length(H, ('@', '@', seedkeys), sink, weight = 'weight') for sink in sinks), maxkeys
 
+def _findpairs(graphs):
+    for i, G in enumerate(graphs):
+        for H in graphs[i + 1:]:
+            keys = reduce(operator.or_, (keymasks.get(n, 0) for n in chain(G, H)))
+            if keys == keys | reduce(operator.or_, (e[2]['requires'] for I in [G, H] for e in I.edges(data = True))):
+                yield G, H
+
 def _mainimpl(block):
     lines = block.splitlines()
     y = len(lines) // 2
@@ -100,8 +107,9 @@ def _mainimpl(block):
         '\n'.join(l[:x + 1] for l in lines[y:]),
         '\n'.join(l[x:] for l in lines[y:]),
     ]))
-    n, keys = _pairreport(0, graphs[1], graphs[2])
-    print(n + _pairreport(keys, graphs[0], graphs[3])[0])
+    pair = next(_findpairs(graphs))
+    n, keys = _pairreport(0, pair)
+    print(n + _pairreport(keys, [G for G in graphs if G not in pair])[0])
 
 def main():
     for block in inpath().read_text().split('\n\n'):
