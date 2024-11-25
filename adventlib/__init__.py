@@ -1,4 +1,3 @@
-from functools import partial
 from itertools import islice
 from pathlib import Path
 from subprocess import DEVNULL
@@ -89,15 +88,3 @@ def intsin(k):
 
 def intcos(k):
     return intsin(k + 1)
-
-def bfs(keys):
-    def deco(keys, proc):
-        seen = set()
-        while keys:
-            nextkeys = []
-            for obj in keys:
-                if obj not in seen:
-                    seen.add(obj)
-                    nextkeys.extend(proc(obj))
-            keys = nextkeys
-    return partial(deco, keys)

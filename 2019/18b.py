@@ -1,4 +1,5 @@
-from adventlib import bfs, inpath, Vector
+from adventlib import inpath, Vector
+from diapyr.util import bfs
 from functools import reduce
 from itertools import accumulate, chain
 from string import ascii_lowercase, ascii_uppercase
@@ -43,7 +44,7 @@ def _graph(block):
     acceptnodes = {'@', *ascii_lowercase, *_markintersections(grid)}
     G = nx.Graph()
     @bfs((origin, origin + m) for m in moves)
-    def proc(e):
+    def proc(bfsinfo, e):
         prev, p = e
         if p not in grid:
             return
@@ -74,7 +75,7 @@ def _pairreport(seedkeys, pair):
     H = nx.DiGraph()
     sinks = []
     @bfs([('@', '@', seedkeys)])
-    def diproc(n):
+    def diproc(bfsinfo, n):
         *chars, keys = n
         for i, G in enumerate(pair):
             for e in G.edges(chars[i], True):

@@ -1,4 +1,5 @@
-from adventlib import bfs, inpath, Vector
+from adventlib import inpath, Vector
+from diapyr.util import bfs
 from itertools import accumulate
 from networkx.exception import NetworkXNoPath
 from string import ascii_uppercase
@@ -57,7 +58,7 @@ def _graph():
     acceptnodes = {*(grid[p] for p in seeds), *_markintersections(grid)}
     G = nx.Graph()
     @bfs((p, p + m) for p in seeds for m in moves)
-    def proc(e):
+    def proc(bfsinfo, e):
         prev, p = e
         if p not in grid:
             return
