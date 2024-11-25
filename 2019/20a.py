@@ -36,8 +36,12 @@ def main():
             p = Vector([x, y])
             if c in acceptchars:
                 grid[p] = c
+    dots = [p for p, c in grid.items() if '.' == c]
+    minx = min(p[0] for p in dots)
+    maxx = max(p[0] for p in dots)
+    miny = min(p[1] for p in dots)
+    maxy = max(p[1] for p in dots)
     letters = set(ascii_uppercase)
-    teleports = {'AA', 'ZZ'}
     seeds = []
     for p, c in grid.items():
         if c in letters:
@@ -45,14 +49,11 @@ def main():
             if v:
                 tile, = v
                 name = ''.join(grid[x] for x in sorted([p, p + p - tile]))
-                if name in teleports:
-                    mark = tile
-                else:
-                    teleports.add(name)
-                    mark = p
+                outer = tile[0] in {minx, maxx} or tile[1] in {miny, maxy}
+                mark = tile if outer else p
                 grid[mark] = name
                 seeds.append(mark)
-    acceptnodes = {*teleports, *_markintersections(grid)}
+    acceptnodes = {*(grid[p] for p in seeds), *_markintersections(grid)}
     G = nx.Graph()
     @bfs((p, p + m) for p in seeds for m in moves)
     def proc(e):
