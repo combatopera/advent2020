@@ -89,7 +89,6 @@ def main():
             G.remove_node(n)
     size = 1
     while True:
-        print(size)
         try:
             print(nx.shortest_path_length(G, ('AA', 0), ('ZZ', 0), weight = 'weight'))
             break
