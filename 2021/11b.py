@@ -1,4 +1,4 @@
-from adventlib import inpath, Vector
+from adventlib import readgrid, Vector
 
 class Grid(dict):
 
@@ -22,10 +22,7 @@ class Grid(dict):
                         self[q] += 1
 
 def main():
-    grid = Grid()
-    for y, line in enumerate(inpath().read_text().splitlines()):
-        for x, c in enumerate(line):
-            grid[Vector([x, y])] = int(c)
+    grid = Grid(readgrid(type = int))
     s = 1
     while True:
         if len(grid) == grid.step():
