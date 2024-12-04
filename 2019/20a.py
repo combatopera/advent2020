@@ -30,11 +30,8 @@ def _cullintersections(G):
             G.add_edge(e[1], f[1], weight = e[2]['weight'] + f[2]['weight'])
 
 def main():
-    grid = {}
     acceptchars = {'.', *ascii_uppercase}
-    for p, c in readgrid():
-        if c in acceptchars:
-            grid[p] = c
+    grid = {p: c for p, c in readgrid() if c in acceptchars}
     dots = [p for p, c in grid.items() if '.' == c]
     minx = min(p[0] for p in dots)
     maxx = max(p[0] for p in dots)
