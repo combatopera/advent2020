@@ -1,4 +1,4 @@
-from adventlib import inpath, intcos, intsin, Vector
+from adventlib import intcos, intsin, readgrid, Vector
 from functools import reduce
 from operator import mul
 
@@ -22,11 +22,7 @@ class Grid(set):
         return n
 
 def main():
-    grid = Grid()
-    for y, line in enumerate(inpath().read_text().splitlines()):
-        for x, c in enumerate(line):
-            if '9' != c:
-                grid.add(Vector([x, y]))
+    grid = Grid(p for p, c in readgrid() if '9' != c)
     basins = []
     while grid:
         basins.append(grid.takebasin())

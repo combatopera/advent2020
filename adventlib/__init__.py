@@ -35,6 +35,11 @@ def inpath():
     gpg.__decrypt(f"{plainpath}.gpg", stdout = f, stderr = DEVNULL)
     return Path(f.name)
 
+def readgrid(type = lambda x: x):
+    for y, l in enumerate(inpath().read_text().splitlines()):
+        for x, c in enumerate(l):
+            yield Vector([x, y]), type(c)
+
 def answerof(taskname):
     'Pretend we saved it.'
     class Capture:

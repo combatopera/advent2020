@@ -1,4 +1,4 @@
-from adventlib import inpath, intcos, intsin, Vector
+from adventlib import intcos, intsin, readgrid, Vector
 
 class Grid(dict):
 
@@ -17,8 +17,4 @@ class Grid(dict):
                 yield n
 
 def main():
-    grid = Grid()
-    for y, line in enumerate(inpath().read_text().splitlines()):
-        for x, c in enumerate(line):
-            grid[Vector([x, y])] = int(c)
-    print(sum(1 + n for n in grid.lowpoints()))
+    print(sum(1 + n for n in Grid(readgrid(type = int)).lowpoints()))
