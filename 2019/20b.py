@@ -1,4 +1,4 @@
-from adventlib import inpath, Vector
+from adventlib import readgrid
 from diapyr.util import bfs
 from itertools import accumulate
 from networkx.exception import NetworkXNoPath
@@ -33,11 +33,9 @@ def _cullintersections(G):
 def _graph():
     grid = {}
     acceptchars = {'.', *ascii_uppercase}
-    for y, line in enumerate(inpath().read_text().splitlines()):
-        for x, c in enumerate(line):
-            p = Vector([x, y])
-            if c in acceptchars:
-                grid[p] = c
+    for p, c in readgrid():
+        if c in acceptchars:
+            grid[p] = c
     dots = [p for p, c in grid.items() if '.' == c]
     minx = min(p[0] for p in dots)
     maxx = max(p[0] for p in dots)
