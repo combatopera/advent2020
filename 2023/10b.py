@@ -1,4 +1,4 @@
-from adventlib import inpath, Vector
+from adventlib import readgrid, Vector
 
 shapes = {k: set(map(Vector, v)) for k, v in {
     '|': [(0, -1), (0, 1)],
@@ -12,20 +12,18 @@ barriers = {c for c, shape in shapes.items() if (0, -1) in shape} # When going a
 
 class Grid:
 
-    def __init__(self, lines):
+    def __init__(self, griditer):
         self.reference = {}
         self.tiletofriends = {}
-        for y, l in enumerate(lines):
-            for x, c in enumerate(l):
-                t = Vector([x, y])
-                self.reference[t] = c
-                shape = shapes.get(c)
-                if shape is not None:
-                    self.tiletofriends[t] = [t + d for d in shape]
-                elif 'S' == c:
-                    self.start = t
-        self.w = x + 1
-        self.h = y + 1
+        for t, c in griditer:
+            self.reference[t] = c
+            shape = shapes.get(c)
+            if shape is not None:
+                self.tiletofriends[t] = [t + d for d in shape]
+            elif 'S' == c:
+                self.start = t
+        self.w = t[0] + 1
+        self.h = t[1] + 1
         self.tiletofriends[self.start] = [t for t, friends in self.tiletofriends.items() if self.start in friends]
         startshape = {t - self.start for t in self.tiletofriends[self.start]}
         self.reference[self.start], = (c for c, shape in shapes.items() if shape == startshape)
@@ -58,4 +56,4 @@ class Grid:
         return inside - self.loop # Loop cells are neither inside nor outside.
 
 def main():
-    print(len(Grid(inpath().read_text().splitlines()).inside()))
+    print(len(Grid(readgrid()).inside()))

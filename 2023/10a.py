@@ -1,4 +1,4 @@
-from adventlib import inpath, Vector
+from adventlib import readgrid, Vector
 
 shapes = {k: set(map(Vector, v)) for k, v in {
     '|': [(0, -1), (0, 1)],
@@ -11,16 +11,14 @@ shapes = {k: set(map(Vector, v)) for k, v in {
 
 class Grid:
 
-    def __init__(self, lines):
+    def __init__(self, griditer):
         self.tiletofriends = {}
-        for y, l in enumerate(lines):
-            for x, c in enumerate(l):
-                t = Vector([x, y])
-                shape = shapes.get(c)
-                if shape is not None:
-                    self.tiletofriends[t] = [t + d for d in shape]
-                elif 'S' == c:
-                    self.start = t
+        for t, c in griditer:
+            shape = shapes.get(c)
+            if shape is not None:
+                self.tiletofriends[t] = [t + d for d in shape]
+            elif 'S' == c:
+                self.start = t
         self.tiletofriends[self.start] = [t for t, friends in self.tiletofriends.items() if self.start in friends]
 
     def _anynext(self, exclude, t):
@@ -39,6 +37,6 @@ class Grid:
         return n
 
 def main():
-    n, r = divmod(Grid(inpath().read_text().splitlines()).looplen(), 2)
+    n, r = divmod(Grid(readgrid()).looplen(), 2)
     assert not r
     print(n)
