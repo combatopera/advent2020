@@ -12,6 +12,6 @@ def main():
     def g():
         for l in updateblock.splitlines():
             u = list(map(int, l.split(',')))
-            if all(t in rules for _, t in enumerate2(u)):
+            if all((y, x) not in rules for _, (x, y) in enumerate2(u)):
                 yield u[len(u) // 2]
     print(sum(g()))
