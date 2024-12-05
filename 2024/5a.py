@@ -1,5 +1,4 @@
 from adventlib import inpath
-from collections import defaultdict
 from itertools import islice
 
 def enumerate2(v):
