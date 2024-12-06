@@ -24,4 +24,4 @@ def main():
         if '^' == c:
             guard = p
             ring = Ring([(0, -1), (1, 0), (0, 1), (-1, 0)])
-    print(len(set(Walker(grid).walk(guard, ring))))
+    print(len({guard, *Walker(grid).walk(guard, ring)}))
