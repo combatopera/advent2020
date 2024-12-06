@@ -5,7 +5,9 @@ class Walker:
     def __init__(self, grid):
         self.grid = grid
 
-    def walk(self, guard, ring):
+    def walk(self, guard, facing):
+        ring = Ring([(0, -1), (1, 0), (0, 1), (-1, 0)])
+        ring.step(facing)
         while True:
             p = guard + ring[0]
             c = self.grid.get(p)
@@ -23,5 +25,4 @@ def main():
         grid[p] = c
         if '^' == c:
             guard = p
-            ring = Ring([(0, -1), (1, 0), (0, 1), (-1, 0)])
-    print(len({guard, *Walker(grid).walk(guard, ring)}))
+    print(len({guard, *Walker(grid).walk(guard, 0)}))
