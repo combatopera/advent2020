@@ -1,20 +1,4 @@
-from adventlib import readgrid
-
-class Ring:
-
-    i = 0
-
-    def __init__(self, v):
-        self.v = v
-
-    def _plus(self, k):
-        return (self.i + k) % len(self.v)
-
-    def step(self, k):
-        self.i = self._plus(k)
-
-    def __getitem__(self, k):
-        return self.v[self._plus(k)]
+from adventlib import readgrid, Ring
 
 class Walker:
 
@@ -30,8 +14,8 @@ class Walker:
             if '#' == c:
                 d.step(1)
             else:
-                guard = p
                 yield p
+                guard = p
 
 def main():
     grid = {}

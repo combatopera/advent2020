@@ -93,3 +93,19 @@ def intsin(k):
 
 def intcos(k):
     return intsin(k + 1)
+
+class Ring:
+
+    i = 0
+
+    def __init__(self, v):
+        self.v = v
+
+    def _indexplus(self, k):
+        return (self.i + k) % len(self.v)
+
+    def step(self, k):
+        self.i = self._indexplus(k)
+
+    def __getitem__(self, k):
+        return self.v[self._indexplus(k)]
