@@ -25,12 +25,11 @@ class Obstructions:
         self.grid = grid
 
     def _checkobstruction(self, mainfootprint, obs, guard, facing):
-        if any(p == obs for p, _ in mainfootprint):
+        if any((obs, i) in mainfootprint for i in range(4)):
             return
         footprint = mainfootprint.copy()
         for g, r in islice(Walker({**self.grid, obs: '#'}).walk(guard, facing), 1, None):
             if (g, r.index) in footprint:
-                print(obs, g, r.index, footprint - mainfootprint)
                 return True
             footprint.add((g, r.index))
 
