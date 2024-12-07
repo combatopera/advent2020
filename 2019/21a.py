@@ -17,10 +17,10 @@ J = D and not (A and B and C)
 
 
 program = '''NOT A J
-NOT J T
-AND B T
-AND C T
-NOT T J
+NOT J J
+AND B J
+AND C J
+NOT J J
 AND D J
 WALK
 '''
