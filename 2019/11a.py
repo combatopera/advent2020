@@ -1,13 +1,11 @@
-from adventlib import inpath, Vector
+from adventlib import inpath, Ring, Vector
 from adventlib.intcode import Computer
 from collections import defaultdict
-
-dirs = [0, -1], [1, 0], [0, 1], [-1, 0]
 
 def main():
     grid = defaultdict(int)
     position = Vector([0, 0])
-    dirindex = 0
+    dirs = Ring([[0, -1], [1, 0], [0, 1], [-1, 0]])
     c = Computer([int(s) for s in inpath().read_text().split(',')], [])
     i = iter(c)
     while True:
@@ -16,6 +14,5 @@ def main():
             grid[position] = next(i)
         except StopIteration:
             break
-        dirindex = (dirindex + next(i) * 2 - 1) % 4
-        position += dirs[dirindex]
+        position += dirs.rol(next(i) * 2 - 1)[0]
     print(len(grid))
