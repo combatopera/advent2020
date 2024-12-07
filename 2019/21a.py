@@ -2,20 +2,6 @@ from adventlib import inpath
 from adventlib.intcode import Computer
 import sys
 
-'''
-ABCDabcd J
-???.#### f no choice
-.??##### t no choice
-#..#?### t
-#.##?### t
-##.#??## t
-####???? f a and d may both be holes
-
-J = D and not (A and B and C)
-
-'''
-
-
 program = '''NOT A J
 NOT J J
 AND B J
