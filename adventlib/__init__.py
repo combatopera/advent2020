@@ -96,16 +96,17 @@ def intcos(k):
 
 class Ring:
 
-    i = 0
+    index = 0
 
     def __init__(self, v):
         self.v = v
 
     def _indexplus(self, k):
-        return (self.i + k) % len(self.v)
+        return (self.index + k) % len(self.v)
 
-    def step(self, k):
-        self.i = self._indexplus(k)
+    def rol(self, k):
+        self.index = self._indexplus(k)
+        return self
 
     def __getitem__(self, k):
         return self.v[self._indexplus(k)]
