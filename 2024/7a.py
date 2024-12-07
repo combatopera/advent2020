@@ -5,8 +5,7 @@ def _check(total, args):
     for x in range(1 << (len(args) - 1)):
         n = args[0]
         for i, a in enumerate(args[1:]):
-            op = operator.mul if x & (1 << i) else operator.add
-            n = op(n, a)
+            n = (operator.mul if x & (1 << i) else operator.add)(n, a)
         if n == total:
             return True
 
