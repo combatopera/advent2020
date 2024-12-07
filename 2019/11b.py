@@ -2,7 +2,6 @@ from adventlib import inpath, Ring, Vector
 from adventlib.intcode import Computer
 from collections import defaultdict
 
-
 def main():
     grid = defaultdict(int)
     position = Vector([0, 0])
