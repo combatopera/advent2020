@@ -16,7 +16,7 @@ def main():
             grid[position] = next(i)
         except StopIteration:
             break
-        position += dirs.rol(next(i) * 2 - 1)[0]
+        position += dirs.iadd(next(i) * 2 - 1)[0]
     minx = min(p[0] for p in grid)
     maxx = max(p[0] for p in grid)
     miny = min(p[1] for p in grid)

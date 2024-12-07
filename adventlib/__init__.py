@@ -104,7 +104,7 @@ class Ring:
     def _indexplus(self, k):
         return (self.index + k) % len(self.v)
 
-    def rol(self, k):
+    def iadd(self, k):
         self.index = self._indexplus(k)
         return self
 

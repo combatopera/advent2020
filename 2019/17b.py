@@ -25,17 +25,17 @@ def main():
             except ValueError:
                 pass
             else:
-                dirs = Ring([(0, -1), (1, 0), (0, 1), (-1, 0)]).rol(direction)
+                dirs = Ring([(0, -1), (1, 0), (0, 1), (-1, 0)]).iadd(direction)
                 robot = Vector([x, y])
             x += 1
     route = []
     while True:
         if '#' == grid.get(robot + dirs[-1]):
             turn = 'L'
-            dirs.rol(-1)
+            dirs.iadd(-1)
         elif '#' == grid.get(robot + dirs[1]):
             turn = 'R'
-            dirs.rol(1)
+            dirs.iadd(1)
         else:
             break
         n = 0

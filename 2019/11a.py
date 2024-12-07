@@ -14,5 +14,5 @@ def main():
             grid[position] = next(i)
         except StopIteration:
             break
-        position += dirs.rol(next(i) * 2 - 1)[0]
+        position += dirs.iadd(next(i) * 2 - 1)[0]
     print(len(grid))

@@ -6,14 +6,14 @@ class Walker:
         self.grid = grid
 
     def walk(self, guard, facing):
-        ring = Ring([(0, -1), (1, 0), (0, 1), (-1, 0)]).rol(facing)
+        ring = Ring([(0, -1), (1, 0), (0, 1), (-1, 0)]).iadd(facing)
         while True:
             p = guard + ring[0]
             c = self.grid.get(p)
             if c is None:
                 break
             if '#' == c:
-                ring.rol(1)
+                ring.iadd(1)
             else:
                 yield p
                 guard = p
