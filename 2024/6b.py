@@ -25,13 +25,12 @@ class Obstructions:
         self.grid = grid
 
     def _checkobstruction(self, mainfootprint, obs, guard, facing):
-        if any((obs, i) in mainfootprint for i in range(4)):
-            return
-        footprint = mainfootprint.copy()
-        for g, r in islice(Walker({**self.grid, obs: '#'}).walk(guard, facing), 1, None):
-            if (g, r.index) in footprint:
-                return True
-            footprint.add((g, r.index))
+        if '.' == self.grid.get(obs) and all((obs, i) not in mainfootprint for i in range(4)):
+            footprint = mainfootprint.copy()
+            for g, r in islice(Walker({**self.grid, obs: '#'}).walk(guard, facing), 1, None):
+                if (g, r.index) in footprint:
+                    return True
+                footprint.add((g, r.index))
 
     def walk(self, guard, facing):
         footprint = set()
@@ -39,7 +38,7 @@ class Obstructions:
         for g, r in Walker(self.grid).walk(guard, facing):
             footprint.add((g, r.index))
             obs = g + r[0]
-            if '.' == self.grid.get(obs) and obs not in obstructions and self._checkobstruction(footprint, obs, g, r.index):
+            if obs not in obstructions and self._checkobstruction(footprint, obs, g, r.index):
                 obstructions.add(obs)
         return len(obstructions)
 
