@@ -2,12 +2,6 @@ from adventlib import inpath
 from adventlib.intcode import Computer
 import sys
 
-'''
-ABCDEFGHIabcd J
->>>#???#???## t
-.??##????#### t
-'''
-
 program = '''NOT A J
 NOT J J
 AND B J
