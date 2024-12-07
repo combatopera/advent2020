@@ -26,9 +26,9 @@ WALK
 '''
 
 def main():
-    c = Computer(map(int, inpath().read_text().split(',')), list(map(ord, program)))
-    for x in c:
-        if x >= 0x80:
+    for x in Computer(map(int, inpath().read_text().split(',')), list(map(ord, program))):
+        try:
+            sys.stderr.write(chr(x))
+        except ValueError:
+            print(x)
             break
-        sys.stderr.write(chr(x))
-    print(x)
