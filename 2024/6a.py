@@ -8,6 +8,7 @@ class Walker:
     def walk(self, guard, facing):
         ring = Ring([(0, -1), (1, 0), (0, 1), (-1, 0)]).iadd(facing)
         while True:
+            yield guard
             p = guard + ring[0]
             c = self.grid.get(p)
             if c is None:
@@ -15,7 +16,6 @@ class Walker:
             if '#' == c:
                 ring.iadd(1)
             else:
-                yield p
                 guard = p
 
 def main():
@@ -24,4 +24,4 @@ def main():
         grid[p] = c
         if '^' == c:
             guard = p
-    print(len({guard, *Walker(grid).walk(guard, 0)}))
+    print(len(set(Walker(grid).walk(guard, 0))))
