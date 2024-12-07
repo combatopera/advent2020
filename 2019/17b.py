@@ -1,10 +1,9 @@
-from adventlib import inpath, Vector
+from adventlib import inpath, Ring, Vector
 from adventlib.intcode import Computer
 from collections import defaultdict
 from itertools import chain
 
 plus = (-1, 0), (0, -1), (0, 0), (0, 1), (1, 0)
-dirs = (0, -1), (1, 0), (0, 1), (-1, 0)
 
 def _enc(routine):
     v = list(map(ord, f"{','.join(routine)}\n"))
@@ -26,22 +25,23 @@ def main():
             except ValueError:
                 pass
             else:
+                dirs = Ring([(0, -1), (1, 0), (0, 1), (-1, 0)]).rol(direction)
                 robot = Vector([x, y])
             x += 1
     route = []
     while True:
-        if '#' == grid.get(robot + dirs[(direction - 1) % 4]):
+        if '#' == grid.get(robot + dirs[-1]):
             turn = 'L'
-            direction = (direction - 1) % 4
-        elif '#' == grid.get(robot + dirs[(direction + 1) % 4]):
+            dirs.rol(-1)
+        elif '#' == grid.get(robot + dirs[1]):
             turn = 'R'
-            direction = (direction + 1) % 4
+            dirs.rol(1)
         else:
             break
         n = 0
-        while '#' == grid.get(robot + dirs[direction]):
+        while '#' == grid.get(robot + dirs[0]):
             n += 1
-            robot += dirs[direction]
+            robot += dirs[0]
         route.append((turn, str(n)))
     subs = []
     for sub in 'ABC':
