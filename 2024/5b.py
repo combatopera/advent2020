@@ -1,5 +1,4 @@
 from adventlib import enumerate2, inpath
-from itertools import islice
 
 def main():
     ruleblock, updateblock = inpath().read_text().split('\n\n')
