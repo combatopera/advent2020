@@ -1,10 +1,5 @@
-from adventlib import inpath
+from adventlib import enumerate2, inpath
 from itertools import islice
-
-def enumerate2(v):
-    for j, y in enumerate(v):
-        for i, x in enumerate(islice(v, j)):
-            yield (i, j), (x, y)
 
 def main():
     ruleblock, updateblock = inpath().read_text().split('\n\n')

@@ -110,3 +110,8 @@ class Ring:
 
     def __getitem__(self, k):
         return self.v[self._indexplus(k)]
+
+def enumerate2(v):
+    for j, y in enumerate(v):
+        for i, x in enumerate(islice(v, j)):
+            yield (i, j), (x, y)
