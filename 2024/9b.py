@@ -11,11 +11,7 @@ def main():
     gaps = []
     block = 0
     for i, k in enumerate(map(int, inpath().read_text().rstrip())):
-        id = None if i & 1 else i // 2
-        if id is None:
-            gaps.append(Chunk(block, k))
-        else:
-            files.append(Chunk(block, k))
+        (gaps if i & 1 else files).append(Chunk(block, k))
         block += k
     for id in range(len(files))[::-1]:
         file = files[id]
