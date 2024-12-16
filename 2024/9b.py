@@ -16,6 +16,8 @@ def main():
     for id in range(len(files))[::-1]:
         file = files[id]
         for gap in gaps:
+            if gap.i >= file.i:
+                break
             if file.n <= gap.n:
                 file.i = gap.i
                 gap.i += file.n
