@@ -16,15 +16,15 @@ class Total:
 
     n = 0
 
-    def stone(self, depth, x):
-        if depth == 25:
+    def stone(self, remaining, x):
+        if not remaining:
             self.n += 1
         else:
             for y in blink(x):
-                self.stone(depth + 1, y)
+                self.stone(remaining - 1, y)
 
 def main():
     total = Total()
     for x in map(int, inpath().read_text().split()):
-        total.stone(0, x)
+        total.stone(25, x)
     print(total.n)
