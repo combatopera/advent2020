@@ -30,5 +30,5 @@ def main():
     n = 0
     memo = Memo()
     for x in map(int, inpath().read_text().split()):
-        n += memo.stone(25, x)
+        n += memo.stone(75, x)
     print(n)
