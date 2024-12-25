@@ -14,12 +14,16 @@ def blink(x):
 
 class Memo:
 
+    def __init__(self):
+        self.memo = {}
+
     def stone(self, remaining, x):
-        if not remaining:
-            return 1
-        n = 0
-        for y in blink(x):
-            n += self.stone(remaining - 1, y)
+        try:
+            return self.memo[remaining, x]
+        except KeyError:
+            pass
+        n = sum(self.stone(remaining - 1, y) for y in blink(x)) if remaining else 1
+        self.memo[remaining, x] = n
         return n
 
 def main():
