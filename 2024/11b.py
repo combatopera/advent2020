@@ -1,23 +1,30 @@
 from adventlib import inpath
 
-def blink(v):
-    for x in v:
-        if not x:
-            yield 1
-            continue
+def blink(x):
+    if not x:
+        yield 1
+    else:
         s = str(x)
-        if not len(s) & 1:
-            i = len(s) // 2
+        i, r = divmod(len(s), 2)
+        if not r:
             yield int(s[:i])
             yield int(s[i:])
-            continue
-        yield 2024 * x
+        else:
+            yield 2024 * x
+
+class Total:
+
+    n = 0
+
+    def stone(self, depth, x):
+        if depth == 25:
+            self.n += 1
+        else:
+            for y in blink(x):
+                self.stone(depth + 1, y)
 
 def main():
-    n = 0
+    total = Total()
     for x in map(int, inpath().read_text().split()):
-        v = [x]
-        for _ in range(25):
-            v = list(blink(v))
-        n += len(v)
-    print(n)
+        total.stone(0, x)
+    print(total.n)
