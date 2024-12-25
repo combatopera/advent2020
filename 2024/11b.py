@@ -12,19 +12,19 @@ def blink(x):
         else:
             yield 2024 * x
 
-class Total:
-
-    n = 0
+class Memo:
 
     def stone(self, remaining, x):
         if not remaining:
-            self.n += 1
-        else:
-            for y in blink(x):
-                self.stone(remaining - 1, y)
+            return 1
+        n = 0
+        for y in blink(x):
+            n += self.stone(remaining - 1, y)
+        return n
 
 def main():
-    total = Total()
+    n = 0
+    memo = Memo()
     for x in map(int, inpath().read_text().split()):
-        total.stone(25, x)
-    print(total.n)
+        n += memo.stone(25, x)
+    print(n)
