@@ -24,7 +24,7 @@ def _callerpath():
             return Path(p)
 
 def inpath():
-    from lagoon import gpg
+    from lagoon.text import gpg
     caller = _callerpath()
     plainpath = caller.parent / 'input' / re.match('[0-9]+', caller.name).group()
     if plainpath.exists():
