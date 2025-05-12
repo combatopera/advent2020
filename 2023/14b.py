@@ -1,5 +1,5 @@
 from adventlib import inpath, Vector
-from diapyr.util import innerclass
+from foyndation import innerclass
 
 dirs = [Vector(t) for t in [(0, -1), (-1, 0), (0, 1), (1, 0)]]
 

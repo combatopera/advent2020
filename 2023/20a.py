@@ -1,6 +1,6 @@
 from adventlib import inpath
 from collections import deque
-from diapyr.util import innerclass
+from foyndation import innerclass
 import operator
 
 class Button:
